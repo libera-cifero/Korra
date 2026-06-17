@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 void test_get_color_by_index(){
-    const char *test_name = "test_get_color_by_index";
+    const char *test_name = "color_test.test_get_color_by_index";
     printInfo(test_name);
     uint32_t test_cases[][2]={
         //control points
@@ -57,12 +57,61 @@ void test_get_color_by_index(){
 }
 
 void test_get_index_by_color(){
+    const char *test_name = "color_test.test_get_index_by_color";
+    printInfo(test_name);
 
+    uint32_t test_cases[][2]={
+        //control points
+        {0xff0000, 0},
+        {0xffff00, 255},
+        {0x00ff00, 510},
+        {0x00ffff, 765},
+        {0x0000ff, 1020},
+        {0xff00ff, 1275},
+        {0xff0001, 1529},
+
+        //around control points
+        {0xff0100, 1},
+        {0xfffe00, 254},
+        {0x01ff00, 509},
+        {0x00fffe, 764},
+        {0x0001ff, 1019},
+        {0xfe00ff, 1274},
+        {0xff0002, 1528},
+        {0xfeff00, 256},
+        {0x00ff01, 511},
+        {0x00feff, 766},
+        {0x0100ff, 1021},
+        {0xff00fe, 1276},
+
+        //random points
+        {0xFF2A00, 42},
+        {0xD2FF00, 300},
+        {0x00FFBE, 700},
+        {0x0078FF, 900},
+        {0xFF0082, 1400},
+
+        //exceptions
+        {0xfe1234, UINT32_MAX},
+        {0xffff0000, UINT32_MAX},
+        {0xfefef0, UINT32_MAX}
+    };
+
+    int test_count = sizeof(test_cases)/2/sizeof(uint32_t);
+    for(int i = 0; i < test_count; i++){
+        uint32_t in = test_cases[i][0], out_predicted = test_cases[i][1];
+        uint32_t out = get_index_by_color(in);
+        if(out != out_predicted){
+            printFail(test_name, "get_index_by_color(%06x) must be equals %u, but returns %u", in, out_predicted, out);
+            return;
+        }
+    }
+
+    printPass(test_name);
 }
 
 int main(){
     test_get_color_by_index();
-
-
+    test_get_index_by_color();
     return 0;
 }
