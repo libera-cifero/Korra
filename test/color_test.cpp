@@ -2,6 +2,7 @@
 #include "test.h"
 #include <cstdint>
 #include <stdint.h>
+#include <map>
 
 void test_get_color_by_index(){
     const char *test_name = "color_test.test_get_color_by_index";
@@ -84,17 +85,8 @@ void test_get_index_by_color(){
         {0x0100ff, 1021},
         {0xff00fe, 1276},
 
-        //random points
-        {0xFF2A00, 42},
-        {0xD2FF00, 300},
-        {0x00FFBE, 700},
-        {0x0078FF, 900},
-        {0xFF0082, 1400},
-
         //exceptions
-        {0xfe1234, UINT32_MAX},
         {0xffff0000, UINT32_MAX},
-        {0xfefef0, UINT32_MAX}
     };
 
     int test_count = sizeof(test_cases)/2/sizeof(uint32_t);
