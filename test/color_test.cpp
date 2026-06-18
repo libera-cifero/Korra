@@ -108,39 +108,36 @@ void test_number_to_color(){
 
     //first argument - output, second - number (input), third - color_bit_resolution (input)
     uint32_t test_cases[][3]={
-        //control points
-        {0x520808, 0, 6},
-        {0x141410, 11, 6},
-        {0xa6e3a4, 21, 6},
-        {0x037e7e, 32, 6},
-        {0x141091, 43, 6},
-        {0x433e43, 53, 6},
-        {0x84131d, 63, 6},
+        {0xff0000, 0, 6},
+        {0xf7ff00, 11, 6},
+        {0x08ff00, 21, 6},
+        {0x00ffff, 32, 6},
+        {0x0800ff, 43, 6},
+        {0xf700ff, 53, 6},
+        {0xff0018, 63, 6},
 
-        //around control points
-        {0xcaa29e, 1, 6},
-        {0x4e4e45, 10, 6},
-        {0x303509, 12, 6},
-        {0x3f7538, 20, 6},
-        {0x445545, 22, 6},
-        {0x000202, 31, 6},
-        {0x7b9598, 33, 6},
-        {0x2d313e, 40, 6},
-        {0x4d5078, 42, 6},
-        {0x321835, 52, 6},
-        {0xdac8ca, 63, 6},
+        {0xff1800, 1, 6},
+        {0xffef00, 10, 6},
+        {0xdfff00, 12, 6},
+        {0x20ff00, 20, 6},
+        {0x00ff10, 22, 6},
+        {0x00ffe7, 31, 6},
+        {0x00e7ff, 33, 6},
+        {0x0040ff, 40, 6},
+        {0x0010ff, 42, 6},
+        {0xdf00ff, 52, 6},
+        {0xff0018, 63, 6},
 
-        //random points
-        {0xa72e2e, 0, 6},
-        {0x016eb0, 36, 6},
-        {0xd99e7a, 4, 6},
-        {0x124711, 21, 6},
-        {0x99e5c1, 27, 6},
-        {0xf3f9ed, 16, 6},
-        {0x0c1309, 19, 6},
-        {0xcaad74, 7, 6},
-        {0x100f10, 49, 6},
-        {0x7b77f6, 43, 6},
+        {0xff3000, 2, 6},
+        {0xdf00ff, 52, 6},
+        {0xff8f00, 6, 6},
+        {0xf7ff00, 11, 6},
+        {0x00ff40, 24, 6},
+        {0xff0018, 63, 6},
+        {0xff0078, 59, 6},
+        {0xaf00ff, 50, 6},
+        {0x00e7ff, 33, 6},
+        {0xff0030, 62, 6}
     };
 
     uint32_t exception_cases[][2]={
@@ -151,10 +148,6 @@ void test_number_to_color(){
     };
 
     int test_count = sizeof(test_cases)/3/sizeof(uint32_t);
-
-    for(int i = 0; i < test_count; i++){
-        test_cases[i][0] = get_color_by_index(number_to_index(test_cases[i][1], test_cases[i][2]));
-    }
 
     for(int i = 0; i < test_count; i++){
         uint16_t number = (uint16_t)test_cases[i][1];
@@ -192,7 +185,40 @@ void test_number_to_color(){
 }
 
 void test_color_to_number(){
+    const char *test_name = "color_test.test_number_to_color";
+    printInfo(test_name);
+    uint32_t test_cases[][3] = {
+        {63, 0x2b0709, 6},
+        {38, 0x5089c6, 6},
+        {63, 0xac131d, 6},
+        {46, 0x5f28cc, 6},
+        {62, 0xe95d72, 6},
+        {62, 0x6e051c, 6},
+        {22, 0x6eb273, 6},
+        {34, 0x07abca, 6},
+        {34, 0x4e757f, 6},
+        {44, 0x060413, 6}
+    };
+    int test_count = sizeof(test_cases)/3/sizeof(uint32_t);
 
+    for(int i = 0; i < test_count; i++){
+        uint32_t color = (uint32_t)test_cases[i][1];
+        int color_bit_resolution = (int)test_cases[i][2];
+        uint16_t out_predicted = (uint16_t)test_cases[i][0];
+
+        try{
+            uint16_t out = color_to_number(color, color_bit_resolution);
+            if(out != out_predicted){
+                printFail(test_name, "color_to_number(0x%06x, %d) must return %u, but returns %u", color, color_bit_resolution, out_predicted, out);
+                return;
+            }
+        }
+        catch(status_error error){
+            printFail(test_name, error.what());
+            return;
+        }
+    }
+    printPass(test_name);
 }
 
 int main(){

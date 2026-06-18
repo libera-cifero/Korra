@@ -66,24 +66,22 @@ uint32_t get_index_by_color(uint32_t color)
         return 0;
     }
     else if(cmax == r){
-        if(g >= b){
-            return 255 * (g - b) / delta;
-        }
-        else{
-            return 1530 - 255 * (b - g) / delta;
-        }
+    if(g >= b)
+        return div_round(255 * (g - b), delta);
+    else
+        return 1530 - div_round(255 * (b - g), delta);
     }
     else if(cmax == g){
         if(b >= r)
-            return 510 + 255 * (b - r) / delta;
+            return 510 + div_round(255 * (b - r), delta);
         else
-            return 510 - 255 * (r - b) / delta;
+            return 510 - div_round(255 * (r - b), delta);
     }
     else if(cmax == b){
         if(r >= g)
-            return 1020 + 255 * (r - g) / delta;
+            return 1020 + div_round(255 * (r - g), delta);
         else
-            return 1020 - 255 * (g - r) / delta;
+            return 1020 - div_round(255 * (g - r), delta);
     }
     else return UINT32_MAX;
 }
@@ -93,7 +91,7 @@ uint32_t index_to_number_base(uint32_t index, int color_bit_resolution){
 }
 
 uint32_t number_to_index(uint32_t number, int color_bit_resolution){
-    return number * COLOR_PALLETE / (1<<color_bit_resolution);
+    return div_round(number * COLOR_PALLETE, (1<<color_bit_resolution));
 }
 
 uint32_t number_to_color(uint16_t number, int color_bit_resolution){
