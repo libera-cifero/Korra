@@ -1,8 +1,8 @@
 #include "../include/color.h"
+#include "../include/status_error.hpp"
 #include "test.h"
 #include <cstdint>
 #include <stdint.h>
-#include <map>
 
 void test_get_color_by_index(){
     const char *test_name = "color_test.test_get_color_by_index";
@@ -102,8 +102,103 @@ void test_get_index_by_color(){
     printPass(test_name);
 }
 
+void test_number_to_color(){
+    const char *test_name = "color_test.test_number_to_color";
+    printInfo(test_name);
+
+    //first argument - output, second - number (input), third - color_bit_resolution (input)
+    uint32_t test_cases[][3]={
+        //control points
+        {0x520808, 0, 6},
+        {0x141410, 11, 6},
+        {0xa6e3a4, 21, 6},
+        {0x037e7e, 32, 6},
+        {0x141091, 43, 6},
+        {0x433e43, 53, 6},
+        {0x84131d, 63, 6},
+
+        //around control points
+        {0xcaa29e, 1, 6},
+        {0x4e4e45, 10, 6},
+        {0x303509, 12, 6},
+        {0x3f7538, 20, 6},
+        {0x445545, 22, 6},
+        {0x000202, 31, 6},
+        {0x7b9598, 33, 6},
+        {0x2d313e, 40, 6},
+        {0x4d5078, 42, 6},
+        {0x321835, 52, 6},
+        {0xdac8ca, 63, 6},
+
+        //random points
+        {0xa72e2e, 0, 6},
+        {0x016eb0, 36, 6},
+        {0xd99e7a, 4, 6},
+        {0x124711, 21, 6},
+        {0x99e5c1, 27, 6},
+        {0xf3f9ed, 16, 6},
+        {0x0c1309, 19, 6},
+        {0xcaad74, 7, 6},
+        {0x100f10, 49, 6},
+        {0x7b77f6, 43, 6},
+    };
+
+    uint32_t exception_cases[][2]={
+        {64, 6},
+        {65,6},
+        {1200, 6},
+        {1024, 11}
+    };
+
+    int test_count = sizeof(test_cases)/3/sizeof(uint32_t);
+
+    for(int i = 0; i < test_count; i++){
+        test_cases[i][0] = get_color_by_index(number_to_index(test_cases[i][1], test_cases[i][2]));
+    }
+
+    for(int i = 0; i < test_count; i++){
+        uint16_t number = (uint16_t)test_cases[i][1];
+        int color_bit_resolution = (int)test_cases[i][2];
+        uint32_t out_predicted = test_cases[i][0];
+
+        try{
+            uint32_t out = number_to_color(number, color_bit_resolution);
+            if(out != out_predicted){
+                printFail(test_name, "number_to_color(%u, %d) must return %x, but returns %x", number, color_bit_resolution, out_predicted, out);
+                return;
+            }
+        }
+        catch(status_error error){
+            printFail(test_name, error.what());
+            return;
+        }
+    }
+
+    int exception_count = sizeof(exception_cases)/2/sizeof(uint32_t);
+    for(int i = 0; i < exception_count; i++){
+        uint16_t number = exception_cases[i][0];
+        int color_bit_resolution = exception_cases[i][1];
+
+        try{
+            number_to_color(number, color_bit_resolution);
+            printFail(test_name, "number_to_color(%u, %d) must throw an exception!", number, color_bit_resolution);
+            return;
+        }
+        catch(status_error err) { }
+        
+    }
+
+    printPass(test_name);
+}
+
+void test_color_to_number(){
+
+}
+
 int main(){
     test_get_color_by_index();
     test_get_index_by_color();
+    test_number_to_color();
+    test_color_to_number();
     return 0;
 }
