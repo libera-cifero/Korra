@@ -1,3 +1,5 @@
+ARGS=1
+
 all: src/main.c
 	g++ src/main.c src/color.cpp -o bin/stegvideo
 
