@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <stdbool.h>
 #include <stdlib.h>
-#include "../include/video_encoder.hpp"
+#include "../include/encoder/video_encoder.hpp"
 #include "../include/color.h"
 
 
@@ -94,41 +94,42 @@ char** video_encoder::encode_package(char *ip_package)
 
 uint32_t video_encoder::_get_block_color(char *frame, block info) 
 {
-    uint32_t color = 0, color_buf;
+    uint32_t color = 0, color_buf, red_sum = 0, green_sum = 0, blue_sum = 0;
     for(int y = info.y0; y < info.y1; y++) 
     {
         for(int x = info.x0; x < info.x1; x++) 
         {
-            color_buf = 0;
             color_index index = _get_color_index(x, y);
             char red = frame[index.red_index], green = frame[index.green_index], blue = frame[index.blue_index];
-            color_buf |= ((uint32_t)red) << 16;
-            color_buf |= ((uint32_t)green) << 8;
-            color_buf |= (uint32_t)blue;
-
-            color += color_buf;
+            red_sum += ((uint32_t)red) << 16;
+            green_sum += ((uint32_t)green) << 8;
+            blue_sum += (uint32_t)blue;
         }
     }
 
-    return color / (info.x1 - info.x0) / (info.y1 - info.y0);
+    uint32_t quatient = (info.x1 - info.x0) * (info.y1 - info.y0);
+    uint32_t red = red_sum / quatient, green = green_sum / quatient, blue = blue_sum / quatient;
+    return (red << 16) | (green << 8) | blue;
 }
 
-void video_encoder::_decode_frame(bitset<IP_PACKAGE_BIT_SIZE> &ip_bitset, char *frame, int frame_index) 
+void video_encoder::_decode_frame(char *ip_package, char *frame, int frame_index) 
 {
     for(int block_index = 0; block_index < _blocks_per_frame; block_index++) 
     {
         block info = _get_block_info(block_index);
         uint32_t block_color = _get_block_color(frame, info);
+        uint32_t data_piece = color_to_number(block_color, _config.bit_color_resolution);
         
+        frame_index += _config.bit_color_resolution;
     }
 }
 
 char* video_encoder::decode_package(char **frames)
 {
-    bitset<IP_PACKAGE_BIT_SIZE> ip_bitset{0};
+    char *ip_package = (char*)malloc(IP_PACKAGE_SIZE);
     for(int frame_index = 0; frame_index < _frames_per_package; frame_index++){
-        _decode_frame(ip_bitset, frames[frame_index], frame_index);
+        _decode_frame(ip_package, frames[frame_index], frame_index);
     }
-    char* package = reinterpret_cast<char*>(&ip_bitset);
-    return package;
+
+    return ip_package;
 }

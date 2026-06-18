@@ -43,7 +43,8 @@ private:
     char *_encode_to_frame(bitset<IP_PACKAGE_BIT_SIZE> &ip_package, int bits_read, int blocks_to_encode);
 
     uint32_t _get_block_color(char *frame, block info);
-    void _decode_frame(bitset<IP_PACKAGE_BIT_SIZE> &ip_package, char *frame, int frame_index);
+    uint16_t _get_ip_package_size(char **frames, int frame_count);
+    void _decode_frame(char *ip_package, char *frame, int frame_index);
 public:
     video_encoder(video_encoder_config config);
     char **encode_package(char *ip_package);
