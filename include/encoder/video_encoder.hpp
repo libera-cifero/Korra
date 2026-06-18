@@ -1,3 +1,7 @@
+#include "compressor/compressor.hpp"
+#include "obfuscator/obfuscator.hpp"
+#include "recoverer/recoverer.hpp"
+#include "provider/provider.hpp"
 #include <bitset>
 #include <cstdint>
 #define IP_PACKAGE_SIZE 65536
@@ -30,6 +34,11 @@ typedef struct color_index
 class video_encoder {
 private:
     video_encoder_config _config;
+    obfuscator *_obfuscator;
+    compressor *_compressor;
+    recoverer *_recoverer;
+    provider *_frame_manager;
+
     int _blocks_per_package;
     int _blocks_per_frame;
     int _blocks_per_last_frame;
