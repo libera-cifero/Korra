@@ -18,5 +18,5 @@ public:
     basic_provider(basic_provider_config config);
     char *pull_data(char **frames, int *date_count) override;
     char **push_frames(char *data, int *frame_count) override;
-    ~basic_provider();
+    virtual ~basic_provider();
 };
