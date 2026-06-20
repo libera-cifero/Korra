@@ -10,11 +10,11 @@
 using namespace std;
 
 uint8_t get_r(uint32_t color){
-    return (uint8_t)((color & 0x00ff0000)>>16);
+    return (uint8_t)((color & 0xff0000)>>16);
 }
 
 uint8_t get_g(uint32_t color){
-    return (uint8_t)((color & 0x0000ff00)>>8);
+    return (uint8_t)((color & 0x00ff00)>>8);
 }
 
 uint8_t get_b(uint32_t color){

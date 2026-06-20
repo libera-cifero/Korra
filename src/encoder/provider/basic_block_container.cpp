@@ -6,7 +6,8 @@
 
 using bbc = basic_block_container;
 
-bbc::basic_block_container(uint32_t bits_per_block, uint32_t block_size, uint32_t frame_width, uint32_t frame_height) {
+bbc::basic_block_container(uint8_t *frame, uint32_t bits_per_block, uint32_t block_size, uint32_t frame_width, uint32_t frame_height) {
+    _frame = frame;
     _bits_per_block = bits_per_block;
     _block_size = block_size;
     _frame_width = frame_width;
@@ -14,7 +15,7 @@ bbc::basic_block_container(uint32_t bits_per_block, uint32_t block_size, uint32_
 
     _block_count = 0;
     _width_capacity = _frame_width / _block_size;
-    _height_capacity = _frame_height / _block_capacity;
+    _height_capacity = _frame_height / _block_size;
     _block_capacity = _height_capacity * _width_capacity;
 }
 
@@ -37,7 +38,7 @@ bbc::rect bbc::_get_rect_by_index(uint32_t block_index)
 }
 
 bbc::rgb_index bbc::_get_index_by_point(int x, int y){
-    int r_pos = 3 * (y * _width_capacity + x);
+    int r_pos = 3 * (y * _frame_width + x);
     int g_pos = r_pos + 1, b_pos = r_pos + 2;
 
     return { .r_index = r_pos, .g_index = g_pos, .b_index = b_pos };
