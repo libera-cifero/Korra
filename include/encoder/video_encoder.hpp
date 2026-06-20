@@ -1,11 +1,11 @@
 #include "compressor/compressor.hpp"
 #include "obfuscator/obfuscator.hpp"
-#include "recoverer/recoverer.hpp"
+#include "corrector/corrector.hpp"
 #include "provider/provider.hpp"
 
 typedef struct video_encoder_config {
     provider *_provider;
-    recoverer *_recoverer;
+    corrector *_corrector;
     compressor *_compressor;
     obfuscator *_obfuscator;
 } video_encoder_config;
