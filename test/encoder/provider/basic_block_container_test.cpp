@@ -97,10 +97,10 @@ void test_get_block_by_index() {
     };
 
     const int frame_count = sizeof(frames) / frame_size / sizeof(uint8_t);
-
+    bbc_config config = {.bits_per_block = bits_per_block, .block_size = 4, .frame_width = w, .frame_height = h};
     for(int i = 0; i < frame_count; i++){
         try{
-            basic_block_container container(frames[i], bits_per_block, 4, w, h);
+            basic_block_container container(frames[i], config);
             auto test = test_cases[i];
             uint32_t expected = get<0>(test);
             int index = get<1>(test);
