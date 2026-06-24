@@ -1,3 +1,4 @@
+#pragma once
 #include "compressor/compressor.hpp"
 #include "obfuscator/obfuscator.hpp"
 #include "corrector/corrector.hpp"

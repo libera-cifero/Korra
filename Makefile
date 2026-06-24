@@ -1,23 +1,45 @@
+DEBUG_FLAG = -DCMAKE_BUILD_TYPE=Debug
+RELEASE_FLAG = -DCMAKE_BUILD_TYPE=Release
+
 init_src:
 	mkdir -p build
-	mkdir -p build/src
-	cmake -S src -B build/src
+	mkdir -p build/src 
+	@if [ -n "$${RELEASE+x}" ]; then \
+		cmake -S src -B build/src ${RELEASE_FLAG}; \
+	else \
+		cmake -S src -B build/src ${DEBUG_FLAG}; \
+	fi
 
 init_test:
 	mkdir -p build
 	mkdir -p build/test
-	cmake -S test -B build/test
+	@if [ -n "$${RELEASE+x}" ]; then \
+		cmake -S test -B build/test ${RELEASE_FLAG}; \
+	else \
+		cmake -S test -B build/test ${DEBUG_FLAG}; \
+	fi
+
+init: init_src init_test
 
 build_src:
 	cmake --build build/src
 
-build_test: init_test
+#SRC
+#=====BEGIN=====
+color:
+	cmake --build build/src --target color
+bbc:
+	cmake --build build/src --target bbc
+#======END======
+
+#TESTS
+#=====BEGIN=====
+build_test: build_src init_test
 	cmake --build build/test
 
-color_test: init_test
+color_test: color
 	cmake --build build/test --target color_test && ./bin/color_test
 
-bbc_test: init_test
+bbc_test: color bbc
 	cmake --build build/test --target bbc_test && ./bin/bbc_test
-
-#rilr_test:
+#======END======

@@ -1,3 +1,4 @@
+#pragma once
 #include "provider.hpp"
 #include "len_reader/data_length_reader.hpp"
 struct basic_provider_config {

@@ -10,7 +10,7 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/bbc_test",
+            "target": "./bin/color_test",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText"
         }

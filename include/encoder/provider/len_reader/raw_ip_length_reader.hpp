@@ -1,3 +1,4 @@
+#pragma once
 #include "data_length_reader.hpp"
 #include "../basic_block_container.hpp"
 
