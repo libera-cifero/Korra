@@ -1,102 +1,150 @@
 digraph {
     rankdir=BT;
-    color;
-    subgraph cluster_providers {
-        label="providers";
-        style=rounded;
-        color=black;
 
-        provider[
-            color=red;
-            fontcolor=red;
-        ];
-        basic_provider[
-            color=blue;
-            fontcolor=blue;
-        ];
-        subgraph basic_block_container{
-            basic_block_container;
-            basic_block_pointer;
-            basic_block_pointer_proxy;
-            data_length_reader [
+    subgraph src{
+        subgraph cluster_providers {
+            label="providers";
+            style=rounded;
+            color=black;
+
+            provider[
                 color=red;
                 fontcolor=red;
             ];
-            raw_ip_length_reader[
+            basic_provider[
                 color=blue;
                 fontcolor=blue;
             ];
-            basic_provider->provider [color=blue;];
-            basic_block_container->basic_provider [weight=1000; ];
-            basic_block_pointer->basic_block_container;
-            basic_block_pointer_proxy->basic_block_pointer;
-            basic_block_pointer_proxy->basic_block_container;
+            subgraph basic_block{
+                basic_block_container;
+                basic_block_pointer;
+                basic_block_pointer_proxy;
+                data_length_reader [
+                    color=red;
+                    fontcolor=red;
+                ];
+                raw_ip_length_reader[
+                    color=blue;
+                    fontcolor=blue;
+                ];
+                
+                basic_provider->provider [color=blue;];
+                
+                basic_block_container->basic_provider [weight=1000; ];
+
+                basic_block_pointer->basic_block_container;
+                
+                basic_block_pointer_proxy->basic_block_pointer;
+                basic_block_pointer_proxy->basic_block_container;
+
+                
+            }
+
+            subgraph data_length_reader{
+                raw_ip_length_reader->data_length_reader [color = blue;];
+                data_length_reader->basic_provider;
+
+                basic_block_container->raw_ip_length_reader [weight=0.1;];
+            }
+
+            basic_block_config;
+            rect;
+            rgb_index;
+            
+            basic_block_config->basic_block_container;
+            basic_block_config->basic_block_pointer;
+            basic_block_config->basic_block_pointer_proxy;
+            basic_block_config->raw_ip_length_reader;
+
+            rect->basic_block_pointer_proxy;
+            rect->basic_block_pointer;
+
+            rgb_index->basic_block_pointer_proxy;
+        }
+        subgraph cluster_compressors {
+            label="compressors";
+            style=rounded;
+            color=black;
+            compressor [
+                color=red;
+                fontcolor=red;
+            ];
+            none_compressor [
+                color=blue;
+                fontcolor=blue;
+            ];
+            none_compressor->compressor [color=blue];
         }
 
-        subgraph data_length_reader{
-            raw_ip_length_reader->data_length_reader [color = blue;];
-            data_length_reader->basic_provider;
+        subgraph cluster_obfuscators 
+        {
+            label="obfuscators";
+            style=rounded;
+            color=black;
 
-            basic_block_container->raw_ip_length_reader [weight=0.1;];
+            obfuscator[
+                color = red;
+                fontcolor=red;
+            ];
+            none_obfuscator [
+                color=blue;
+                fontcolor=blue;
+            ];
+
+            none_obfuscator->obfuscator [color=blue];
         }
+
+        subgraph cluster_correctors{
+            label="correctors";
+            style=rounded;
+            color=black;
+
+            corrector[
+                color = red;
+                fontcolor=red;
+            ];
+            none_corrector [
+                color=blue;
+                fontcolor=blue;
+            ];
+
+            none_corrector->corrector [color=blue];
+        }
+
+        video_encoder;
+        color;
+        status_error;
+        
+        provider->video_encoder; 
+        compressor->video_encoder;
+        obfuscator->video_encoder;
+        corrector->video_encoder;
+
+        color->basic_block_pointer_proxy [minlen=1];
+        color->basic_block_pointer [minlen=1];
+        
+        status_error->color;
     }
-    subgraph cluster_compressors {
-        label="compressors";
-        style=rounded;
-        color=black;
-        compressor [
-            color=red;
-            fontcolor=red;
-        ];
-        none_compressor [
-            color=blue;
-            fontcolor=blue;
-        ];
-        none_compressor->compressor [color=blue];
-    }
-
-    subgraph cluster_obfuscators 
-    {
-        label="obfuscators";
-        style=rounded;
-        color=black;
-
-        obfuscator[
-            color = red;
-            fontcolor=red;
-        ];
-        none_obfuscator [
-            color=blue;
-            fontcolor=blue;
-        ];
-
-        none_obfuscator->obfuscator [color=blue];
-    }
-
-    subgraph cluster_correctors{
-        label="correctors";
-        style=rounded;
-        color=black;
-
-        corrector[
-            color = red;
-            fontcolor=red;
-        ];
-        none_corrector [
-            color=blue;
-            fontcolor=blue;
-        ];
-
-        none_corrector->corrector [color=blue];
-    }
-
-    video_encoder;
     
-    provider->video_encoder; 
-    compressor->video_encoder;
-    obfuscator->video_encoder;
-    corrector->video_encoder;
+    subgraph cluster_test{
+        style=rounded;
+        subgraph lib{
+            test;
+        }
 
-    color->basic_block_pointer_proxy [minlen=3];
-    color->basic_block_pointer [minlen=3];
+        color_test;
+        basic_block_test;
+        raw_ip_length_reader_test;
+        
+        test->color_test;
+        test->basic_block_test;
+        test->raw_ip_length_reader_test;
+    }
+
+    color->basic_block_test [minlen=3];
+    color->color_test [minlen=3];
+
+    basic_block_pointer_proxy->basic_block_test;
+    basic_block_container->basic_block_test;
+    basic_block_pointer->basic_block_test;
 }
