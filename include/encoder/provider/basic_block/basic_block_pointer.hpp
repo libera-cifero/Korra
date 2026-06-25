@@ -3,11 +3,13 @@
 #include "encoder/provider/basic_block_config.h"
 #include "basic_block_pointer_proxy.hpp"
 #include "rect.h"
+#include <iterator>
 #include <cstddef>
 #include <cstdint>
 
 class basic_block_pointer {
 private:
+    bool _is_null;
     uint8_t *_blocks;
     uint32_t _block_index;
 
@@ -23,8 +25,15 @@ private:
         bool (*more)(size_t delta_base, uint32_t a, uint32_t b)
     );
 public:
-    basic_block_pointer(uint8_t *blocks, uint32_t block_index, basic_block_config *config);
+    using iterator_category = std::random_access_iterator_tag;
+    using value_type = int;
+    using difference_type = std::ptrdiff_t;
+    using pointer = basic_block_pointer;
+    using reference = basic_block_pointer_proxy;
 
+    basic_block_pointer(uint8_t *blocks, uint32_t block_index, basic_block_config *config);
+    basic_block_pointer(std::nullptr_t);
+    basic_block_pointer();
     basic_block_pointer_proxy operator*();
 
     basic_block_pointer& operator+=(int delta_index);

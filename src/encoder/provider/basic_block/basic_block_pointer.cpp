@@ -4,6 +4,7 @@
 #include "color.h"
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 
 using bbp = basic_block_pointer;
 
@@ -21,7 +22,14 @@ rect bbp::_get_rect() {
     };
 }
 
+bbp::basic_block_pointer(std::nullptr_t) {
+    _is_null = true;
+}
+
+bbp::basic_block_pointer():basic_block_pointer(nullptr) { }
+
 bbp::basic_block_pointer(uint8_t *blocks, uint32_t block_index, basic_block_config *config) {
+    _is_null = false;
     _blocks = blocks;
     _block_index = block_index;
     _config = config;
@@ -109,7 +117,9 @@ bool bbp::_compare(
     }
 }
 
-bool bbp::operator==(const basic_block_pointer& ref) {
+bool bbp::operator==(const basic_block_pointer& ref) 
+{
+    if(_is_null && ref._is_null) return true;
     return _compare(ref, 
         [](uint32_t a, uint32_t b){
             return a == b;
@@ -128,6 +138,8 @@ bool bbp::operator!=(const basic_block_pointer& ref){
 }
 
 bool bbp::operator<(const basic_block_pointer& ref) {
+    if(_is_null || ref._is_null) return false;
+
     return _compare(ref, 
         [](uint32_t a, uint32_t b){
             return a < b;
@@ -142,6 +154,7 @@ bool bbp::operator<(const basic_block_pointer& ref) {
 }
 
 bool bbp::operator>(const basic_block_pointer& ref){
+    if(_is_null || ref._is_null) return false;
     return _compare(ref, 
         [](uint32_t a, uint32_t b){
             return a > b;
@@ -156,6 +169,8 @@ bool bbp::operator>(const basic_block_pointer& ref){
 }
 
 bool bbp::operator<=(const basic_block_pointer& ref){
+    if(_is_null && ref._is_null) return true;
+    else if(_is_null || ref._is_null) return false;
     return _compare(ref, 
         [](uint32_t a, uint32_t b){
             return a <= b;
@@ -170,6 +185,9 @@ bool bbp::operator<=(const basic_block_pointer& ref){
 }
 
 bool bbp::operator>=(const basic_block_pointer& ref){
+    if(_is_null && ref._is_null) return true;
+    else if(_is_null || ref._is_null) return false;
+
     return _compare(ref, 
         [](uint32_t a, uint32_t b){
             return a >= b;
