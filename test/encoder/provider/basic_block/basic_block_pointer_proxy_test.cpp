@@ -1,14 +1,17 @@
-#include "encoder/provider/basic_block_container.hpp"
+#include "encoder/provider/basic_block/basic_block_container.hpp"
+#include "encoder/provider/basic_block_config.h"
 #include "color.h"
 #include "test.h"
 #include <cstdint>
 #include <exception>
 #include <tuple>
 
+#define TEST_BASE_NAME "basic_block_pointer_proxy_test"
+
 using namespace std;
 
 void test_get_block_by_index() {
-    const char *test_name = "basic_block_container_test.test_get_block_by_index";
+    const char *test_name = TEST_BASE_NAME ".test_get_block_by_index";
     printInfo(test_name);
 
     const uint32_t num0 = 34, num1 = 13, num2 = 2, num3 = 27;
@@ -119,12 +122,12 @@ void test_get_block_by_index() {
     printPass(test_name);
 }
 
-void test_append_block(){
+void test_set_block_by_index(){
 
 }
 
 int main() {
     test_get_block_by_index();
-    test_append_block();
+    test_set_block_by_index();
     return 0;
 }

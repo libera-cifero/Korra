@@ -1,7 +1,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "encoder/video_encoder.hpp"
-#include "color.h"
 
 video_encoder::video_encoder(video_encoder_config config){
     _config = config;

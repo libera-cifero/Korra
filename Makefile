@@ -1,6 +1,9 @@
 DEBUG_FLAG = -DCMAKE_BUILD_TYPE=Debug
 RELEASE_FLAG = -DCMAKE_BUILD_TYPE=Release
 
+arch:
+	dot -Tsvg doc/architecture.dot > doc/map.svg
+
 init_src:
 	mkdir -p build
 	mkdir -p build/src 

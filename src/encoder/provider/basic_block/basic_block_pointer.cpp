@@ -4,7 +4,6 @@
 #include "color.h"
 #include <cstddef>
 #include <cstdint>
-#include <optional>
 
 using bbp = basic_block_pointer;
 
