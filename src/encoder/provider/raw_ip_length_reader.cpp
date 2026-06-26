@@ -1,7 +1,8 @@
 #include "encoder/provider/len_reader/raw_ip_length_reader.hpp"
+#include "encoder/provider/basic_block/basic_block_container.hpp"
 #include <cstdint>
 
-raw_ip_length_reader::raw_ip_length_reader(bbc_config config){
+raw_ip_length_reader::raw_ip_length_reader(basic_block_config config){
     _config = config;
 }
 

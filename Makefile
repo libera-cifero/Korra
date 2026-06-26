@@ -1,6 +1,9 @@
 DEBUG_FLAG = -DCMAKE_BUILD_TYPE=Debug
 RELEASE_FLAG = -DCMAKE_BUILD_TYPE=Release
 
+arch:
+	dot -Tsvg doc/architecture.dot > doc/map.svg
+
 init_src:
 	mkdir -p build
 	mkdir -p build/src 
@@ -21,15 +24,14 @@ init_test:
 
 init: init_src init_test
 
-build_src:
-	cmake --build build/src
-
 #SRC
 #=====BEGIN=====
+build_src:
+	cmake --build build/src
 color:
 	cmake --build build/src --target color
-bbc:
-	cmake --build build/src --target bbc
+basic_block: color
+	cmake --build build/src --target basic_block
 #======END======
 
 #TESTS
@@ -40,6 +42,6 @@ build_test: build_src init_test
 color_test: color
 	cmake --build build/test --target color_test && ./bin/color_test
 
-bbc_test: color bbc
-	cmake --build build/test --target bbc_test && ./bin/bbc_test
+basic_block_test: color basic_block
+	cmake --build build/test --target basic_block_test && ./bin/basic_block_test
 #======END======

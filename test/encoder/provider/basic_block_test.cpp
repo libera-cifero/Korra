@@ -1,14 +1,82 @@
-#include "encoder/provider/basic_block_container.hpp"
+#include "encoder/provider/basic_block/basic_block_container.hpp"
 #include "color.h"
+#include "encoder/provider/basic_block/basic_block_pointer.hpp"
+#include "encoder/provider/basic_block_config.h"
 #include "test.h"
 #include <cstdint>
 #include <exception>
 #include <tuple>
 
+#define TEST_BASE_NAME "basic_block_test"
+#define PTR_TEST_BASE_NAME TEST_BASE_NAME ".basic_block_pointer"
 using namespace std;
 
+//basic_block_pointer
+//=====BEGIN=====
+void test_ptr_equal(){
+    const char *test_name = PTR_TEST_BASE_NAME ".test_ptr_equal";
+    printInfo(test_name);
+    basic_block_config config = {
+        .bits_per_block = 6,
+        .block_size = 4,
+        .frame_width = 10,
+        .frame_height = 12
+    };
+    const int frame_size = 3 * config.frame_width * config.frame_height;
+    uint8_t frame[frame_size];
+
+    basic_block_pointer ptr_nullptr0 = nullptr;
+    basic_block_pointer ptr_nullptr1 = nullptr;
+
+    basic_block_pointer ptr00(frame, 0, &config);
+    basic_block_pointer ptr01(frame, 0, &config);
+
+    basic_block_pointer ptr10(frame, 4, &config);
+    basic_block_pointer ptr11(frame + 3, 0, &config);
+
+
+    if(ptr_nullptr0 != ptr_nullptr1) {
+        fail(test_name, "ptr_nullptr0 != ptr_nullptr1", 1);
+    }
+    if(ptr_nullptr1 != ptr_nullptr0){
+        fail(test_name, "ptr_nullptr1 != ptr_nullptr0", 1);
+    }
+    
+    if(ptr_nullptr0 == ptr00){
+        fail(test_name, "ptr_nullptr1 == ptr_nullptr0", 1);
+    }
+    if(ptr_nullptr0 == ptr01){
+        fail(test_name, "ptr_nullptr0 == ptr01", 1);
+    }
+    if(ptr_nullptr0 == ptr10){
+        fail(test_name, "ptr_nullptr0 == ptr10", 1);
+    }
+    if(ptr_nullptr0 == ptr11){
+        fail(test_name, "ptr_nullptr0 == ptr11", 1);
+    }
+    
+    if(ptr00 != ptr01){
+        fail(test_name, "ptr00 != ptr01", 1);
+    }
+    if(ptr01 != ptr00){
+        fail(test_name, "ptr01 != ptr00", 1);
+    }
+
+    if(ptr10 != ptr11){
+        fail(test_name, "ptr10 != ptr11", 1);
+    }
+    if(ptr11 != ptr10){
+        fail(test_name, "ptr11 != ptr10", 1);
+    }
+
+    printPass(test_name);
+}
+//======END======
+
+//basic_block_container
+//=====BEGIN=====
 void test_get_block_by_index() {
-    const char *test_name = "basic_block_container_test.test_get_block_by_index";
+    const char *test_name = TEST_BASE_NAME ".test_get_block_by_index";
     printInfo(test_name);
 
     const uint32_t num0 = 34, num1 = 13, num2 = 2, num3 = 27;
@@ -97,7 +165,7 @@ void test_get_block_by_index() {
     };
 
     const int frame_count = sizeof(frames) / frame_size / sizeof(uint8_t);
-    bbc_config config = {.bits_per_block = bits_per_block, .block_size = 4, .frame_width = w, .frame_height = h};
+    basic_block_config config = {.bits_per_block = bits_per_block, .block_size = 4, .frame_width = w, .frame_height = h};
     for(int i = 0; i < frame_count; i++){
         try{
             basic_block_container container(frames[i], config);
@@ -119,12 +187,15 @@ void test_get_block_by_index() {
     printPass(test_name);
 }
 
-void test_append_block(){
+void test_set_block_by_index(){
 
 }
+//======END======
 
 int main() {
     test_get_block_by_index();
-    test_append_block();
+    test_set_block_by_index();
+
+    test_ptr_equal();
     return 0;
 }
