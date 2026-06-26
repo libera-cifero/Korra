@@ -66,8 +66,8 @@ void printInfo(const char *info, ...){
 
 void fail(const char *testName, const char *text, int code, ...){
     va_list args;
-    va_start(args, text);
-    printFail(testName, text);
+    va_start(args, code);
+    printFail_origin(testName, text, args);
     va_end(args);
     exit(code);
 }
