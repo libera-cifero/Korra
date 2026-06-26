@@ -20,9 +20,7 @@ private:
     rect _get_rect();
     bool _compare(
         const basic_block_pointer& b_ptr,
-        bool (*equals)(uint32_t a, uint32_t b),
-        bool (*less)(size_t delta_base, uint32_t a, uint32_t b),
-        bool (*more)(size_t delta_base, uint32_t a, uint32_t b)
+        bool (*compare)(size_t a, size_t b)
     );
 public:
     using iterator_category = std::random_access_iterator_tag;

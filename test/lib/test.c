@@ -1,3 +1,4 @@
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "test.h"
@@ -15,16 +16,21 @@ void printFormatted(const char *text, ...){
     printf("\n");
 }
 
-void printFail(const char *testName, const char *text, ...)
-{
-    va_list args;
-    va_start(args, text);
-
+void printFail_origin(const char *testName, const char *text, va_list args) {
     printf("\x1b[1;91mFAIL\x1b[0m ");
     printf(pattern, testName);
     printf(" ");
     
     vprintf(text, args);
+}
+
+void printFail(const char *testName, const char *text, ...)
+{
+    va_list args;
+    va_start(args, text);
+
+    printFail_origin(testName, text, args);
+
     va_end(args);
     printf("\n\n");
 }
@@ -56,4 +62,12 @@ void printInfo(const char *info, ...){
     vprintf(info, args);
     va_end(args);
     printf("\n");
+}
+
+void fail(const char *testName, const char *text, int code, ...){
+    va_list args;
+    va_start(args, text);
+    printFail(testName, text);
+    va_end(args);
+    exit(code);
 }

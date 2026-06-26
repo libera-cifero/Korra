@@ -98,38 +98,19 @@ basic_block_pointer bbp::operator--(int)
 
 bool bbp::_compare(
     const basic_block_pointer& b_ptr,
-    bool (*equals)(uint32_t a, uint32_t b), 
-    bool (*less)(size_t delta_base, uint32_t a, uint32_t b), 
-    bool (*more)(size_t delta_base, uint32_t a, uint32_t b)
+    bool (*compare)(size_t a, size_t b)
 )
 {
-    if(_blocks == b_ptr._blocks){
-        return equals(_block_index, b_ptr._block_index);
-    }
-    else if(_blocks < b_ptr._blocks){
-        size_t block_delta_bits = 8 * (size_t)(b_ptr._blocks - _blocks);
-        return less(block_delta_bits, _block_index, b_ptr._block_index);
-    }
-    else{
-        size_t block_delta_bits = 8 * (size_t)(_blocks - b_ptr._blocks);
-        return more(block_delta_bits, b_ptr._block_index, _block_index);
-    }
+    size_t a = 8 * (size_t)_blocks + _config->bits_per_block * _block_index;
+    size_t b = 8 * (size_t)b_ptr._blocks + b_ptr._config->bits_per_block * b_ptr._block_index;
+    return compare(a,b);
 }
 
 bool bbp::operator==(const basic_block_pointer& ref) 
 {
     if(_is_null && ref._is_null) return true;
-    return _compare(ref, 
-        [](uint32_t a, uint32_t b){
-            return a == b;
-        },
-        [](size_t delta_base,uint32_t a, uint32_t b) {
-            return delta_base == (a - b);
-        },
-        [](size_t delta_base,uint32_t a, uint32_t b){
-            return delta_base == (b - a);
-        }
-    );
+    else if(_config != ref._config) return false;
+    return _compare(ref, [](size_t a, size_t b){return  a==b;});
 }
 
 bool bbp::operator!=(const basic_block_pointer& ref){
@@ -139,63 +120,23 @@ bool bbp::operator!=(const basic_block_pointer& ref){
 bool bbp::operator<(const basic_block_pointer& ref) {
     if(_is_null || ref._is_null) return false;
 
-    return _compare(ref, 
-        [](uint32_t a, uint32_t b){
-            return a < b;
-        },
-        [](size_t delta_base,uint32_t a, uint32_t b) {
-            return (delta_base + a) < b;
-        },
-        [](size_t delta_base,uint32_t a, uint32_t b){
-            return (delta_base + b) < a;
-        }
-    );
+    return _compare(ref, [](size_t a, size_t b){ return  a < b; });
 }
 
-bool bbp::operator>(const basic_block_pointer& ref){
+bool bbp::operator>(const basic_block_pointer& ref) {
     if(_is_null || ref._is_null) return false;
-    return _compare(ref, 
-        [](uint32_t a, uint32_t b){
-            return a > b;
-        },
-        [](size_t delta_base,uint32_t a, uint32_t b) {
-            return (delta_base + a) > b;
-        },
-        [](size_t delta_base,uint32_t a, uint32_t b){
-            return (delta_base + b) > a;
-        }
-    );
+    return _compare(ref, [](size_t a, size_t b){return  a > b;});
 }
 
-bool bbp::operator<=(const basic_block_pointer& ref){
+bool bbp::operator<=(const basic_block_pointer& ref) {
     if(_is_null && ref._is_null) return true;
     else if(_is_null || ref._is_null) return false;
-    return _compare(ref, 
-        [](uint32_t a, uint32_t b){
-            return a <= b;
-        },
-        [](size_t delta_base,uint32_t a, uint32_t b) {
-            return (delta_base + a) <= b;
-        },
-        [](size_t delta_base,uint32_t a, uint32_t b){
-            return (delta_base + b) <= a;
-        }
-    );
+    return _compare(ref, [](size_t a, size_t b){return  a <= b;});
 }
 
 bool bbp::operator>=(const basic_block_pointer& ref){
     if(_is_null && ref._is_null) return true;
     else if(_is_null || ref._is_null) return false;
 
-    return _compare(ref, 
-        [](uint32_t a, uint32_t b){
-            return a >= b;
-        },
-        [](size_t delta_base,uint32_t a, uint32_t b) {
-            return (delta_base + a) >= b;
-        },
-        [](size_t delta_base,uint32_t a, uint32_t b){
-            return (delta_base + b) >= a;
-        }
-    );
+    return _compare(ref, [](size_t a, size_t b){return  a >= b;});
 }

@@ -10,7 +10,7 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/color_test",
+            "target": "./bin/basic_block_test",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText"
         }
