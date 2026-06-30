@@ -2,8 +2,9 @@
 #include "encoder/provider/basic_block/basic_block_container.hpp"
 #include <cstdint>
 
-raw_ip_length_reader::raw_ip_length_reader(basic_block_config config){
-    _config = config;
+raw_ip_length_reader::raw_ip_length_reader(basic_block_container *container){
+    _container = *container;
+    _config = _container.config();
 }
 
 int raw_ip_length_reader::_get_first(int block_data, int shift){
@@ -26,9 +27,9 @@ int raw_ip_length_reader::read(const char *frame, int frame_size) {
     int bit_index1 = _LENGTH_BIT_SHIFT + _LENGTH_BIT_SIZE;
     int first_shift = _LENGTH_BIT_SHIFT % bits_per_block, last_shift = bit_index1 % bits_per_block;
     int index0 = _LENGTH_BIT_SHIFT / bits_per_block + (first_shift > 0 ? 1 : 0), index1 = bit_index1 / bits_per_block + (last_shift > 0 ? 1 : 0);
-    basic_block_container container((uint8_t*)frame, _config);
+
     for(int i=index0; i<=index1; i++){
-        int data = container[i];
+        int data = _container[i];
         if(i == index0){
             data = _get_first(data, first_shift);
         }
