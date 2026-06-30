@@ -77,7 +77,7 @@ int* bbc::_convert_to_blocks(uint8_t *data, size_t block_count){
 }
 
 basic_block_pointer bbc::_get_end(basic_block_pointer begin, size_t byte_count){
-    size_t byte_count_with_padding = get_lcd(8, _config.bits_per_block, 8 * byte_count) / 8;
+    size_t byte_count_with_padding = get_lcm(8, _config.bits_per_block, 8 * byte_count) / 8;
     uint32_t bits_per_block = _config.bits_per_block;
     basic_block_pointer end = begin + 8 * byte_count_with_padding / _config.bits_per_block;
     if(end > _end) {
@@ -110,7 +110,7 @@ bit_area bbc::_read_block(uint8_t *bytes, bit_area area, int block) {
 basic_block_pointer bbc::read(basic_block_pointer begin, uint8_t *data_out, size_t byte_count){
     basic_block_pointer end = _get_end(begin, byte_count);
     size_t blocks_to_read = _get_block_count(byte_count);
-    
+
     int index1 = blocks_to_read - 1;
     bit_area area = { .bit0 = 0, .bit1 = _config.bits_per_block };
     for(int i = 0; i < blocks_to_read; i++) {

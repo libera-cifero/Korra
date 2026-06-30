@@ -1,4 +1,12 @@
 #include <stddef.h>
 #include <stdint.h>
 
-size_t get_lcd(size_t a, size_t b, size_t min_res);
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+size_t get_lcm(size_t a, size_t b, size_t min_res);
+
+#ifdef __cplusplus
+}
+#endif

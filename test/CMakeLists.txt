@@ -10,15 +10,24 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
 file(GLOB test_lib_src "lib/test.c")
 file(GLOB color_test_src "color_test.cpp")
 file(GLOB basic_block_test_src "encoder/provider/basic_block_test.cpp")
+file(GLOB math_test_src "math_test.cpp")
+
+macro(target_setup target)
+    target_link_directories(${target} PUBLIC ../bin/lib)
+    target_include_directories(${target} PUBLIC ${INCLUDE_DIR})
+endmacro()
 
 #color_test
 add_executable(color_test ${test_lib_src} ${color_test_src})
-target_link_directories(color_test PUBLIC ../bin/lib)
-target_link_libraries(color_test color)
-target_include_directories(color_test PUBLIC ${INCLUDE_DIR})
+target_setup(color_test)
+target_link_libraries(color_test PRIVATE color)
 
 #basic_block_test
 add_executable(basic_block_test ${test_lib_src} ${basic_block_test_src})
-target_link_directories(basic_block_test PUBLIC ../bin/lib)
+target_setup(basic_block_test)
 target_link_libraries(basic_block_test PRIVATE color basic_block)
-target_include_directories(basic_block_test PUBLIC ${INCLUDE_DIR})
+
+#math_test
+add_executable(math_test ${test_lib_src} ${math_test_src})
+target_setup(math_test)
+target_link_libraries(math_test PRIVATE math)

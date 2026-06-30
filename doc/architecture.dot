@@ -27,6 +27,7 @@ digraph {
                     color=blue;
                     fontcolor=blue;
                 ];
+                bit_area;
                 
                 basic_provider->provider [color=blue;];
                 
@@ -37,7 +38,7 @@ digraph {
                 basic_block_pointer_proxy->basic_block_pointer;
                 basic_block_pointer_proxy->basic_block_container;
 
-                
+                bit_area->basic_block_container;                
             }
 
             subgraph data_length_reader{
@@ -114,6 +115,7 @@ digraph {
         video_encoder;
         color;
         status_error;
+        math;
         
         provider->video_encoder; 
         compressor->video_encoder;
@@ -124,6 +126,8 @@ digraph {
         color->basic_block_pointer [minlen=1];
         
         status_error->color;
+
+        math->basic_block_container;
     }
     
     subgraph cluster_test{
@@ -136,14 +140,18 @@ digraph {
         color_test;
         basic_block_test;
         raw_ip_length_reader_test;
+        math_test;
         
         test->color_test;
         test->basic_block_test;
         test->raw_ip_length_reader_test;
+        test->math_test;
     }
 
     color->basic_block_test [minlen=3];
     color->color_test [minlen=3];
+
+    math->math_test;
 
     basic_block_pointer_proxy->basic_block_test;
     basic_block_container->basic_block_test;

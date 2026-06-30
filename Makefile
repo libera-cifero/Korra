@@ -30,7 +30,9 @@ build_src:
 	cmake --build build/src
 color:
 	cmake --build build/src --target color
-basic_block: color
+math:
+	cmake --build build/src --target math
+basic_block: color math
 	cmake --build build/src --target basic_block
 #======END======
 
@@ -39,9 +41,15 @@ basic_block: color
 build_test: build_src init_test
 	cmake --build build/test
 
+test: build_test
+	python3 test.py
+
 color_test: color
 	cmake --build build/test --target color_test && ./bin/color_test
 
 basic_block_test: color basic_block
 	cmake --build build/test --target basic_block_test && ./bin/basic_block_test
+
+math_test: math
+	cmake --build build/test --target math_test && ./bin/math_test
 #======END======

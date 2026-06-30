@@ -69,5 +69,6 @@ void fail(const char *testName, const char *text, int code, ...){
     va_start(args, code);
     printFail_origin(testName, text, args);
     va_end(args);
+    printf("\n");
     exit(code);
 }
