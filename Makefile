@@ -1,33 +1,21 @@
-DEBUG_FLAG = -DCMAKE_BUILD_TYPE=Debug
-RELEASE_FLAG = -DCMAKE_BUILD_TYPE=Release
+#COMMON
+#=====BEGIN=====
+init_release: init_src_release init_test_release
+init_debug: init_src_debug init_test_debug
 
 arch:
 	dot -Tsvg doc/architecture.dot > doc/map.svg
-
-init_src:
-	mkdir -p build
-	mkdir -p build/src 
-	@if [ -n "$${RELEASE+x}" ]; then \
-		cmake -S src -B build/src ${RELEASE_FLAG}; \
-	else \
-		cmake -S src -B build/src ${DEBUG_FLAG}; \
-	fi
-
-init_test:
-	mkdir -p build
-	mkdir -p build/test
-	@if [ -n "$${RELEASE+x}" ]; then \
-		cmake -S test -B build/test ${RELEASE_FLAG}; \
-	else \
-		cmake -S test -B build/test ${DEBUG_FLAG}; \
-	fi
-
-init: init_src init_test
+#======END======
 
 #SRC
 #=====BEGIN=====
+init_src_debug:
+	python3 tool/cmake_init.py src Debug
+init_src_release:
+	python3 tool/cmake_init.py src Release
 build_src:
 	cmake --build build/src
+
 color:
 	cmake --build build/src --target color
 math:
@@ -38,18 +26,24 @@ basic_block: color math
 
 #TESTS
 #=====BEGIN=====
+init_test_debug:
+	python3 tool/cmake_init.py test Debug
+init_test_release:
+	python3 tool/cmake_init.py test Release
 build_test: build_src init_test
 	cmake --build build/test
 
 test: build_test
-	python3 test.py
-
+	python3 tool/test.py
 color_test: color
-	cmake --build build/test --target color_test && ./bin/color_test
-
+	cmake --build build/test --target color_test && python3 tool/run.py color_test
 basic_block_test: color basic_block
-	cmake --build build/test --target basic_block_test && ./bin/basic_block_test
-
+	cmake --build build/test --target basic_block_test && python3 tool/run.py basic_block_test
 math_test: math
-	cmake --build build/test --target math_test && ./bin/math_test
+	cmake --build build/test --target math_test && python3 tool/run.py math_test
+#======END======
+
+#TEST TOOLS
+#=====BEGIN=====
+
 #======END======

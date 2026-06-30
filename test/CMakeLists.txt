@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 4.3.1)
 
 project(stegvideo.test)
-add_subdirectory(src)
 
 set(BIN_DIR ../../bin)
 set(INCLUDE_DIR "lib" "../include")
