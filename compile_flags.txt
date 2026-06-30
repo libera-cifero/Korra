@@ -1,2 +1,2 @@
 -Iinclude
--Itest/lib
+-Itest/src/lib

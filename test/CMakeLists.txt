@@ -1,16 +1,17 @@
 cmake_minimum_required(VERSION 4.3.1)
 
 project(stegvideo.test)
+add_subdirectory(src)
 
 set(BIN_DIR ../../bin)
 set(INCLUDE_DIR "lib" "../include")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
 
-file(GLOB test_lib_src "lib/test.c")
-file(GLOB color_test_src "color_test.cpp")
-file(GLOB basic_block_test_src "encoder/provider/basic_block_test.cpp")
-file(GLOB math_test_src "math_test.cpp")
+file(GLOB test_lib_src "src/lib/test.c")
+file(GLOB color_test_src "src/color_test.cpp")
+file(GLOB basic_block_test_src "src/encoder/provider/basic_block_test.cpp")
+file(GLOB math_test_src "src/math_test.cpp")
 
 macro(target_setup target)
     target_link_directories(${target} PUBLIC ../bin/lib)
