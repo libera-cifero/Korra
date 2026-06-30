@@ -1,7 +1,6 @@
 #pragma once
 #include "encoder/provider/basic_block_config.h"
 #include "rect.h"
-#include "rgb_index.h"
 #include <cstdint>
 
 struct proxy_config{
@@ -15,7 +14,6 @@ struct proxy_config{
 class basic_block_pointer_proxy {
 private:
     proxy_config _config;
-    rgb_index _get_index_by_point(int x, int y) const;
 public:
     basic_block_pointer_proxy(proxy_config& config);
 

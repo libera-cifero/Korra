@@ -17,7 +17,6 @@ private:
     uint32_t _width_capacity;
 
     rect _rect;
-    rect _get_rect();
     bool _compare(
         const basic_block_pointer& b_ptr,
         bool (*compare)(size_t a, size_t b)

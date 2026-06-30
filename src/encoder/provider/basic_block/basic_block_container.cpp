@@ -25,8 +25,8 @@ bbc::basic_block_container(uint8_t *frame, basic_block_config config){
     uint32_t height_capacity = config.frame_height / config.block_size;
     _block_count = height_capacity * width_capacity;
     int bits_per_block = config.bits_per_block;
-    if(_block_count % 8 != 0 || _block_count % bits_per_block != 0){
-        const char *string_fmt = "The block_count (%d) must be divisible by 8 and bits_per_block(%d) without remainder!";
+    if(_block_count == 0 ||_block_count % 8 != 0 || _block_count % bits_per_block != 0){
+        const char *string_fmt = "The block_count (%d) must be divisible by 8 and bits_per_block(%d) without remainder and greater than 0!";
         char msg[256];
         sprintf(msg,string_fmt, _block_count, bits_per_block);
         throw status_error(msg, 1);

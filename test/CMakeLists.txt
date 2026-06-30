@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 4.3.1)
 project(stegvideo.test)
 
 set(BIN_DIR ../../bin)
-set(INCLUDE_DIR "lib" "../include")
+set(INCLUDE_DIR "../include" "include")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
 

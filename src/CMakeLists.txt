@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 4.3.1)
 project(stegvideo)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(BIN_DIR ../../bin)
 set(PROVIDER_DIR encoder/provider)
 

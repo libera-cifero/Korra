@@ -30,7 +30,7 @@ init_test_debug:
 	python3 tool/cmake_init.py test Debug
 init_test_release:
 	python3 tool/cmake_init.py test Release
-build_test: build_src init_test
+build_test: build_src
 	cmake --build build/test
 
 test: build_test
