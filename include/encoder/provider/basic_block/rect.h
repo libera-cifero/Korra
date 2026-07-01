@@ -1,5 +1,4 @@
 #pragma once
-#include "encoder/provider/basic_block_config.h"
 
 struct rect{
     int x0;

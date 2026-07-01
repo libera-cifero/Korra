@@ -1,0 +1,17 @@
+digraph {
+    rankdir=TB;
+    include;
+    src;
+    "test/include";
+    "test/lib";
+    "test/src";
+    "test/tool";
+
+    include->src;
+    include->"test/include";
+    include->"test/src";
+    include->"test/tool";
+    "test/include"->"test/src";
+    "test/include"->"test/tool";
+    "test/include"->"test/lib";
+}

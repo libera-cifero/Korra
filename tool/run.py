@@ -9,8 +9,8 @@ if len(sys.argv) < 2:
 exe_name = sys.argv[1]
 if sys.platform == "win32":
     exe_name+=".exe"
-exe_path = os.path.join("bin", exe_name)
-result = subprocess.run([exe_path], capture_output=True, text=True)
+exe_path = os.path.join("bin", *exe_name.split('/'))
+result = subprocess.run([exe_path, *sys.argv[2:]], capture_output=True, text=True)
 print(result.stdout)
 if result.stderr != "" and result.stderr != None:
     print(result.stderr)

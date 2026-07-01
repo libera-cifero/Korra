@@ -1,3 +1,5 @@
+ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+
 #COMMON
 #=====BEGIN=====
 init_release: init_src_release init_test_release
@@ -5,6 +7,8 @@ init_debug: init_src_debug init_test_debug
 
 arch:
 	dot -Tsvg doc/architecture.dot > doc/map.svg
+include_arch:
+	dot -Tsvg doc/includes.dot > doc/include_map.svg
 #======END======
 
 #SRC
@@ -45,5 +49,9 @@ math_test: math
 
 #TEST TOOLS
 #=====BEGIN=====
-
+frame_gen_tool: basic_block
+	cmake --build build/test --target frame_gen_tool
 #======END======
+
+%:
+	@:
