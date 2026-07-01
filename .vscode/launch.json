@@ -8,10 +8,10 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/tool/frame_gen_tool",
+            "target": "./bin/tool/args_frame_gen_tool",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
-            "arguments": "24 16 6 4 frame_0.json frame_0.bmp"
+            "arguments": "4"
         }
     ]
 }

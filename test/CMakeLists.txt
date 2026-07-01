@@ -14,7 +14,8 @@ file(GLOB color_test_src "src/color_test.cpp")
 file(GLOB basic_block_test_src "src/encoder/provider/basic_block_test.cpp")
 file(GLOB math_test_src "src/math_test.cpp")
 
-file(GLOB frame_gen_tool_src "tool/frame_gen/frame_generator.cpp")
+file(GLOB frame_gen_tool_src "tool/gen_frame/frame_generator.cpp")
+file(GLOB args_frame_gen_tool_src "tool/gen_frame/argument_generator.cpp")
 
 macro(target_setup target)
     target_link_directories(${target} PUBLIC ../bin/lib)
@@ -47,3 +48,7 @@ target_link_libraries(math_test PRIVATE math)
 add_executable(frame_gen_tool ${frame_gen_tool_src} ${frame_io_src})
 target_setup_tool(frame_gen_tool)
 target_link_libraries(frame_gen_tool PRIVATE basic_block color rect rgb_index)
+
+#args_frame_gen_tool
+add_executable(args_frame_gen_tool ${args_frame_gen_tool_src})
+target_setup_tool(args_frame_gen_tool)

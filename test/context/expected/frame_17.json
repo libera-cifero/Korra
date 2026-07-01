@@ -1,0 +1,25 @@
+{
+  "bits_per_block": 1,
+  "block_size": 119,
+  "blocks": [
+    0,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    0,
+    0,
+    1,
+    0,
+    1,
+    1,
+    0,
+    0,
+    0
+  ],
+  "frame_height": 1031,
+  "frame_path": "frame_17.bmp",
+  "frame_width": 317
+}

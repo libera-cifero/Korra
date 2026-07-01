@@ -51,6 +51,10 @@ math_test: math
 #=====BEGIN=====
 frame_gen_tool: basic_block
 	cmake --build build/test --target frame_gen_tool
+args_frame_gen_tool:
+	cmake --build build/test --target args_frame_gen_tool
+gen_frame: frame_gen_tool args_frame_gen_tool
+	python3 test/tool/gen_frame.py $(ARGS)
 #======END======
 
 %:

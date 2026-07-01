@@ -24,13 +24,12 @@ using json = nlohmann::json;
 
 int block_count, width_capacity, height_capacity;
 
-struct input : basic_block_config { char *expected_name; char *frame_name; };
 struct output {
     vector<int> blocks;
     uint8_t *frame;
 };
 
-input parse_argv(int argc, char **argv) {
+frame_gen_args parse_argv(int argc, char **argv) {
     if(argc < 7){
         throw runtime_error("Too few arguments!");
     }
@@ -61,7 +60,7 @@ input parse_argv(int argc, char **argv) {
         throw runtime_error(msg);
     }
     
-    input res;
+    frame_gen_args res;
     res.frame_width = frame_width;
     res.frame_height = frame_height;
     res.block_size = block_size;
@@ -71,7 +70,7 @@ input parse_argv(int argc, char **argv) {
     return res;
 }
 
-output generate(input in){
+output generate(frame_gen_args in){
     srand(time(NULL));
     vector<int> blocks(block_count);
     uint8_t *data = alloc_by_config(in);
@@ -95,7 +94,7 @@ output generate(input in){
 }
 
 int main(int argc, char **argv) {
-    input in;
+    frame_gen_args in;
     try{
         in = parse_argv(argc, argv);
     }
