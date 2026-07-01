@@ -41,7 +41,7 @@ test: build_test
 	python3 tool/test.py
 color_test: color
 	cmake --build build/test --target color_test && python3 tool/run.py color_test
-basic_block_test: color basic_block
+basic_block_test:
 	cmake --build build/test --target basic_block_test && python3 tool/run.py basic_block_test
 math_test: math
 	cmake --build build/test --target math_test && python3 tool/run.py math_test

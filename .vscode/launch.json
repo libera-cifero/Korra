@@ -8,10 +8,9 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/tool/args_frame_gen_tool",
+            "target": "./bin/basic_block_test",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
-            "arguments": "4"
         }
     ]
 }

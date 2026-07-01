@@ -35,9 +35,9 @@ target_setup(color_test)
 target_link_libraries(color_test PRIVATE color)
 
 #basic_block_test
-add_executable(basic_block_test ${test_lib_src} ${basic_block_test_src})
+add_executable(basic_block_test ${test_lib_src} ${basic_block_test_src} ${frame_io_src})
 target_setup(basic_block_test)
-target_link_libraries(basic_block_test PRIVATE basic_block)
+target_link_libraries(basic_block_test PRIVATE basic_block color math rect rgb_index)
 
 #math_test
 add_executable(math_test ${test_lib_src} ${math_test_src})

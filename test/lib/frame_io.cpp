@@ -22,10 +22,9 @@ void write_frame_expected(frame_meta config, const string &path){
 
 frame_meta read_frame_expected(const string &path){
     fstream file(path, ios_base::in);
-    string data;
-    file >> data;
-    file.close();
-
+    stringstream buffer;
+    buffer << file.rdbuf();
+    string data = buffer.str();
     json j = json::parse(data);
     frame_meta meta;
     meta.frame_path = j["frame_path"].get<string>();

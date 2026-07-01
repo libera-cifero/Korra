@@ -1,3 +1,4 @@
+#pragma once
 #include "encoder/provider/basic_block_config.h"
 #include <vector>
 #include <string>
