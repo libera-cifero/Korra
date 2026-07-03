@@ -1,8 +1,8 @@
 import os
 import subprocess
 
-bin_dir = os.path.join("..","bin")
-
+bin_dir = os.path.abspath(os.path.join('.','bin'))
+print(bin_dir)
 files=[]
 for f in os.listdir(bin_dir):
     file_path = os.path.join(bin_dir, f)
@@ -10,8 +10,7 @@ for f in os.listdir(bin_dir):
         files.append(file_path)
 
 for file in files:
-    file_path = os.path.join(bin_dir, f)
-    result = subprocess.run([file_path], capture_output=True, text=True)
+    result = subprocess.run([file], capture_output=True, text=True)
     print(result.stdout)
     if result.stderr != "" and result.stderr != None:
         print(result.stderr)

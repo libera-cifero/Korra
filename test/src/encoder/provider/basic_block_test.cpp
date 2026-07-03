@@ -9,9 +9,11 @@
 #include <exception>
 #include <filesystem>
 #include <regex>
+#include <stdint.h>
 #include <string>
 
 #define TEST_BASE_NAME "basic_block_test"
+#define BBC_TEST_BASE_NAME TEST_BASE_NAME ".basic_block_container"
 #define PTR_TEST_BASE_NAME TEST_BASE_NAME ".basic_block_pointer"
 using namespace std;
 using namespace filesystem;
@@ -80,10 +82,8 @@ void test_ptr_equal(){
 
 //basic_block_container
 //=====BEGIN=====
-void test_get_block_by_index() {
-    const char *test_name = TEST_BASE_NAME ".test_get_block_by_index";
-    printInfo(test_name);
 
+void iterate_bbc_test_cases(const char *test_name, void (*test)(const char *test_name, frame_meta expected, uint8_t *data, string file_name)){
     directory_iterator iter(EXPECTED_PATH);
     regex pattern("frame_[0-9]+\\.json");
     for(directory_entry entry : iter) {
@@ -106,24 +106,35 @@ void test_get_block_by_index() {
                 fail(test_name, "Height is expected %d but got %d!", 2, expected.frame_height, height);
             }
 
-            basic_block_container container(data, expected);
-            if(container.block_count() != expected.blocks.size()){
-                delete[] data;
-                printInfo(file_name.c_str());
-                fail(test_name, "Count of blocks is expected %d, but got %d!", 3, expected.blocks.size(), container.block_count());
-            }
-            for(int i = 0; i < container.block_count(); i++){
-                int block = container[i];
-                int block_expected = expected.blocks[i];
-                if(block != block_expected){
-                    delete[] data;
-                    printInfo(file_name.c_str());
-                    fail(test_name, "container[%d] is expected %d but got %d!", 4, i, block_expected, block);
-                }
-            }
+            test(test_name, expected, data, file_name);
+
             delete[] data;
         }
     }
+}
+
+void test_get_block_by_index() {
+    const char *test_name = BBC_TEST_BASE_NAME ".test_get_block_by_index";
+    printInfo(test_name);
+
+    iterate_bbc_test_cases(test_name, [](const char *test_name, frame_meta expected, uint8_t *data, string file_name)
+    {
+        basic_block_container container(data, expected);
+        if(container.block_count() != expected.blocks.size()){
+            delete[] data;
+            printInfo(file_name.c_str());
+            fail(test_name, "Count of blocks is expected %d, but got %d!", 3, expected.blocks.size(), container.block_count());
+        }
+        for(int i = 0; i < container.block_count(); i++){
+            int block = container[i];
+            int block_expected = expected.blocks[i];
+            if(block != block_expected){
+                delete[] data;
+                printInfo(file_name.c_str());
+                fail(test_name, "container[%d] is expected %d but got %d!", 4, i, block_expected, block);
+            }
+        }
+    });
 
     printPass(test_name);
 }
@@ -131,14 +142,64 @@ void test_get_block_by_index() {
 void test_set_block_by_index(){
 
 }
+
+void test_block_byte_io() {
+    const char *test_name = BBC_TEST_BASE_NAME ".test_block_byte_io";
+    printInfo(test_name);
+    srand(time(NULL));
+    iterate_bbc_test_cases(test_name, [](const char *test_name, frame_meta expected, uint8_t *data, string file_name) 
+    {
+        const char *cfile_name = file_name.c_str();
+        basic_block_container container(data, expected);
+        size_t byte_count = container.byte_count();
+        uint8_t *read_buffer0 = (uint8_t*)calloc(byte_count, 1);
+        auto end = container.read(container.begin(), read_buffer0, byte_count);
+        if(end != nullptr) {
+            delete[] read_buffer0;
+            delete[] data;
+            printInfo("[read0] %s", cfile_name);
+            fail(test_name, "end pointer must equals nullptr!", 10);
+        }
+
+        for(int i = 0; i < byte_count; i++) read_buffer0[0] = rand() % 256;
+        
+        end = container.write(container.begin(), read_buffer0, byte_count);
+
+        if(end != nullptr) {
+            delete[] read_buffer0;
+            delete[] data;
+            printInfo("[write0] %s", cfile_name);
+            fail(test_name, "end pointer must equals nullptr!", 11);
+        }
+
+        uint8_t *read_buffer1 = (uint8_t*)calloc(byte_count, 1);
+        container.read(container.begin(), read_buffer1, byte_count);
+        for(int i = 0; i < byte_count; i++){
+            if(read_buffer0[i] != read_buffer1[i]){
+                delete [] read_buffer0;
+                delete [] read_buffer1;
+                delete [] data;
+                printInfo(cfile_name);
+                fail(test_name, "read_buffer0[%d] != read_buffer1[%d]", 12, i);
+            }
+        }
+
+        delete [] read_buffer0;
+        delete [] read_buffer1;
+    });
+
+    printPass(test_name);
+}
 //======END======
 
 int main() {
     try{
+        test_ptr_equal();
+
         test_get_block_by_index();
         test_set_block_by_index();
-
-        test_ptr_equal();
+        
+        test_block_byte_io();
     }
     catch(exception &e){
         printFail(TEST_BASE_NAME, e.what());

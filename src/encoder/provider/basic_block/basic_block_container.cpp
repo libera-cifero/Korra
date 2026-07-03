@@ -65,7 +65,7 @@ int* bbc::_convert_to_blocks(uint8_t *data, size_t block_count){
             size_t bit_index = b % 8;
             uint8_t byte = data[byte_index];
             int mask = 1 << bit_index;
-            int bit = ((byte & mask) >> bit_index) << b;
+            int bit = ((byte & mask) >> bit_index) << (b - bit0);
             buffer |= bit;
         }
         blocks[x] = buffer;
