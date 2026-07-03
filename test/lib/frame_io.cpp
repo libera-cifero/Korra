@@ -150,8 +150,6 @@ uint8_t *read_frame_data(const string &path, int &width, int &height)
     width = bmpWidth;
     height = std::abs(bmpHeight);
 
-    bool bottomUp = (bmpHeight > 0);
-
     const size_t rowDataSize = width * 3;
     const size_t rowSize = (rowDataSize + 3) & ~3;
 
@@ -171,10 +169,8 @@ uint8_t *read_frame_data(const string &path, int &width, int &height)
             return nullptr;
         }
 
-        int dstY = bottomUp ? (height - 1 - y) : y;
-
         memcpy(
-            pixels + dstY * rowDataSize,
+            pixels + y * rowDataSize,
             row.data(),
             rowDataSize
         );
