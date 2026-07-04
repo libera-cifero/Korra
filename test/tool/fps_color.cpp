@@ -22,7 +22,7 @@ inline YCbCr8 rgb_to_ycbcr(int color)
     return {Y, Cb, Cr};
 }
 
-// -------------------- метрика --------------------
+// -------------------- metrics --------------------
 
 struct Weights {
     float wY;
