@@ -53,7 +53,11 @@ frame_gen_tool: basic_block
 	cmake --build build/test --target frame_gen_tool
 args_frame_gen_tool:
 	cmake --build build/test --target args_frame_gen_tool
-gen_frame: frame_gen_tool args_frame_gen_tool
+fps_color_tool:
+	cmake --build build/test --target fps_color_tool
+gen_frame: frame_gen_tool
+	python3 run.py tool/frame_gen_tool $(ARGS)
+gen_frames: frame_gen_tool args_frame_gen_tool
 	python3 test/tool/gen_frame.py $(ARGS)
 #======END======
 

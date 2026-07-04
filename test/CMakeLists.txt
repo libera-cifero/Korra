@@ -16,6 +16,7 @@ file(GLOB math_test_src "src/math_test.cpp")
 
 file(GLOB frame_gen_tool_src "tool/gen_frame/frame_generator.cpp")
 file(GLOB args_frame_gen_tool_src "tool/gen_frame/argument_generator.cpp")
+file(GLOB fps_color_tool_src "tool/fps_color.cpp")
 
 macro(target_setup target)
     target_link_directories(${target} PUBLIC ../bin/lib)
@@ -52,3 +53,7 @@ target_link_libraries(frame_gen_tool PRIVATE basic_block color rect rgb_index)
 #args_frame_gen_tool
 add_executable(args_frame_gen_tool ${args_frame_gen_tool_src})
 target_setup_tool(args_frame_gen_tool)
+
+#fps_color_tool
+add_executable(fps_color_tool ${fps_color_tool_src})
+target_setup_tool(fps_color_tool)
