@@ -14,7 +14,7 @@ bbpp::basic_block_pointer_proxy(proxy_config& config)
 basic_block_pointer_proxy& bbpp::operator=(int data) {
     rect area = *_config.area;
     uint8_t *blocks = _config.blocks;
-    uint32_t color = number_to_color(data, _config.base->bits_per_block);
+    uint32_t color = _config.base->codec->number_to_color(data);
 
     uint8_t r = get_r(color), g = get_g(color), b = get_b(color);
     int frame_width = _config.base->frame_width;
@@ -51,5 +51,5 @@ bbpp::operator int() const {
     }
 
     c = ((r_sum / c) << 16) | ((g_sum / c) << 8) | (b_sum / c);
-    return color_to_number(c, _config.base->bits_per_block);
+    return _config.base->codec->color_to_number(c);
 }

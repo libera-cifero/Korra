@@ -1,7 +1,7 @@
 #pragma once
 #include "data_length_reader.hpp"
 #include "encoder/provider/basic_block/basic_block_container.hpp"
-#include "encoder/provider/basic_block_config.h"
+#include "encoder/provider/basic_block_config.hpp"
 
 class raw_ip_length_reader : public data_length_reader
 {

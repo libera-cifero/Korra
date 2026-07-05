@@ -1,7 +1,7 @@
 #include "encoder/provider/basic_block/basic_block_pointer_proxy.hpp"
 #include "encoder/provider/basic_block/basic_block_pointer.hpp"
 #include "encoder/provider/basic_block/rect.h"
-#include "encoder/provider/basic_block_config.h"
+#include "encoder/provider/basic_block_config.hpp"
 #include "color.h"
 #include <cstddef>
 #include <cstdint>

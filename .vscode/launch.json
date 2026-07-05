@@ -8,9 +8,10 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/basic_block_test",
+            "target": "./bin/tool/fps_color_tool",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
+            "arguments": "4 rgb"
         }
     ]
 }

@@ -1,3 +1,5 @@
+#include <cstring>
+#include <stdexcept>
 #include <vector>
 #include <limits>
 #include <algorithm>
@@ -39,6 +41,14 @@ inline float dist2(const YCbCr8& a, const YCbCr8& b, const Weights& w)
     return dY*dY*w.wY + dCb*dCb*w.wCb + dCr*dCr*w.wCr;
 }
 
+inline float rgb_distance2(int c1, int c2)
+{
+    float dr = float(((c1 >> 16) & 255) - ((c2 >> 16) & 255));
+    float dg = float(((c1 >> 8)  & 255) - ((c2 >> 8)  & 255));
+    float db = float(( c1        & 255) - ( c2        & 255));
+
+    return dr * dr + dg * dg + db * db;
+}
 // -------------------- FPS --------------------
 
 std::vector<int> fps_ycbcr_palette(
@@ -89,11 +99,83 @@ std::vector<int> fps_ycbcr_palette(
     return selected;
 }
 
+std::vector<int> fps_rgb_palette(
+    const std::vector<int>& candidates_rgb,
+    int k)
+{
+    const int n = (int)candidates_rgb.size();
+
+    if (n == 0 || k <= 0)
+        return {};
+
+    if (k > n)
+        k = n;
+
+    std::vector<float> minDist(n, std::numeric_limits<float>::max());
+    std::vector<bool> used(n, false);
+    std::vector<int> selected;
+    selected.reserve(k);
+
+    // Первая точка
+    int first = 0;
+    used[first] = true;
+    selected.push_back(candidates_rgb[first]);
+
+    // Инициализация расстояний
+    for (int i = 0; i < n; ++i)
+        minDist[i] = rgb_distance2(candidates_rgb[i], candidates_rgb[first]);
+
+    // Основной цикл FPS
+    for (int it = 1; it < k; ++it)
+    {
+        int best = -1;
+        float bestVal = -1.0f;
+
+        for (int i = 0; i < n; ++i)
+        {
+            if (used[i])
+                continue;
+
+            if (minDist[i] > bestVal)
+            {
+                bestVal = minDist[i];
+                best = i;
+            }
+        }
+
+        if (best == -1)
+            break;
+
+        used[best] = true;
+        selected.push_back(candidates_rgb[best]);
+
+        // Обновляем минимальные расстояния
+        for (int i = 0; i < n; ++i)
+        {
+            if (used[i])
+                continue;
+
+            float d = rgb_distance2(candidates_rgb[i], candidates_rgb[best]);
+            if (d < minDist[i])
+                minDist[i] = d;
+        }
+    }
+
+    return selected;
+}
+
 // -------------------- main --------------------
 
-int main()
+int main(int argc, char **argv)
 {
-    int bits = 3;
+    if(argc < 3){
+        throw new std::runtime_error("Arg count less than 3!\n");
+    }
+
+    int bits = atoi(argv[1]);
+    if(bits < 1 || bits > 8){
+        throw new std::runtime_error("Invalid bit count!");
+    }
     int count = 1 << bits;
     int step = 256 / count;
 
@@ -105,13 +187,23 @@ int main()
             for (int b = 0; b < 256; b += step)
                 candidates.push_back((r << 16) | (g << 8) | b);
 
-    Weights w{
-        1.0f / 9.0f,    // Y
-        1.0f / 81.0f,   // Cb
-        1.0f / 81.0f    // Cr
-    };
 
-    auto palette = fps_ycbcr_palette(candidates, count, w);
+    std::vector<int> palette;
+    if(strcmp(argv[2], "rgb") == 0){
+        palette = fps_rgb_palette(candidates, count);
+    }
+    else if(strcmp(argv[2], "ycbcr") == 0){
+        Weights w{
+            1.0f / 9.0f,    // Y
+            1.0f / 81.0f,   // Cb
+            1.0f / 81.0f    // Cr
+        };
+
+        palette = fps_ycbcr_palette(candidates, count, w);
+    }
+    else{
+        throw std::runtime_error("Invalid color mode!");
+    }
 
     for (int i = 0; i < count; i++)
     {
@@ -120,7 +212,7 @@ int main()
         int g = (c >> 8)  & 255;
         int b =  c        & 255;
 
-        printf("%02X%02X%02X\n", r, g, b);
+        printf("\"%02X%02X%02X\",\n", r, g, b);
     }
 
     return 0;

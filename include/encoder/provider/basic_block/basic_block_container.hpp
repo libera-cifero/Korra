@@ -3,7 +3,7 @@
 #include <cstdint>
 #include "encoder/provider/basic_block/basic_block_pointer.hpp"
 #include "encoder/provider/basic_block/basic_block_pointer_proxy.hpp"
-#include "encoder/provider/basic_block_config.h"
+#include "encoder/provider/basic_block_config.hpp"
 #include "bit_area.h"
 
 class basic_block_container {
@@ -14,6 +14,7 @@ private:
     basic_block_config _config;
 
     uint32_t _block_count;
+    int _bits_per_block;
 
     size_t _get_block_count(size_t byte_size);
     basic_block_pointer _get_end(basic_block_pointer begin, size_t byte_count);

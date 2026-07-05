@@ -87,11 +87,11 @@ uint32_t get_index_by_color(uint32_t color)
 }
 
 uint32_t index_to_number_base(uint32_t index, int color_bit_resolution){
-    return index * (1<<color_bit_resolution) / COLOR_PALLETE;
+    return index * (1<<color_bit_resolution) / COLOR_palette;
 }
 
 uint32_t number_to_index(uint32_t number, int color_bit_resolution){
-    return div_round(number * COLOR_PALLETE, (1<<color_bit_resolution));
+    return div_round(number * COLOR_palette, (1<<color_bit_resolution));
 }
 
 uint32_t number_to_color(uint16_t number, int color_bit_resolution){
@@ -116,7 +116,7 @@ uint16_t color_to_number(uint32_t color, int color_bit_resolution) {
     }
     int available_numbers = 1 << color_bit_resolution;
     int color_index = get_index_by_color(color);
-    int number_predicted = color_index * available_numbers / COLOR_PALLETE, color_index_min, color_index_max;
+    int number_predicted = color_index * available_numbers / COLOR_palette, color_index_min, color_index_max;
     if(number_predicted == available_numbers - 1){
         color_index_min = number_to_index(number_predicted, color_bit_resolution);
         color_index_max = 0;

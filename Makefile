@@ -26,6 +26,8 @@ math:
 	cmake --build build/src --target math
 basic_block: color math
 	cmake --build build/src --target basic_block
+color_codec:
+	cmake --build build/src --target color_codec
 #======END======
 
 #TESTS

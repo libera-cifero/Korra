@@ -116,6 +116,26 @@ digraph {
         color;
         status_error;
         math;
+        color_codec [
+            color=purple;
+            fontcolor=purple;
+        ];
+        hsv_codec [
+            color=blue;
+            fontcolor=blue;
+        ];
+        palette_codec[
+            color=purple;
+            fontcolor=purple;
+        ];
+        rgb_palette_codec[
+            color=blue;
+            fontcolor=blue;
+        ];
+        ycbcr_palette_codec[
+            color=blue;
+            fontcolor=blue;
+        ];
         
         provider->video_encoder; 
         compressor->video_encoder;
@@ -124,10 +144,19 @@ digraph {
 
         color->basic_block_pointer_proxy [minlen=1];
         color->basic_block_pointer [minlen=1];
+        color->rgb_palette_codec;
+        color->hsv_codec;
         
         status_error->color;
+        status_error->color_codec;
 
         math->basic_block_container;
+
+        color_codec->basic_block_pointer_proxy;
+        hsv_codec->color_codec [color=blue; ];
+        palette_codec->color_codec[color=purple;];   
+        rgb_palette_codec->palette_codec [color=blue;];
+        ycbcr_palette_codec->palette_codec [color=blue];
     }
     
     subgraph cluster_test{

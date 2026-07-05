@@ -1,5 +1,5 @@
 #include <stdint.h>
-#define COLOR_PALLETE 1530
+#define COLOR_palette 1530
 
 #ifdef __cplusplus
 extern "C"{

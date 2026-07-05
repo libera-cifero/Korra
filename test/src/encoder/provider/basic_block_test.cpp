@@ -3,7 +3,7 @@
 #include "frame_io.hpp"
 #include "io.hpp"
 #include "encoder/provider/basic_block/basic_block_pointer.hpp"
-#include "encoder/provider/basic_block_config.h"
+#include "encoder/provider/basic_block_config.hpp"
 #include "test.h"
 #include <cstdint>
 #include <exception>

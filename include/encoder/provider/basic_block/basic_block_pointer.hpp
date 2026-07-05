@@ -1,6 +1,6 @@
 #pragma once
 
-#include "encoder/provider/basic_block_config.h"
+#include "encoder/provider/basic_block_config.hpp"
 #include "basic_block_pointer_proxy.hpp"
 #include "rect.h"
 #include <iterator>

@@ -3,7 +3,7 @@
 #include "color.h"
 #include "encoder/provider/basic_block/rgb_index.h"
 #include "math.h"
-#include "encoder/provider/basic_block_config.h"
+#include "encoder/provider/basic_block_config.hpp"
 #include "encoder/provider/basic_block/rect.h"
 #include "frame_io.hpp"
 #include "io.hpp"
