@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <algorithm>
 #include <cmath>
+#include <format>
 #include "color.hpp"
 #include "status_error.hpp"
 
@@ -128,4 +129,14 @@ uint16_t color_to_number(uint32_t color, int color_bit_resolution) {
 
     bool is_min = abs(color_index - color_index_min) <= abs(color_index_max - color_index);
     return (uint16_t)(is_min ? number_predicted : ++number_predicted);
+}
+
+string rgb_to_hex(int rgb){
+    int r = (rgb >> 16) & 0xFF;
+    int g = (rgb >> 8) & 0xFF;
+    int b = rgb & 0xFF;
+
+    char buf[8];
+    sprintf(buf, "#%02x%02x%02x", r,g,b);
+    return string(buf); 
 }
