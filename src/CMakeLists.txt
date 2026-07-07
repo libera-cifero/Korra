@@ -23,6 +23,7 @@ file(GLOB hsv_codec_src "color_codec/hsv_codec.cpp")
 file(GLOB palette_codec_src "color_codec/palette_codec.cpp")
 file(GLOB rgb_palette_codec_src "color_codec/rgb_palette_codec.cpp")
 file(GLOB ycbcr_palette_codec_src "color_codec/ycbcr_palette_codec.cpp")
+file(GLOB codec_json_src "color_codec/codec_json.cpp")
 
 #color
 add_library(color STATIC ${color_src})
@@ -41,7 +42,7 @@ add_library(rgb_index STATIC ${rgb_index_src})
 target_include_directories(rgb_index PRIVATE ../include)
 
 #color_codec
-add_library(color_codec STATIC ${color_codec_src} ${hsv_codec_src} ${palette_codec_src} ${rgb_palette_codec_src} ${ycbcr_palette_codec_src} ${color_src})
+add_library(color_codec STATIC ${color_codec_src} ${hsv_codec_src} ${palette_codec_src} ${rgb_palette_codec_src} ${ycbcr_palette_codec_src} ${color_src} ${codec_json_src})
 target_include_directories(color_codec PUBLIC ../include)
 
 #basic_block

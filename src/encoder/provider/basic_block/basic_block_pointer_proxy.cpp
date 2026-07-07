@@ -1,6 +1,6 @@
 #include "encoder/provider/basic_block/basic_block_pointer_proxy.hpp"
 #include "encoder/provider/basic_block/rgb_index.h"
-#include "color.h"
+#include "color.hpp"
 #include <cstdint>
 
 using bbpp = basic_block_pointer_proxy;

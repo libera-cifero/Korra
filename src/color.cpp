@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <algorithm>
 #include <cmath>
-#include "color.h"
+#include "color.hpp"
 #include "status_error.hpp"
 
 using namespace std;
@@ -18,7 +18,7 @@ uint8_t get_g(uint32_t color){
 }
 
 uint8_t get_b(uint32_t color){
-    return (uint8_t)(color & 0x000000ff);
+    return (uint8_t)(color & 0x0000ff);
 }
 
 uint32_t get_color_by_index(uint32_t color_index) 

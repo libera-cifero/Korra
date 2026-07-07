@@ -24,10 +24,10 @@ void test_ptr_equal(){
     const char *test_name = PTR_TEST_BASE_NAME ".test_ptr_equal";
     printInfo(test_name);
     basic_block_config config = {
-        .bits_per_block = 6,
         .block_size = 4,
         .frame_width = 10,
-        .frame_height = 12
+        .frame_height = 12,
+        .codec = NULL
     };
     const int frame_size = 3 * config.frame_width * config.frame_height;
     uint8_t frame[frame_size];

@@ -11,5 +11,6 @@ public:
     palette_codec(int *palette, int bits_per_number);
     virtual int color_to_number(int color) override;
     virtual int number_to_color(int number) override;
+    int* palette();
     ~palette_codec();
 };

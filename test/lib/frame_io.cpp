@@ -1,4 +1,5 @@
 #include "frame_io.hpp"
+#include "color_codec/codec_json.hpp"
 #include "json.hpp"
 #include <fstream>
 #include <ios>
@@ -7,7 +8,7 @@ using json = nlohmann::json;
 
 void write_frame_expected(frame_meta config, const string &path){
     json j;
-    j["bits_per_block"] = config.bits_per_block;
+    j["colorCodec"] = serialize_color_codec(config.codec);
     j["block_size"] = config.block_size;
     j["frame_width"] = config.frame_width;
     j["frame_height"] = config.frame_height;
@@ -32,9 +33,8 @@ frame_meta read_frame_expected(const string &path){
     meta.frame_width = j["frame_width"].get<int>();
     
     meta.block_size = j["block_size"];
-    meta.bits_per_block = j["bits_per_block"].get<int>();
     meta.blocks = j["blocks"].get<vector<int>>();
-    
+    meta.codec = parse_color_codec(j["codec"]);
     return meta;
 }
 

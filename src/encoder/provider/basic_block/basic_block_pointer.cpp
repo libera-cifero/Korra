@@ -2,7 +2,7 @@
 #include "encoder/provider/basic_block/basic_block_pointer.hpp"
 #include "encoder/provider/basic_block/rect.h"
 #include "encoder/provider/basic_block_config.hpp"
-#include "color.h"
+#include "color.hpp"
 #include <cstddef>
 #include <cstdint>
 
@@ -88,8 +88,8 @@ bool bbp::_compare(
     bool (*compare)(size_t a, size_t b)
 )
 {
-    size_t a = 8 * (size_t)_blocks + _config->bits_per_block * _block_index;
-    size_t b = 8 * (size_t)b_ptr._blocks + b_ptr._config->bits_per_block * b_ptr._block_index;
+    size_t a = 8 * (size_t)_blocks + _config->codec->bits_per_number() * _block_index;
+    size_t b = 8 * (size_t)b_ptr._blocks + b_ptr._config->codec->bits_per_number() * b_ptr._block_index;
     return compare(a,b);
 }
 

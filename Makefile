@@ -26,6 +26,10 @@ math:
 	cmake --build build/src --target math
 basic_block: color math
 	cmake --build build/src --target basic_block
+rect:
+	cmake --build build/src --target rect
+rgb_index:
+	cmake --build build/src --target rgb_index
 color_codec:
 	cmake --build build/src --target color_codec
 #======END======
@@ -43,7 +47,7 @@ test: build_test
 	python3 tool/test.py
 color_test: color
 	cmake --build build/test --target color_test && python3 tool/run.py color_test
-basic_block_test:
+basic_block_test: basic_block
 	cmake --build build/test --target basic_block_test && python3 tool/run.py basic_block_test
 math_test: math
 	cmake --build build/test --target math_test && python3 tool/run.py math_test
@@ -51,9 +55,9 @@ math_test: math
 
 #TEST TOOLS
 #=====BEGIN=====
-frame_gen_tool: basic_block
+frame_gen_tool: basic_block color rect rgb_index color_codec
 	cmake --build build/test --target frame_gen_tool
-args_frame_gen_tool:
+args_frame_gen_tool: color_codec
 	cmake --build build/test --target args_frame_gen_tool
 fps_color_tool:
 	cmake --build build/test --target fps_color_tool

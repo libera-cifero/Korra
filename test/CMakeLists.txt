@@ -48,7 +48,7 @@ target_link_libraries(math_test PRIVATE math)
 #frame_gen_tool
 add_executable(frame_gen_tool ${frame_gen_tool_src} ${frame_io_src})
 target_setup_tool(frame_gen_tool)
-target_link_libraries(frame_gen_tool PRIVATE basic_block color rect rgb_index)
+target_link_libraries(frame_gen_tool PRIVATE basic_block color rect rgb_index color_codec)
 
 #args_frame_gen_tool
 add_executable(args_frame_gen_tool ${args_frame_gen_tool_src})

@@ -1,6 +1,9 @@
 //input: frame_width, frame_height, bits_per_block, block_size, name of expected data file, name of frame file
 //output: array of random expected blocks, path to frame in binary format
-#include "color.h"
+#include "color.hpp"
+#include "color_codec/color_codec.hpp"
+#include "color_codec/codec_json.hpp"
+#include "color_codec/palette_codec.hpp"
 #include "encoder/provider/basic_block/rgb_index.h"
 #include "math.h"
 #include "encoder/provider/basic_block_config.hpp"
@@ -13,7 +16,11 @@
 #include <cstring>
 #include <ctime>
 #include <exception>
+#include <fstream>
+#include <ios>
 #include <iostream>
+#include <ostream>
+#include <sstream>
 #include <stdexcept>
 #include <stdint.h>
 #include <vector>
@@ -28,6 +35,16 @@ struct output {
     vector<int> blocks;
     uint8_t *frame;
 };
+static color_codec *read_color_codec(string path) {
+    string text;
+    fstream codec_file(path, ios_base::in);
+    ostringstream reader;
+    reader << codec_file.rdbuf();
+    text = reader.str();
+    codec_file.close();
+    json j = json::parse(text);
+    return parse_color_codec(j);
+}
 
 frame_gen_args parse_argv(int argc, char **argv) {
     if(argc < 7){
@@ -41,10 +58,9 @@ frame_gen_args parse_argv(int argc, char **argv) {
     if(frame_height <= 0){
         throw runtime_error("Invalid frame_height (second argument)!");
     }
-    int bits_per_block = atoi(argv[3]);
-    if(bits_per_block <= 0 || bits_per_block > 24) {
-        throw runtime_error("Invalid bits_per_block (third argument)!");
-    }
+    string codec_path = DATA_PATH / "color_codec" / argv[3];
+    color_codec *codec = read_color_codec(codec_path);
+    int bits_per_block = codec->bits_per_number();
     int block_size = atoi(argv[4]);
     if(block_size <= 0){
         throw runtime_error("Invalid block_size (fourth argument)!");
@@ -53,6 +69,7 @@ frame_gen_args parse_argv(int argc, char **argv) {
     width_capacity = frame_width / block_size;
     height_capacity = frame_height / block_size;
     block_count = height_capacity * width_capacity;
+
     if(block_count == 0 || block_count % 8 != 0 || block_count % bits_per_block != 0){
         const char *string_fmt = "The block_count (%d) must be divisible by 8 and bits_per_block(%d) without remainder and greater than 0!";
         char msg[256];
@@ -64,7 +81,7 @@ frame_gen_args parse_argv(int argc, char **argv) {
     res.frame_width = frame_width;
     res.frame_height = frame_height;
     res.block_size = block_size;
-    res.bits_per_block = bits_per_block;
+    res.codec = (palette_codec*)codec;
     res.expected_name = argv[5];
     res.frame_name = argv[6];
     return res;
@@ -73,12 +90,13 @@ frame_gen_args parse_argv(int argc, char **argv) {
 output generate(frame_gen_args in){
     srand(time(NULL));
     vector<int> blocks(block_count);
+    color_codec *codec = in.codec;
     uint8_t *data = alloc_by_config(in);
-    int max = 1 << in.bits_per_block;
+    int max = codec->max_number();
     for(int i = 0; i < block_count; i++) {
-        int block_data = rand() % max;
+        int block_data = rand() % (max + 1);
         blocks[i] = block_data;
-        int color = number_to_color(block_data, in.bits_per_block);
+        int color = codec->number_to_color(block_data);
         uint8_t r = get_r(color), g = get_g(color), b = get_b(color);
         rect area = get_rect(i, in.block_size, width_capacity);
         for(int y = area.y0; y < area.y1; y++){
@@ -104,10 +122,11 @@ int main(int argc, char **argv) {
     }
 
     output out = generate(in);
-    string frame_expected_path = EXPECTED_PATH / in.expected_name;
-    string frame_data_path = DATA_PATH / in.frame_name;
+    string frame_expected_path = EXPECTED_PATH / "frame" / in.expected_name;
+    string frame_data_path = DATA_PATH / "frame" / in.frame_name;
     write_frame_expected({in, in.frame_name, out.blocks}, frame_expected_path);
     write_frame_data(out.frame, in.frame_width, in.frame_height, frame_data_path);
+    delete in.codec;
     delete[] out.frame;
     return 0;
 }

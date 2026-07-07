@@ -1,6 +1,6 @@
 #include "color_codec/hsv_codec.hpp"
 #include "color_codec/color_codec.hpp"
-#include "color.h"
+#include "color.hpp"
 #include <cstdio>
 #include <algorithm>
 #include <cstring>

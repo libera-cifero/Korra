@@ -193,10 +193,13 @@ int main(int argc, char **argv)
         palette = fps_rgb_palette(candidates, count);
     }
     else if(strcmp(argv[2], "ycbcr") == 0){
-        Weights w{
+        /*Weights w{
             1.0f / 9.0f,    // Y
             1.0f / 81.0f,   // Cb
             1.0f / 81.0f    // Cr
+        };*/
+        Weights w{
+            1,1,1
         };
 
         palette = fps_ycbcr_palette(candidates, count, w);
@@ -212,7 +215,7 @@ int main(int argc, char **argv)
         int g = (c >> 8)  & 255;
         int b =  c        & 255;
 
-        printf("\"%02X%02X%02X\",\n", r, g, b);
+        printf("\"#%02X%02X%02X\",\n", r, g, b);
     }
 
     return 0;

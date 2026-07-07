@@ -1,7 +1,8 @@
-//input: count
+//input: count, palette_path
 //output: lines of [width height bits_per_block block_size frame_N.json frame_N.bmp]
 #include "io.hpp"
 #include "frame_meta.hpp"
+#include "color_codec/codec_json.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
@@ -15,7 +16,7 @@ void print_args(frame_gen_args args){
     cout 
         << args.frame_width << " " 
         << args.frame_height << " " 
-        << args.bits_per_block << " "
+        << args.color_codec_path << " "
         << args.block_size << " "
         << args.expected_name << " "
         << args.frame_name;
@@ -42,7 +43,7 @@ int get_max_file_index(path dir_path, regex pattern) {
     return *max_element(file_indices.begin(), file_indices.end());
 }
 
-frame_gen_args gen_random_args(int expected_index, int data_index) {
+frame_gen_args gen_random_args(int expected_index, int data_index, string codec_path) {
     int frame_width = (rand() % 1913) + 8;
     int frame_height = (rand() % 1073) + 8;
     int block_size, block_count = 0, min_size = frame_width < frame_height ? frame_width : frame_height;
@@ -71,16 +72,16 @@ frame_gen_args gen_random_args(int expected_index, int data_index) {
     frame_gen_args args;
     args.frame_name = data_file;
     args.expected_name = expected_file;
-    args.bits_per_block = bits_per_block;
     args.block_size = block_size;
     args.frame_width = frame_width;
     args.frame_height = frame_height;
+    args.color_codec_path = codec_path;
 
     return args;
 }
 
 int main(int argc, char **argv) {
-    if(argc < 2) {
+    if(argc < 3) {
         cerr << "Invalid arguments count!" << endl;
         return -1;
     }
@@ -91,12 +92,14 @@ int main(int argc, char **argv) {
         return -2;
     }
 
-    int expected_index = get_max_file_index(EXPECTED_PATH, regex("frame_([0-9]+)\\.json"));
-    int data_index = get_max_file_index(DATA_PATH, regex("frame_([0-9]+)\\.bmp"));
+    int expected_index = get_max_file_index(EXPECTED_PATH / "frame", regex("frame_([0-9]+)\\.json"));
+    int data_index = get_max_file_index(DATA_PATH / "frame", regex("frame_([0-9]+)\\.bmp"));
+
+    string codec_path = argv[2];
 
     srand(time(NULL));
     for(int i = 0; i < count; i++){
-        frame_gen_args args = gen_random_args(++expected_index, ++data_index);
+        frame_gen_args args = gen_random_args(++expected_index, ++data_index, codec_path);
         if(i > 0) cout << endl;
         print_args(args);
     }

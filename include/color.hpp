@@ -1,9 +1,7 @@
-#include <stdint.h>
+#include <cstdint>
+#include <string>
+using namespace std;
 #define COLOR_palette 1530
-
-#ifdef __cplusplus
-extern "C"{
-#endif
 
 uint8_t get_r(uint32_t color);
 uint8_t get_g(uint32_t color);
@@ -17,6 +15,5 @@ uint32_t index_to_number(uint32_t number, int color_bit_resolution);
 
 uint32_t number_to_color(uint16_t number, int color_bit_resolution);
 uint16_t color_to_number(uint32_t color, int color_bit_resolution);
-#ifdef __cplusplus
-}
-#endif
+
+string rgb_to_hex(int rgb);

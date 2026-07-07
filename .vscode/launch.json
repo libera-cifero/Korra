@@ -8,10 +8,10 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/tool/fps_color_tool",
+            "target": "./bin/tool/frame_gen_tool",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
-            "arguments": "4 rgb"
+            "arguments": "742 939 rgb_palette0.json 87 frame_20.json frame_20.bmp"
         }
     ]
 }

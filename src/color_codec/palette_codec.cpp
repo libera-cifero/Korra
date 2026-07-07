@@ -1,9 +1,12 @@
 #include "color_codec/palette_codec.hpp"
 #include "color_codec/color_codec.hpp"
 #include <cmath>
+#include <cstring>
 
 palette_codec::palette_codec(int *palette, int bits_per_number) : color_codec(bits_per_number){
-    _palette = palette;
+    int count = max_number() + 1;
+    _palette = new int[count];
+    memcpy(_palette, palette, count * sizeof(int));
 }
 
 int palette_codec::color_to_number(int color) {
@@ -25,6 +28,13 @@ int palette_codec::color_to_number(int color) {
 int palette_codec::number_to_color(int number) {
     color_codec::number_to_color(number);
     return _palette[number];
+}
+
+int* palette_codec::palette(){
+    int count = max_number() + 1;
+    int *palette = new int[count];
+    memcpy(palette, _palette, count * sizeof(int));
+    return palette;
 }
 
 palette_codec::~palette_codec(){

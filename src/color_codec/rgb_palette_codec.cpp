@@ -1,5 +1,5 @@
 #include "color_codec/rgb_palette_codec.hpp"
-#include "color.h"
+#include "color.hpp"
 
 rgb_palette_codec::rgb_palette_codec(int *palette, int bits_per_number):palette_codec(palette, bits_per_number) { }
 float rgb_palette_codec::$get_distance(int color0, int color1) {
