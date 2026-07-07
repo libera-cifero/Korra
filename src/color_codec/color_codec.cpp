@@ -6,12 +6,12 @@ color_codec::color_codec(int bits_per_number) {
 }
 
 int color_codec::bits_per_number(){ return _bits_per_number; }
-int color_codec::max_number(){ return (1<<_bits_per_number) - 1; }
+int color_codec::color_count(){ return (1<<_bits_per_number); }
 
 int color_codec::number_to_color(int number){
-    if(number > max_number()){
+    if(number > color_count() - 1){
         char error_buff[256];
-        sprintf(error_buff,"color_bit_resolution equals %d must be less or equal %d!", _bits_per_number, max_number());
+        sprintf(error_buff,"color_bit_resolution equals %d must be less %d!", _bits_per_number, color_count());
         throw status_error(error_buff, 1);
     }
 

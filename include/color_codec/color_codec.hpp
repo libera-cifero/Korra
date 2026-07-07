@@ -6,7 +6,7 @@ private:
 public:
     color_codec(int bits_per_number);
     int bits_per_number();
-    int max_number();
+    int color_count();
     virtual int color_to_number(int color);
     virtual int number_to_color(int number);
     virtual ~color_codec() { }

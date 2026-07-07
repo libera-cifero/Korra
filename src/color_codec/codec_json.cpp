@@ -2,6 +2,7 @@
 #include "color_codec/hsv_codec.hpp"
 #include "color_codec/rgb_palette_codec.hpp"
 #include "color_codec/ycbcr_palette_codec.hpp"
+#include "color.hpp"
 #include <regex>
 #include <stdexcept>
 #include <string>
@@ -75,22 +76,22 @@ static vector<int> parse_palette(json &settingsObject) {
 }
 
 color_codec *parse_color_codec(json &root){
-    string color_mode = root["colorCodec"].get<string>();
-    json settingsObject = root[color_mode + "Settings"];
+    string codec_type = root["type"].get<string>();
+    json settingsObject = root[codec_type + "Settings"];
     int bits_per_number = settingsObject["bitsPerNumber"].get<int>();
-    if(color_mode == "hsv"){
+    if(codec_type == "hsv"){
         return new hsv_codec(bits_per_number);
     }
-    else if(color_mode == "rgbPalette"){
+    else if(codec_type == "rgbPalette"){
         vector<int> palette = parse_palette(settingsObject);
         return new rgb_palette_codec(palette.begin().base(), bits_per_number);
     }
-    else if(color_mode == "ycbcrPalette"){
+    else if(codec_type == "ycbcrPalette"){
         vector<int> palette = parse_palette(settingsObject);
         return new ycbcr_palette_codec(palette.begin().base(), bits_per_number);
     }
 
-    throw runtime_error("Invalid colorCodec \"" + color_mode + "\"!");
+    throw runtime_error("Invalid colorCodec \"" + codec_type + "\"!");
 }
 
 json serialize_color_codec(color_codec *codec) {
@@ -103,8 +104,11 @@ json serialize_color_codec(color_codec *codec) {
     }
     else if(auto *rgb_codec = dynamic_cast<palette_codec*>(codec)) {
         int *palette = rgb_codec->palette();
-        vector<string> palette_list(rgb_codec->max_number() + 1);
-        
+        int count = rgb_codec->color_count();
+        vector<string> palette_list(count);
+        for(int i = 0; i < count; i++){
+            palette_list[i] = rgb_to_hex(palette[i]);
+        }
         settings["palette"] = palette_list;
         delete [] palette;
         if(dynamic_cast<rgb_palette_codec*>(codec)) {

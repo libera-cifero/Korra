@@ -4,7 +4,7 @@
 #include <cstring>
 
 palette_codec::palette_codec(int *palette, int bits_per_number) : color_codec(bits_per_number){
-    int count = max_number() + 1;
+    int count = color_count();
     _palette = new int[count];
     memcpy(_palette, palette, count * sizeof(int));
 }
@@ -13,7 +13,7 @@ int palette_codec::color_to_number(int color) {
     color_codec::color_to_number(color);
     float min_distance = MAXFLOAT;
     int min_index = -1;
-    for(int i = 0; i < max_number(); i++){
+    for(int i = 0; i < color_count(); i++){
         float dist = $get_distance(color, _palette[i]);
         if(dist < min_distance)
         {
@@ -31,7 +31,7 @@ int palette_codec::number_to_color(int number) {
 }
 
 int* palette_codec::palette(){
-    int count = max_number() + 1;
+    int count = color_count();
     int *palette = new int[count];
     memcpy(palette, _palette, count * sizeof(int));
     return palette;

@@ -92,9 +92,9 @@ output generate(frame_gen_args in){
     vector<int> blocks(block_count);
     color_codec *codec = in.codec;
     uint8_t *data = alloc_by_config(in);
-    int max = codec->max_number();
+    int count = codec->color_count();
     for(int i = 0; i < block_count; i++) {
-        int block_data = rand() % (max + 1);
+        int block_data = rand() % count;
         blocks[i] = block_data;
         int color = codec->number_to_color(block_data);
         uint8_t r = get_r(color), g = get_g(color), b = get_b(color);

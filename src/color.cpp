@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include <algorithm>
 #include <cmath>
-#include <format>
 #include "color.hpp"
 #include "status_error.hpp"
 
