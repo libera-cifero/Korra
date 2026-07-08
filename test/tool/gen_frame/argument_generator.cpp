@@ -92,8 +92,8 @@ int main(int argc, char **argv) {
         return -2;
     }
 
-    int expected_index = get_max_file_index(EXPECTED_PATH / "frame", regex("frame_([0-9]+)\\.json"));
-    int data_index = get_max_file_index(DATA_PATH / "frame", regex("frame_([0-9]+)\\.bmp"));
+    int expected_index = get_max_file_index(EXPECTED_FRAME_PATH, regex("frame_([0-9]+)\\.json"));
+    int data_index = get_max_file_index(DATA_FRAME_PATH, regex("frame_([0-9]+)\\.bmp"));
 
     string codec_path = argv[2];
 

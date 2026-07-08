@@ -34,7 +34,7 @@ frame_meta read_frame_expected(const string &path){
     
     meta.block_size = j["block_size"];
     meta.blocks = j["blocks"].get<vector<int>>();
-    meta.codec = parse_color_codec(j["codec"]);
+    meta.codec = parse_color_codec(j["colorCodec"]);
     return meta;
 }
 

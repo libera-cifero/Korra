@@ -11,5 +11,5 @@ lines = result.stdout.split('\n')
 for line in lines:
     if line=='': break
     args = line.split(' ')
-    print(args)
+    print(line)
     result = subprocess.run(["python3", runner, "tool/frame_gen_tool", *args], cwd = root)

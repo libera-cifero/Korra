@@ -84,7 +84,7 @@ void test_ptr_equal(){
 //=====BEGIN=====
 
 void iterate_bbc_test_cases(const char *test_name, void (*test)(const char *test_name, frame_meta expected, uint8_t *data, string file_name)){
-    directory_iterator iter(EXPECTED_PATH);
+    directory_iterator iter(EXPECTED_FRAME_PATH);
     regex pattern("frame_[0-9]+\\.json");
     for(directory_entry entry : iter) {
         smatch match;
@@ -93,7 +93,7 @@ void iterate_bbc_test_cases(const char *test_name, void (*test)(const char *test
         if(entry.is_regular_file() && regex_match(file_name, match, pattern)){
             int width, height;
             frame_meta expected = read_frame_expected(file_path);
-            string frame_data_path = DATA_PATH / expected.frame_path;
+            string frame_data_path = DATA_FRAME_PATH / expected.frame_path;
             uint8_t *data = read_frame_data(frame_data_path, width, height);
             if(expected.frame_width != width){
                 delete[] data;

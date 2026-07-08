@@ -58,7 +58,7 @@ frame_gen_args parse_argv(int argc, char **argv) {
     if(frame_height <= 0){
         throw runtime_error("Invalid frame_height (second argument)!");
     }
-    string codec_path = DATA_PATH / "color_codec" / argv[3];
+    string codec_path = DATA_COLOR_CODEC_PATH / argv[3];
     color_codec *codec = read_color_codec(codec_path);
     int bits_per_block = codec->bits_per_number();
     int block_size = atoi(argv[4]);
@@ -122,8 +122,8 @@ int main(int argc, char **argv) {
     }
 
     output out = generate(in);
-    string frame_expected_path = EXPECTED_PATH / "frame" / in.expected_name;
-    string frame_data_path = DATA_PATH / "frame" / in.frame_name;
+    string frame_expected_path = EXPECTED_FRAME_PATH / in.expected_name;
+    string frame_data_path = DATA_FRAME_PATH / in.frame_name;
     write_frame_expected({in, in.frame_name, out.blocks}, frame_expected_path);
     write_frame_data(out.frame, in.frame_width, in.frame_height, frame_data_path);
     delete in.codec;
