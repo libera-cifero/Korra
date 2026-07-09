@@ -5,6 +5,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(BIN_DIR ../../bin)
 set(PROVIDER_DIR encoder/provider)
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${BIN_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${BIN_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
@@ -46,6 +47,6 @@ add_library(color_codec STATIC ${color_codec_src} ${hsv_codec_src} ${palette_cod
 target_include_directories(color_codec PUBLIC ../include)
 
 #basic_block
-add_library(basic_block STATIC ${bbc_src} ${bbp_src} ${bbpp_src} ${basic_block_config_src})
+add_library(basic_block SHARED ${bbc_src} ${bbp_src} ${bbpp_src} ${basic_block_config_src})
 target_link_libraries(basic_block PUBLIC color math rect rgb_index color_codec)
 target_include_directories(basic_block PUBLIC ../include)

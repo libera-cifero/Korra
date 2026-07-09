@@ -1,4 +1,4 @@
-//input: frame_width, frame_height, bits_per_block, block_size, name of expected data file, name of frame file
+//input: frame_width, frame_height, color_codec_path, block_size, name of expected data file, name of frame file
 //output: array of random expected blocks, path to frame in binary format
 #include "color.hpp"
 #include "color_codec/color_codec.hpp"

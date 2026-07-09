@@ -61,6 +61,8 @@ args_frame_gen_tool: color_codec
 	cmake --build build/test --target args_frame_gen_tool
 fps_color_tool:
 	cmake --build build/test --target fps_color_tool
+adm_tool: basic_block color_codec
+	cmake --build build/test --target analyse_decode_metric_tool
 gen_frame: frame_gen_tool
 	python3 tool/run.py tool/frame_gen_tool $(ARGS)
 gen_frames: frame_gen_tool args_frame_gen_tool

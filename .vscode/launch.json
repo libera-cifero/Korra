@@ -8,7 +8,7 @@
             "target": "./bin/tool/frame_gen_tool",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
-            "arguments": "1135 816 rgb_palett0.json 40 frame_21.json frame_21.bmp"
+            "arguments": "1036 1777 4 12 frame_31.json frame_31.bmp"
         },
         {
             "name": "Python Debugger: Python File",
