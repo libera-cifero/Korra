@@ -93,7 +93,7 @@ bit_area bbc::_read_block(uint8_t *bytes, bit_area area, int block) {
     size_t bit0 = area.bit0, bit1 = area.bit1;
     for(size_t bd = bit0; bd < bit1; bd++){ 
         size_t bb = bd-bit0;
-        uint8_t bit = (uint8_t)(block & (1 << bb)) >> bb;
+        uint8_t bit = (uint8_t)((block >> bb) & 1);
 
         size_t byte_index = bd / 8;
         size_t bit_index = bd % 8;
@@ -108,6 +108,7 @@ bit_area bbc::_read_block(uint8_t *bytes, bit_area area, int block) {
 
 
 basic_block_pointer bbc::read(basic_block_pointer begin, uint8_t *data_out, size_t byte_count){
+    memset(data_out, 0, byte_count);
     basic_block_pointer end = _get_end(begin, byte_count);
     size_t blocks_to_read = _get_block_count(byte_count);
 

@@ -100,12 +100,13 @@ int main(int argc, char **argv) {
         uint8_t byte0 = data0[i], byte1 = data1[i];
         if(byte0 != byte1){
             error_count++;
+            cout << i << " " << (int)byte0 << ", " << (int)byte1 << endl;
             average_delta_sum += abs(byte1 - byte0);
         }
     }
 
     float error_percent = error_count / (float)byte_count * 100;
-    float average_delta = average_delta_sum / (float)byte_count;
+    float average_delta = average_delta_sum / (float)error_count;
 
     cout << error_percent << " " << average_delta << " " << elapsed_ms;
 
@@ -120,7 +121,7 @@ int main(int argc, char **argv) {
     }
 
     error_percent = error_count / (float)block_count * 100;
-    average_delta = average_delta_sum / (float)block_count;
+    average_delta = average_delta_sum / (float)error_count;
 
     cout << endl << error_percent << " " << average_delta<<endl;
 
