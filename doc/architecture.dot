@@ -48,6 +48,31 @@ digraph {
                 basic_block_container->raw_ip_length_reader [weight=0.1;];
             }
 
+            subgraph video_pipes {
+                video_pipe_config;
+                video_pipe [color=purple; fontcolor = purple;];
+                readonly_video_pipe [color=purple; fontcolor = purple;];
+                writeonly_video_pipe [color=purple; fontcolor = purple;];
+                linux_tcp_readonly_video_pipe [color=blue; fontcolor = blue;];
+                linux_tcp_writeonly_video_pipe [color=blue; fontcolor = blue;];
+                windows_tcp_readonly_video_pipe [color=blue; fontcolor = blue;];
+                windows_tcp_writeonly_video_pipe [color=blue; fontcolor = blue;];
+
+                video_pipe->readonly_video_pipe;
+                video_pipe->writeonly_video_pipe;
+                readonly_video_pipe->linux_tcp_readonly_video_pipe;
+                writeonly_video_pipe->linux_tcp_writeonly_video_pipe;
+                readonly_video_pipe->windows_tcp_readonly_video_pipe;
+
+                video_pipe_config->video_pipe;
+                video_pipe_config->readonly_video_pipe;
+                video_pipe_config->linux_tcp_readonly_video_pipe;
+                video_pipe_config->linux_tcp_writeonly_video_pipe;
+                video_pipe_config->windows_tcp_readonly_video_pipe;
+                video_pipe_config->windows_tcp_writeonly_video_pipe;
+
+            }
+
             basic_block_config;
             rect;
             rgb_index;
