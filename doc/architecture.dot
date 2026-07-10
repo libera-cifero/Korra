@@ -38,7 +38,21 @@ digraph {
                 basic_block_pointer_proxy->basic_block_pointer;
                 basic_block_pointer_proxy->basic_block_container;
 
-                bit_area->basic_block_container;                
+                bit_area->basic_block_container;              
+                
+                basic_block_config [color=green;fontcolor=green;];
+                rect [color=green;fontcolor=green;];
+                rgb_index[color=green;fontcolor=green;];
+                
+                basic_block_config->basic_block_container;
+                basic_block_config->basic_block_pointer;
+                basic_block_config->basic_block_pointer_proxy;
+                basic_block_config->raw_ip_length_reader;
+
+                rect->basic_block_pointer_proxy;
+                rect->basic_block_pointer;
+
+                rgb_index->basic_block_pointer_proxy;  
             }
 
             subgraph data_length_reader{
@@ -48,7 +62,8 @@ digraph {
                 basic_block_container->raw_ip_length_reader [weight=0.1;];
             }
 
-            subgraph video_pipe {
+            subgraph cluster_video_pipes {
+                label="video_pipes";
                 video_pipe_in [color=red; fontcolor=red;];
                 video_pipe_out [color = red; fontcolor=red;];
                 ffmpeg_rtmp_pipe_in [color=blue;fontcolor=blue;];
@@ -65,20 +80,36 @@ digraph {
                 ffmpeg_rtmp_config->ffmpeg_rtmp_pipe_in;
                 ffmpeg_rtmp_config->ffmpeg_rtmp_pipe_out;
             }
+            subgraph cluster_color_codecs{
+                label="color_codecs";
+                color_codec [
+                    color=purple;
+                    fontcolor=purple;
+                ];
+                hsv_codec [
+                    color=blue;
+                    fontcolor=blue;
+                ];
+                palette_codec[
+                    color=purple;
+                    fontcolor=purple;
+                ];
+                rgb_palette_codec[
+                    color=blue;
+                    fontcolor=blue;
+                ];
+                ycbcr_palette_codec[
+                    color=blue;
+                    fontcolor=blue;
+                ];
+                hsv_codec->color_codec [color=blue; ];
+                palette_codec->color_codec[color=purple;];   
+                rgb_palette_codec->palette_codec [color=blue;];
+                ycbcr_palette_codec->palette_codec [color=blue];
+            }
 
-            basic_block_config [color=green;fontcolor=green;];
-            rect [color=green;fontcolor=green;];
-            rgb_index[color=green;fontcolor=green;];
+            color_codec->basic_block_pointer_proxy [minlen=2;];
             
-            basic_block_config->basic_block_container;
-            basic_block_config->basic_block_pointer;
-            basic_block_config->basic_block_pointer_proxy;
-            basic_block_config->raw_ip_length_reader;
-
-            rect->basic_block_pointer_proxy;
-            rect->basic_block_pointer;
-
-            rgb_index->basic_block_pointer_proxy;
         }
         subgraph cluster_compressors {
             label="compressors";
@@ -134,26 +165,7 @@ digraph {
         color;
         status_error;
         math;
-        color_codec [
-            color=purple;
-            fontcolor=purple;
-        ];
-        hsv_codec [
-            color=blue;
-            fontcolor=blue;
-        ];
-        palette_codec[
-            color=purple;
-            fontcolor=purple;
-        ];
-        rgb_palette_codec[
-            color=blue;
-            fontcolor=blue;
-        ];
-        ycbcr_palette_codec[
-            color=blue;
-            fontcolor=blue;
-        ];
+        
         
         provider->video_encoder; 
         compressor->video_encoder;
@@ -170,11 +182,7 @@ digraph {
 
         math->basic_block_container;
 
-        color_codec->basic_block_pointer_proxy;
-        hsv_codec->color_codec [color=blue; ];
-        palette_codec->color_codec[color=purple;];   
-        rgb_palette_codec->palette_codec [color=blue;];
-        ycbcr_palette_codec->palette_codec [color=blue];
+
     }
     
     subgraph cluster_test{
@@ -189,14 +197,14 @@ digraph {
         raw_ip_length_reader_test;
         math_test;
         
-        test->color_test;
-        test->basic_block_test;
-        test->raw_ip_length_reader_test;
+        test->color_test [weight=5;];
+        test->basic_block_test [weight=2;];
+        test->raw_ip_length_reader_test [weight=0.001;];
         test->math_test;
     }
 
-    color->basic_block_test [minlen=3];
-    color->color_test [minlen=3];
+    color->basic_block_test;
+    color->color_test;
 
     math->math_test;
 
