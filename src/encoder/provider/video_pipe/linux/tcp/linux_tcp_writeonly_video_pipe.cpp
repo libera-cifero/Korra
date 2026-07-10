@@ -6,8 +6,9 @@
 #include <sys/ioctl.h>
 using ltwvp = linux_tcp_writeonly_video_pipe;
 
-v4l2_format ltwvp::_get_format(int width, int height){
+v4l2_format ltwvp::_get_format(){
     v4l2_format fmt = {0};
+    int width = $config.frame_width, height = $config.frame_height;
 
     fmt.type = V4L2_BUF_TYPE_VIDEO_OUTPUT;
 
@@ -25,7 +26,7 @@ v4l2_format ltwvp::_get_format(int width, int height){
 
 ltwvp::linux_tcp_writeonly_video_pipe(video_pipe_config config) : writeonly_video_pipe(config) {
     _file_descriptor = open($config.device_name.c_str(), O_WRONLY);
-    v4l2_format fmt = _get_format($config.frame_width, $config.frame_height);
+    v4l2_format fmt = _get_format();
     ioctl(_file_descriptor, VIDIOC_S_FMT, &fmt);
 }
 

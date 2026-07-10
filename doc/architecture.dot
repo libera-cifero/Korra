@@ -58,19 +58,20 @@ digraph {
                 windows_tcp_readonly_video_pipe [color=blue; fontcolor = blue;];
                 windows_tcp_writeonly_video_pipe [color=blue; fontcolor = blue;];
 
-                video_pipe->readonly_video_pipe;
-                video_pipe->writeonly_video_pipe;
-                readonly_video_pipe->linux_tcp_readonly_video_pipe;
-                writeonly_video_pipe->linux_tcp_writeonly_video_pipe;
-                readonly_video_pipe->windows_tcp_readonly_video_pipe;
-
+                readonly_video_pipe->video_pipe [color=purple;];
+                writeonly_video_pipe->video_pipe [color=purple;];
+                linux_tcp_readonly_video_pipe->readonly_video_pipe [color=blue;];
+                linux_tcp_writeonly_video_pipe->writeonly_video_pipe [color=blue;];
+                windows_tcp_readonly_video_pipe->readonly_video_pipe [color=blue;];
+                windows_tcp_writeonly_video_pipe->writeonly_video_pipe [color=blue;];
+                
                 video_pipe_config->video_pipe;
                 video_pipe_config->readonly_video_pipe;
+                video_pipe_config->writeonly_video_pipe;
                 video_pipe_config->linux_tcp_readonly_video_pipe;
                 video_pipe_config->linux_tcp_writeonly_video_pipe;
                 video_pipe_config->windows_tcp_readonly_video_pipe;
                 video_pipe_config->windows_tcp_writeonly_video_pipe;
-
             }
 
             basic_block_config;

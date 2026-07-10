@@ -5,7 +5,7 @@
 class linux_tcp_writeonly_video_pipe : public writeonly_video_pipe {
 private:
     int _file_descriptor;
-    v4l2_format _get_format(int width, int height);
+    v4l2_format _get_format();
 public:
     linux_tcp_writeonly_video_pipe(video_pipe_config config);
     void write(uint8_t *data, int size) override;
