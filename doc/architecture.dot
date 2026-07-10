@@ -16,9 +16,9 @@ digraph {
                 fontcolor=blue;
             ];
             subgraph basic_block{
-                basic_block_container;
-                basic_block_pointer;
-                basic_block_pointer_proxy;
+                basic_block_container [color=blue;fontcolor=blue;];
+                basic_block_pointer [color=blue;fontcolor=blue;];
+                basic_block_pointer_proxy [color=blue;fontcolor=blue;];
                 data_length_reader [
                     color=red;
                     fontcolor=red;
@@ -27,7 +27,7 @@ digraph {
                     color=blue;
                     fontcolor=blue;
                 ];
-                bit_area;
+                bit_area [color=green;fontcolor=green;];
                 
                 basic_provider->provider [color=blue;];
                 
@@ -48,35 +48,27 @@ digraph {
                 basic_block_container->raw_ip_length_reader [weight=0.1;];
             }
 
-            subgraph video_pipes {
-                video_pipe_config;
-                video_pipe [color=purple; fontcolor = purple;];
-                readonly_video_pipe [color=purple; fontcolor = purple;];
-                writeonly_video_pipe [color=purple; fontcolor = purple;];
-                linux_tcp_readonly_video_pipe [color=blue; fontcolor = blue;];
-                linux_tcp_writeonly_video_pipe [color=blue; fontcolor = blue;];
-                windows_tcp_readonly_video_pipe [color=blue; fontcolor = blue;];
-                windows_tcp_writeonly_video_pipe [color=blue; fontcolor = blue;];
+            subgraph video_pipe {
+                video_pipe_in [color=red; fontcolor=red;];
+                video_pipe_out [color = red; fontcolor=red;];
+                ffmpeg_rtmp_pipe_in [color=blue;fontcolor=blue;];
+                ffmpeg_rtmp_pipe_out [color=blue;fontcolor=blue;];
 
-                readonly_video_pipe->video_pipe [color=purple;];
-                writeonly_video_pipe->video_pipe [color=purple;];
-                linux_tcp_readonly_video_pipe->readonly_video_pipe [color=blue;];
-                linux_tcp_writeonly_video_pipe->writeonly_video_pipe [color=blue;];
-                windows_tcp_readonly_video_pipe->readonly_video_pipe [color=blue;];
-                windows_tcp_writeonly_video_pipe->writeonly_video_pipe [color=blue;];
+                video_pipe_config [color=green; fontcolor=green;];
+                ffmpeg_rtmp_config [color=green;fontcolor=green;];
+
+                ffmpeg_rtmp_config->video_pipe_config [color=green;];
+
+                ffmpeg_rtmp_pipe_in->video_pipe_in [color=blue;];
+                ffmpeg_rtmp_pipe_out->video_pipe_out [color=blue;];
                 
-                video_pipe_config->video_pipe;
-                video_pipe_config->readonly_video_pipe;
-                video_pipe_config->writeonly_video_pipe;
-                video_pipe_config->linux_tcp_readonly_video_pipe;
-                video_pipe_config->linux_tcp_writeonly_video_pipe;
-                video_pipe_config->windows_tcp_readonly_video_pipe;
-                video_pipe_config->windows_tcp_writeonly_video_pipe;
+                ffmpeg_rtmp_config->ffmpeg_rtmp_pipe_in;
+                ffmpeg_rtmp_config->ffmpeg_rtmp_pipe_out;
             }
 
-            basic_block_config;
-            rect;
-            rgb_index;
+            basic_block_config [color=green;fontcolor=green;];
+            rect [color=green;fontcolor=green;];
+            rgb_index[color=green;fontcolor=green;];
             
             basic_block_config->basic_block_container;
             basic_block_config->basic_block_pointer;
