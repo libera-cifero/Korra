@@ -1,6 +1,5 @@
 #include "encoder/provider/len_reader/raw_ip_length_reader.hpp"
 #include "encoder/provider/basic_block/basic_block_pointer.hpp"
-#include "encoder/provider/basic_block_config.hpp"
 #include <cstdint>
 
 raw_ip_length_reader::raw_ip_length_reader(basic_block_pointer package_begin){
@@ -43,3 +42,5 @@ int raw_ip_length_reader::read(const char *frame, int frame_size) {
     }
     return package_length;
 }
+
+raw_ip_length_reader::~raw_ip_length_reader(){}

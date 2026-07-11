@@ -83,41 +83,11 @@ void test_ptr_equal(){
 //basic_block_container
 //=====BEGIN=====
 
-void iterate_bbc_test_cases(const char *test_name, void (*test)(const char *test_name, frame_meta expected, uint8_t *data, string file_name)){
-    directory_iterator iter(EXPECTED_FRAME_PATH);
-    regex pattern("frame_[0-9]+\\.json");
-    for(directory_entry entry : iter) {
-        smatch match;
-        path file_path = entry.path();
-        string file_name = file_path.filename();
-        if(entry.is_regular_file() && regex_match(file_name, match, pattern)){
-            int width, height;
-            frame_meta expected = read_frame_expected(file_path);
-            string frame_data_path = DATA_FRAME_PATH / expected.frame_path;
-            uint8_t *data = read_frame_data(frame_data_path, width, height);
-            if(expected.frame_width != width){
-                delete[] data;
-                printInfo(file_name.c_str());
-                fail(test_name, "Width is expected %d but got %d!", 1, expected.frame_width, width);
-            }
-            if(expected.frame_height != height){
-                delete[] data;
-                printInfo(file_name.c_str());
-                fail(test_name, "Height is expected %d but got %d!", 2, expected.frame_height, height);
-            }
-
-            test(test_name, expected, data, file_name);
-
-            delete[] data;
-        }
-    }
-}
-
 void test_get_block_by_index() {
     const char *test_name = BBC_TEST_BASE_NAME ".test_get_block_by_index";
     printInfo(test_name);
 
-    iterate_bbc_test_cases(test_name, [](const char *test_name, frame_meta expected, uint8_t *data, string file_name)
+    iterate_frame_test_cases(test_name, [](const char *test_name, frame_meta expected, uint8_t *data, string file_name)
     {
         basic_block_container container(data, expected);
         if(container.block_count() != expected.blocks.size()){
@@ -147,7 +117,7 @@ void test_block_byte_io() {
     const char *test_name = BBC_TEST_BASE_NAME ".test_block_byte_io";
     printInfo(test_name);
     srand(time(NULL));
-    iterate_bbc_test_cases(test_name, [](const char *test_name, frame_meta expected, uint8_t *data, string file_name) 
+    iterate_frame_test_cases(test_name, [](const char *test_name, frame_meta expected, uint8_t *data, string file_name) 
     {
         const char *cfile_name = file_name.c_str();
         basic_block_container container(data, expected);

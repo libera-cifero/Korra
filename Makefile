@@ -20,18 +20,14 @@ init_src_release:
 build_src:
 	cmake --build build/src
 
-color:
-	cmake --build build/src --target color
-math:
-	cmake --build build/src --target math
-basic_block: color math
-	cmake --build build/src --target basic_block
-rect:
-	cmake --build build/src --target rect
-rgb_index:
-	cmake --build build/src --target rgb_index
+base_utils:
+	cmake --build build/src --target base_utils
 color_codec:
 	cmake --build build/src --target color_codec
+basic_block: base_utils color_codec
+	cmake --build build/src --target basic_block
+len_reader: basic_block
+	cmake --build build/src --target len_reader
 #======END======
 
 #TESTS
@@ -51,6 +47,8 @@ basic_block_test: basic_block
 	cmake --build build/test --target basic_block_test && python3 tool/run.py basic_block_test
 math_test: math
 	cmake --build build/test --target math_test && python3 tool/run.py math_test
+len_reader_test: len_reader
+	cmake --build build/test --target len_reader_test && python3 tool/run.py len_reader_test
 #======END======
 
 #TEST TOOLS

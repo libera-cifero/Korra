@@ -1,10 +1,16 @@
 #include "frame_io.hpp"
 #include "color_codec/codec_json.hpp"
 #include "json.hpp"
+#include "io.hpp"
+#include "test.h"
 #include <fstream>
 #include <ios>
+#include <regex>
+#include <filesystem>
 
 using json = nlohmann::json;
+using namespace std;
+using namespace filesystem;
 
 void write_frame_expected(frame_meta config, const string &path){
     json j;
@@ -177,4 +183,34 @@ uint8_t *read_frame_data(const string &path, int &width, int &height)
     }
 
     return pixels;
+}
+
+void iterate_frame_test_cases(const char *test_name, void (*test)(const char *test_name, frame_meta expected, uint8_t *data, string file_name)){
+    directory_iterator iter(EXPECTED_FRAME_PATH);
+    regex pattern("frame_[0-9]+\\.json");
+    for(directory_entry entry : iter) {
+        smatch match;
+        path file_path = entry.path();
+        string file_name = file_path.filename();
+        if(entry.is_regular_file() && regex_match(file_name, match, pattern)){
+            int width, height;
+            frame_meta expected = read_frame_expected(file_path);
+            string frame_data_path = DATA_FRAME_PATH / expected.frame_path;
+            uint8_t *data = read_frame_data(frame_data_path, width, height);
+            if(expected.frame_width != width){
+                delete[] data;
+                printInfo(file_name.c_str());
+                fail(test_name, "Width is expected %d but got %d!", 1, expected.frame_width, width);
+            }
+            if(expected.frame_height != height){
+                delete[] data;
+                printInfo(file_name.c_str());
+                fail(test_name, "Height is expected %d but got %d!", 2, expected.frame_height, height);
+            }
+
+            test(test_name, expected, data, file_name);
+
+            delete[] data;
+        }
+    }
 }
