@@ -2,189 +2,198 @@ digraph {
     rankdir=BT;
 
     subgraph src{
-        subgraph cluster_providers {
-            label="providers";
-            style=rounded;
-            color=black;
+        subgraph encoder{
+            subgraph cluster_providers {
+                label="providers";
+                style=rounded;
+                color=black;
 
-            provider[
-                color=red;
-                fontcolor=red;
-            ];
-            basic_provider[
-                color=blue;
-                fontcolor=blue;
-            ];
-            subgraph basic_block{
-                basic_block_container [color=blue;fontcolor=blue;];
-                basic_block_pointer [color=blue;fontcolor=blue;];
-                basic_block_pointer_proxy [color=blue;fontcolor=blue;];
-                data_length_reader [
+                provider[
                     color=red;
                     fontcolor=red;
                 ];
-                raw_ip_length_reader[
+                basic_provider[
                     color=blue;
                     fontcolor=blue;
                 ];
-                bit_area [color=green;fontcolor=green;];
-                
-                basic_provider->provider [color=blue;];
-                
-                basic_block_container->basic_provider [weight=1000; ];
+                subgraph basic_block{
+                    basic_block_container [color=blue;fontcolor=blue;];
+                    basic_block_pointer [color=blue;fontcolor=blue;];
+                    basic_block_pointer_proxy [color=blue;fontcolor=blue;];
+                    data_length_reader [
+                        color=red;
+                        fontcolor=red;
+                    ];
+                    raw_ip_length_reader[
+                        color=blue;
+                        fontcolor=blue;
+                    ];
+                    bit_area [color=green;fontcolor=green;];
+                    
+                    basic_provider->provider [color=blue;];
+                    
+                    basic_block_container->basic_provider [weight=1000; ];
 
-                basic_block_pointer->basic_block_container;
-                
-                basic_block_pointer_proxy->basic_block_pointer;
-                basic_block_pointer_proxy->basic_block_container;
+                    basic_block_pointer->basic_block_container;
+                    
+                    basic_block_pointer_proxy->basic_block_pointer;
+                    basic_block_pointer_proxy->basic_block_container;
 
-                bit_area->basic_block_container;              
-                
-                basic_block_config [color=green;fontcolor=green;];
-                rect [color=green;fontcolor=green;];
-                rgb_index[color=green;fontcolor=green;];
-                
-                basic_block_config->basic_block_container;
-                basic_block_config->basic_block_pointer;
-                basic_block_config->basic_block_pointer_proxy;
-                basic_block_config->raw_ip_length_reader;
+                    bit_area->basic_block_container;              
+                    
+                    basic_block_config [color=green;fontcolor=green;];
+                    rect [color=green;fontcolor=green;];
+                    rgb_index[color=green;fontcolor=green;];
+                    
+                    basic_block_config->basic_block_container;
+                    basic_block_config->basic_block_pointer;
+                    basic_block_config->basic_block_pointer_proxy;
+                    basic_block_config->raw_ip_length_reader;
 
-                rect->basic_block_pointer_proxy;
-                rect->basic_block_pointer;
+                    rect->basic_block_pointer_proxy;
+                    rect->basic_block_pointer;
 
-                rgb_index->basic_block_pointer_proxy;  
+                    rgb_index->basic_block_pointer_proxy;  
+                }
+
+                subgraph data_length_reader{
+                    raw_ip_length_reader->data_length_reader [color = blue;];
+                    data_length_reader->basic_provider;
+
+                    basic_block_container->raw_ip_length_reader [weight=0.1;];
+                }
+
+
+                subgraph cluster_color_codecs{
+                    label="color_codecs";
+                    color_codec [
+                        color=purple;
+                        fontcolor=purple;
+                    ];
+                    hsv_codec [
+                        color=blue;
+                        fontcolor=blue;
+                    ];
+                    palette_codec[
+                        color=purple;
+                        fontcolor=purple;
+                    ];
+                    rgb_palette_codec[
+                        color=blue;
+                        fontcolor=blue;
+                    ];
+                    ycbcr_palette_codec[
+                        color=blue;
+                        fontcolor=blue;
+                    ];
+                    hsv_codec->color_codec [color=blue; ];
+                    palette_codec->color_codec[color=purple;];   
+                    rgb_palette_codec->palette_codec [color=blue;];
+                    ycbcr_palette_codec->palette_codec [color=blue];
+                }
+
+                color_codec->basic_block_pointer_proxy [minlen=2;];
+                
             }
-
-            subgraph data_length_reader{
-                raw_ip_length_reader->data_length_reader [color = blue;];
-                data_length_reader->basic_provider;
-
-                basic_block_container->raw_ip_length_reader [weight=0.1;];
-            }
-
-            subgraph cluster_video_pipes {
-                label="video_pipes";
-                video_pipe_in [color=red; fontcolor=red;];
-                video_pipe_out [color = red; fontcolor=red;];
-                ffmpeg_rtmp_pipe_in [color=blue;fontcolor=blue;];
-                ffmpeg_rtmp_pipe_out [color=blue;fontcolor=blue;];
-
-                video_pipe_config [color=green; fontcolor=green;];
-                ffmpeg_rtmp_config [color=green;fontcolor=green;];
-
-                ffmpeg_rtmp_config->video_pipe_config [color=green;];
-
-                ffmpeg_rtmp_pipe_in->video_pipe_in [color=blue;];
-                ffmpeg_rtmp_pipe_out->video_pipe_out [color=blue;];
-                
-                ffmpeg_rtmp_config->ffmpeg_rtmp_pipe_in;
-                ffmpeg_rtmp_config->ffmpeg_rtmp_pipe_out;
-            }
-            subgraph cluster_color_codecs{
-                label="color_codecs";
-                color_codec [
-                    color=purple;
-                    fontcolor=purple;
+            subgraph cluster_compressors {
+                label="compressors";
+                style=rounded;
+                color=black;
+                compressor [
+                    color=red;
+                    fontcolor=red;
                 ];
-                hsv_codec [
+                none_compressor [
                     color=blue;
                     fontcolor=blue;
                 ];
-                palette_codec[
-                    color=purple;
-                    fontcolor=purple;
-                ];
-                rgb_palette_codec[
-                    color=blue;
-                    fontcolor=blue;
-                ];
-                ycbcr_palette_codec[
-                    color=blue;
-                    fontcolor=blue;
-                ];
-                hsv_codec->color_codec [color=blue; ];
-                palette_codec->color_codec[color=purple;];   
-                rgb_palette_codec->palette_codec [color=blue;];
-                ycbcr_palette_codec->palette_codec [color=blue];
+                none_compressor->compressor [color=blue];
             }
 
-            color_codec->basic_block_pointer_proxy [minlen=2;];
+            subgraph cluster_obfuscators 
+            {
+                label="obfuscators";
+                style=rounded;
+                color=black;
+
+                obfuscator[
+                    color = red;
+                    fontcolor=red;
+                ];
+                none_obfuscator [
+                    color=blue;
+                    fontcolor=blue;
+                ];
+
+                none_obfuscator->obfuscator [color=blue];
+            }
+
+            subgraph cluster_correctors{
+                label="correctors";
+                style=rounded;
+                color=black;
+
+                corrector[
+                    color = red;
+                    fontcolor=red;
+                ];
+                none_corrector [
+                    color=blue;
+                    fontcolor=blue;
+                ];
+
+                none_corrector->corrector [color=blue];
+            }
+
+            video_encoder [color=blue;fontcolor=blue;];
+            color;
+            status_error[color=blue; fontcolor=blue;];
+            math;
             
+            
+            provider->video_encoder; 
+            compressor->video_encoder;
+            obfuscator->video_encoder;
+            corrector->video_encoder;
+
+            color->basic_block_pointer_proxy [minlen=1];
+            color->basic_block_pointer [minlen=1];
+            color->rgb_palette_codec;
+            color->hsv_codec;
+            
+            status_error->color;
+            status_error->color_codec;
+
+            math->basic_block_container;
+
+
         }
-        subgraph cluster_compressors {
-            label="compressors";
-            style=rounded;
-            color=black;
-            compressor [
-                color=red;
-                fontcolor=red;
-            ];
-            none_compressor [
-                color=blue;
-                fontcolor=blue;
-            ];
-            none_compressor->compressor [color=blue];
-        }
+        subgraph video_pipes {
+            label="video_pipes";
+            video_pipe_in [color=red; fontcolor=red;];
+            video_pipe_out [color = red; fontcolor=red;];
+            ffmpeg_rtmp_pipe_in [color=blue;fontcolor=blue;];
+            ffmpeg_rtmp_pipe_out [color=blue;fontcolor=blue;];
 
-        subgraph cluster_obfuscators 
-        {
-            label="obfuscators";
-            style=rounded;
-            color=black;
+            video_pipe_config [color=green; fontcolor=green;];
+            ffmpeg_rtmp_config [color=green;fontcolor=green;];
 
-            obfuscator[
-                color = red;
-                fontcolor=red;
-            ];
-            none_obfuscator [
-                color=blue;
-                fontcolor=blue;
-            ];
+            ffmpeg_rtmp_config->video_pipe_config [color=green;];
 
-            none_obfuscator->obfuscator [color=blue];
-        }
-
-        subgraph cluster_correctors{
-            label="correctors";
-            style=rounded;
-            color=black;
-
-            corrector[
-                color = red;
-                fontcolor=red;
-            ];
-            none_corrector [
-                color=blue;
-                fontcolor=blue;
-            ];
-
-            none_corrector->corrector [color=blue];
+            ffmpeg_rtmp_pipe_in->video_pipe_in [color=blue;];
+            ffmpeg_rtmp_pipe_out->video_pipe_out [color=blue;];
+            
+            ffmpeg_rtmp_config->ffmpeg_rtmp_pipe_in;
+            ffmpeg_rtmp_config->ffmpeg_rtmp_pipe_out;
         }
 
-        video_encoder;
-        color;
-        status_error;
-        math;
+        video_socket [color=blue; fontcolor=blue;];
         
-        
-        provider->video_encoder; 
-        compressor->video_encoder;
-        obfuscator->video_encoder;
-        corrector->video_encoder;
-
-        color->basic_block_pointer_proxy [minlen=1];
-        color->basic_block_pointer [minlen=1];
-        color->rgb_palette_codec;
-        color->hsv_codec;
-        
-        status_error->color;
-        status_error->color_codec;
-
-        math->basic_block_container;
-
-
+        video_encoder->video_socket [weight=2;];
+        video_pipe_in->video_socket;
+        video_pipe_out->video_socket;
     }
-    
+
     subgraph cluster_test{
         style=rounded;
         label="TESTS";

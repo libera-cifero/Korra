@@ -1,4 +1,4 @@
-#include "encoder/provider/video_pipe/ffmpeg_rtmp/ffmpeg_rtmp_pipe_out.hpp"
+#include "video_pipe/ffmpeg_rtmp/ffmpeg_rtmp_pipe_out.hpp"
 #include <cstdio>
 #include <chrono>
 #include <thread>

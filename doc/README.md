@@ -7,9 +7,9 @@ flowchart TB
         direction TB
         subgraph Layer2 ["Layer 2: Corrected data"]
             direction TB
-            subgraph Layer3 ["Layer 3: Compressed data"]
+            subgraph Layer3 ["Layer 3: Obfuscated data"]
                 direction TB
-                subgraph Layer4 ["Layer 4: Obfuscated data"]
+                subgraph Layer4 ["Layer 4: Compressed data"]
                     direction TB
                     subgraph Layer5 ["Layer 5: payload"]
 

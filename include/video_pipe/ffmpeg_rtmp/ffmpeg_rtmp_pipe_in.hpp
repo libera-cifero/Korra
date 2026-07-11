@@ -1,6 +1,6 @@
 #pragma once
 #include "ffmpeg_rtmp_config.hpp"
-#include "encoder/provider/video_pipe/video_pipe_in.hpp"
+#include "video_pipe/video_pipe_in.hpp"
 
 class ffmpeg_rtmp_pipe_in : public video_pipe_in {
 private:
