@@ -48,8 +48,9 @@ basic_block_pointer_proxy bbc::operator[](int index){ return *(_begin + index); 
 basic_block_config bbc::config(){ return _config; }
 
 size_t bbc::_get_block_count(size_t byte_size) {
-    size_t count = 8 * byte_size / _bits_per_block;
-    if(count % _bits_per_block > 0) count+=1;
+    size_t bit_size = 8 * byte_size;
+    size_t count = bit_size / _bits_per_block;
+    if(bit_size % _bits_per_block > 0) count+=1;
     return count;
 }
 

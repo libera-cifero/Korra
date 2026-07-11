@@ -55,4 +55,6 @@ public:
     bool operator>(const basic_block_pointer& ref);
     bool operator<=(const basic_block_pointer& ref);
     bool operator>=(const basic_block_pointer& ref);
+
+    basic_block_config config();
 };

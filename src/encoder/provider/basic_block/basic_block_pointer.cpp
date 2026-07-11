@@ -127,3 +127,5 @@ bool bbp::operator>=(const basic_block_pointer& ref){
 
     return _compare(ref, [](size_t a, size_t b){return  a >= b;});
 }
+
+basic_block_config bbp::config() { return *_config; }
