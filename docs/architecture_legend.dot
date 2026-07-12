@@ -1,10 +1,84 @@
 digraph{
-    rankdir = TB;
-    subgraph cluster_legend{
-        rank = same;
-        "Hint" [shape=none];
-        legend2 [label="B", shape=circle];
-        legend1 [label="A", shape=circle];
-        legend1 -> legend2 [constraint=false, minlen=2];
+    rankdir=TB;
+    subgraph cluster_1{
+        style=invis;
+        "Library of functions. It can contains structure also, but if functions a lot." [shape=none];
+        entity1 [label="Entity name"];
     }
+    subgraph cluster_2{
+        style=invis;
+        
+        "OOP class" [shape=none];
+        entity2 [label="Entity name"; color=blue; fontcolor=blue;];
+    }
+    subgraph cluster_3{
+        style=invis;
+
+        "OOP abstract class" [shape=none];
+        entity3 [label="Entity name"; color=purple; fontcolor=purple];
+    }
+    subgraph cluster_4{
+        style = invis;
+
+        "OOP interface"[shape=none];
+        entity4 [label="Entity name", color=red, fontcolor=red];
+    }
+
+    subgraph cluster_5{
+        style = invis;
+
+        "Structure. It can contains a FEW helper functions (no more 3). In other way it is library"[shape=none];
+        entity5 [label="Entity name", color=green, fontcolor=green];
+    }
+
+    subgraph cluster_6 {
+        style = invis;
+
+        "A's functionality is used in B. Type of entity A and B is inimportant. These can be class/interface/library etc." [shape = none];
+        B0[label = "B"]; entity6[label = "A"];
+        entity6->B0 [constraint=false; minlen=2];
+        
+    }
+
+    subgraph cluster_7 {
+        style = invis;
+
+        "B is parent of struct A. A inherits or implements B in other words. B can be struct, class, abstract class, interface" [shape = none];
+        B1[label = "B"]; entity7[label = "A", color=green, fontcolor=green];
+        entity7->B1 [constraint=false; minlen=2, color=green];
+        
+    }
+
+    subgraph cluster_8 {
+        style = invis;
+        
+        "B is parent of class A. A inherits or implements B in other words. B can be struct, class, abstract class, interface" [shape=none];
+        B2 [label="B"]; entity8 [label="A", color = blue, fontcolor=blue];
+        entity8->B2 [constraint=false; minlen=2; color=blue;];
+    }
+
+    subgraph cluster_9 {
+        style = invis;
+        
+        "B is parent of abstract class A. A inherits or implements B in other words. B can be struct, class, abstract class, interface" [shape=none];
+        B3 [label="B"]; entity9 [label="A", color = purple, fontcolor=purple];
+        entity9->B3 [constraint=false; minlen=2; color=purple;];
+    }
+
+    subgraph cluster_10 {
+        style = invis;
+        
+        "B is parent of interface A. A inherits B in other words" [shape=none];
+        B4 [label="B", color=red, fontcolor = red]; entity10 [label="A", color = "red", fontcolor=red];
+        entity10->B4 [constraint=false; minlen=2; color=red;];
+    }
+
+    subgraph cluster_11{
+        style = invis;
+        "Test \"Test name\" for \"Entity name\". Entity can be whatever class, structure etc" [shape=none];
+        B5 [label="Test name"]; entity11 [label="Entity name"];
+        entity11->B5 [constraint=false; minlen=2; color=orange;];
+    }
+
+    entity1->entity2->entity3->entity4->entity5->entity6->entity7->entity8->entity9->entity10->entity11 [style=invis];
 }

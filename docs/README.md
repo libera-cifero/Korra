@@ -27,4 +27,5 @@ flowchart TB
 ```
 # Project structure
 ![](map.svg)
+![](arch_legend.svg)
 _Displayed by graphviz_

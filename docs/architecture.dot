@@ -212,18 +212,6 @@ digraph {
         test->math_test;
     }
 
-    subgraph cluster_legend{
-        label = "Legend";
-        style = dashed;
-        labelloc="b";
-        subgraph{   
-            rank = same;
-            "Hint" [shape=none];
-            legend2 [label="B", shape=circle];
-            legend1 [label="A", shape=circle];
-            legend1 -> legend2 [constraint=false, minlen=2];
-        }
-    }
 
     color->basic_block_test;
     color->color_test [color=orange;];
