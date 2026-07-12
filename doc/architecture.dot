@@ -34,7 +34,7 @@ digraph {
                     
                     basic_block_container->basic_provider [weight=1000; ];
 
-                    basic_block_pointer->basic_block_container;
+                    basic_block_pointer->basic_block_container [weight=1000;];
                     
                     basic_block_pointer_proxy->basic_block_pointer;
                     basic_block_pointer_proxy->basic_block_container;
@@ -60,7 +60,7 @@ digraph {
                     raw_ip_length_reader->data_length_reader [color = blue;];
                     data_length_reader->basic_provider;
 
-                    basic_block_container->raw_ip_length_reader [weight=0.1;];
+                    basic_block_pointer->raw_ip_length_reader [minlen=2;];
                 }
 
 
@@ -203,21 +203,25 @@ digraph {
 
         color_test;
         basic_block_test;
-        raw_ip_length_reader_test;
+        len_reader_test;
         math_test;
         
-        test->color_test [weight=5;];
-        test->basic_block_test [weight=2;];
-        test->raw_ip_length_reader_test [weight=0.001;];
+        test->color_test;
+        test->basic_block_test;
+        test->len_reader_test;
         test->math_test;
     }
 
     color->basic_block_test;
-    color->color_test;
+    color->color_test [color=orange;];
 
-    math->math_test;
+    math->math_test [color=orange;];
 
-    basic_block_pointer_proxy->basic_block_test;
-    basic_block_container->basic_block_test;
-    basic_block_pointer->basic_block_test;
+    basic_block_pointer_proxy->basic_block_test [color=orange;];
+    basic_block_container->basic_block_test [color=orange;];
+    basic_block_pointer->basic_block_test [color=orange;];
+
+    raw_ip_length_reader->len_reader_test [color=orange;];
+    basic_block_pointer->len_reader_test;
+    basic_block_container->len_reader_test;
 }

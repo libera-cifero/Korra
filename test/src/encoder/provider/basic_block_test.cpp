@@ -1,3 +1,4 @@
+#include "color_codec/rgb_palette_codec.hpp"
 #include "encoder/provider/basic_block/basic_block_container.hpp"
 #include "frame_meta.hpp"
 #include "frame_io.hpp"
@@ -7,8 +8,6 @@
 #include "test.h"
 #include <cstdint>
 #include <exception>
-#include <filesystem>
-#include <regex>
 #include <stdint.h>
 #include <string>
 
@@ -23,11 +22,13 @@ using namespace filesystem;
 void test_ptr_equal(){
     const char *test_name = PTR_TEST_BASE_NAME ".test_ptr_equal";
     printInfo(test_name);
+    int palette[16]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+    rgb_palette_codec codec(palette, 4);
     basic_block_config config = {
         .block_size = 4,
         .frame_width = 10,
         .frame_height = 12,
-        .codec = NULL
+        .codec = &codec
     };
     const int frame_size = 3 * config.frame_width * config.frame_height;
     uint8_t frame[frame_size];
@@ -38,8 +39,8 @@ void test_ptr_equal(){
     basic_block_pointer ptr00(frame, 0, &config);
     basic_block_pointer ptr01(frame, 0, &config);
 
-    basic_block_pointer ptr10(frame, 4, &config);
-    basic_block_pointer ptr11(frame + 3, 0, &config);
+    basic_block_pointer ptr10(frame, 2, &config);
+    basic_block_pointer ptr11(frame + 1, 0, &config);
 
 
     if(ptr_nullptr0 != ptr_nullptr1) {
@@ -131,7 +132,7 @@ void test_block_byte_io() {
             fail(test_name, "end pointer must equals nullptr!", 10);
         }
 
-        for(int i = 0; i < byte_count; i++) read_buffer0[0] = rand() % 256;
+        for(int i = 0; i < byte_count; i++) read_buffer0[i] = rand() % 256;
         
         end = container.write(container.begin(), read_buffer0, byte_count);
 

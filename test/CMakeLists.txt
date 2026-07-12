@@ -48,7 +48,7 @@ target_link_libraries(math_test PUBLIC base_utils)
 #basic_block_test
 add_executable(basic_block_test ${test_lib_src} ${basic_block_test_src} ${frame_io_src})
 target_setup(basic_block_test)
-target_link_libraries(basic_block_test PRIVATE basic_block color math rect rgb_index)
+target_link_libraries(basic_block_test PRIVATE basic_block base_utils color_codec)
 
 #len_reader_test
 add_executable(len_reader_test ${test_lib_src} ${frame_io_src} ${len_reader_test_src})
@@ -59,20 +59,21 @@ target_link_libraries(len_reader_test PUBLIC base_utils color_codec basic_block 
 #TEST TOOLS
 #=====BEGIN=====
 #frame_gen_tool
-add_executable(frame_gen_tool ${frame_gen_tool_src} ${frame_io_src})
+add_executable(frame_gen_tool ${test_lib_src} ${frame_gen_tool_src} ${frame_io_src})
 target_setup_tool(frame_gen_tool)
-target_link_libraries(frame_gen_tool PRIVATE basic_block color rect rgb_index color_codec)
+target_link_libraries(frame_gen_tool PRIVATE basic_block base_utils color_codec)
 
 #args_frame_gen_tool
 add_executable(args_frame_gen_tool ${args_frame_gen_tool_src})
 target_setup_tool(args_frame_gen_tool)
+target_link_libraries(args_frame_gen_tool PRIVATE color_codec)
 
 #fps_color_tool
 add_executable(fps_color_tool ${fps_color_tool_src})
 target_setup_tool(fps_color_tool)
 
 #analyse_decode_metric_tool
-add_executable(analyse_decode_metric_tool ${adm_tool_src} ${frame_io_src})
+add_executable(analyse_decode_metric_tool ${adm_tool_src} ${frame_io_src} ${test_lib_src})
 target_setup_tool(analyse_decode_metric_tool)
 target_link_libraries(analyse_decode_metric_tool PRIVATE basic_block color_codec)
 #======END======

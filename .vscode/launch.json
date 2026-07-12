@@ -5,10 +5,10 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/tool/frame_gen_tool",
+            "target": "./bin/tool/args_frame_gen_tool",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
-            "arguments": "1036 1777 4 12 frame_31.json frame_31.bmp"
+            "arguments": "3 rgb_palette1.json"
         },
         {
             "name": "Python Debugger: Python File",

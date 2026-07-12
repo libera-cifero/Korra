@@ -5,6 +5,7 @@
 #include "color.hpp"
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 
 using bbp = basic_block_pointer;
 

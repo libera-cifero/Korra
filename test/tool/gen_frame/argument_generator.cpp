@@ -5,9 +5,11 @@
 #include "color_codec/codec_json.hpp"
 #include <algorithm>
 #include <cstdlib>
+#include <fstream>
 #include <iostream>
 #include <filesystem>
 #include <regex>
+#include <sstream>
 #include <string>
 using namespace std;
 using namespace filesystem;
@@ -43,28 +45,30 @@ int get_max_file_index(path dir_path, regex pattern) {
     return *max_element(file_indices.begin(), file_indices.end());
 }
 
-frame_gen_args gen_random_args(int expected_index, int data_index, string codec_path) {
+int get_bits_per_number(string codec_path) {
+    fstream file(DATA_COLOR_CODEC_PATH / codec_path);
+    ostringstream buf;
+    buf << file.rdbuf();
+    string data = buf.str();
+    file.close();
+    json j = json::parse(data);
+    auto codec = parse_color_codec(j);
+    int bits_per_number = codec->bits_per_number();
+    delete codec;
+    return bits_per_number;
+}
+
+frame_gen_args gen_random_args(int expected_index, int data_index, int bits_per_number, string codec_path) {
     int frame_width = (rand() % 1913) + 8;
     int frame_height = (rand() % 1073) + 8;
     int block_size, block_count = 0, min_size = frame_width < frame_height ? frame_width : frame_height;
     bool bits_per_block_compatible = false;
-    while(block_count == 0 || block_count % 8 != 0 || !bits_per_block_compatible) {
-        bits_per_block_compatible = false;
+    while(block_count == 0 || block_count % 8 != 0 || block_count % bits_per_number != 0) {
         block_size = (rand() % min_size) + 1;
         int width_capacity = frame_width / block_size;
         int height_capacity = frame_height / block_size;
         block_count = height_capacity * width_capacity;
-
-        for(int i = 10; i >= 1 && !bits_per_block_compatible; i++){
-            bits_per_block_compatible = block_count % i != 0;
-        }
     }
-
-    int bits_per_block = 10;
-    while(block_count % bits_per_block != 0) {
-        bits_per_block = (rand() % 10) + 1;
-    }
-
 
     string expected_file = "frame_" + to_string(expected_index) + ".json";
     string data_file = "frame_" + to_string(data_index) + ".bmp";
@@ -96,10 +100,11 @@ int main(int argc, char **argv) {
     int data_index = get_max_file_index(DATA_FRAME_PATH, regex("frame_([0-9]+)\\.bmp"));
 
     string codec_path = argv[2];
+    int bits_per_number = get_bits_per_number(codec_path);
 
     srand(time(NULL));
     for(int i = 0; i < count; i++){
-        frame_gen_args args = gen_random_args(++expected_index, ++data_index, codec_path);
+        frame_gen_args args = gen_random_args(++expected_index, ++data_index, bits_per_number, codec_path);
         if(i > 0) cout << endl;
         print_args(args);
     }
