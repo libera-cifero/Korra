@@ -7,6 +7,8 @@ init_debug: init_src_debug init_test_debug
 
 arch:
 	dot -Tsvg doc/architecture.dot > doc/map.svg
+arch_legend:
+	dot -Tsvg doc/architecture_legend.dot > dot/arch_legend.svg
 include_arch:
 	dot -Tsvg doc/includes.dot > doc/include_map.svg
 #======END======

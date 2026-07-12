@@ -1,0 +1,10 @@
+digraph{
+    rankdir = TB;
+    subgraph cluster_legend{
+        rank = same;
+        "Hint" [shape=none];
+        legend2 [label="B", shape=circle];
+        legend1 [label="A", shape=circle];
+        legend1 -> legend2 [constraint=false, minlen=2];
+    }
+}
