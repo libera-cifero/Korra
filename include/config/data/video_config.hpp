@@ -1,5 +1,6 @@
+#include <cstdint>
 struct video_config {
-    int frame_width;
-    int frame_height;
-    int fps;
+    uint32_t frame_width;
+    uint32_t frame_height;
+    uint32_t fps;
 };
