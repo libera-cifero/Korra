@@ -1,0 +1,199 @@
+Date : 2026-07-13 01:46:35
+Directory : /home/admin/programming/C++/Korra/stegvideo
+Total : 118 files,  61086 codes, 4772 comments, 3736 blanks, all 69594 lines
+
+Languages
++----------------+------------+------------+------------+------------+------------+
+| language       | files      | code       | comment    | blank      | total      |
++----------------+------------+------------+------------+------------+------------+
+| JSON           |         30 |     38,749 |          0 |          5 |     38,754 |
+| C++            |         65 |     20,825 |      4,611 |      3,565 |     29,001 |
+| XML            |          3 |        787 |        160 |          3 |        950 |
+| Graphviz (DOT) |          3 |        264 |          0 |         65 |        329 |
+| Python         |          9 |        150 |          1 |         36 |        187 |
+| C              |          5 |        142 |          0 |         36 |        178 |
+| MS SQL         |          1 |         75 |          0 |         16 |         91 |
+| Makefile       |          1 |         65 |          0 |          8 |         73 |
+| Markdown       |          1 |         29 |          0 |          2 |         31 |
++----------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                           | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                              |        118 |     61,086 |      4,772 |      3,736 |     69,594 |
+| . (Files)                                                                                                      |          1 |         65 |          0 |          8 |         73 |
+| docs                                                                                                           |          7 |      1,080 |        160 |         70 |      1,310 |
+| include                                                                                                        |         35 |     18,815 |      4,572 |      3,199 |     26,586 |
+| include (Files)                                                                                                |          5 |     18,448 |      4,567 |      3,146 |     26,161 |
+| include/color_codec                                                                                            |          6 |         61 |          0 |          6 |         67 |
+| include/encoder                                                                                                |         18 |        256 |          5 |         41 |        302 |
+| include/encoder (Files)                                                                                        |          1 |         20 |          0 |          2 |         22 |
+| include/encoder/compressor                                                                                     |          2 |         13 |          0 |          1 |         14 |
+| include/encoder/corrector                                                                                      |          2 |         13 |          0 |          1 |         14 |
+| include/encoder/obfuscator                                                                                     |          2 |         13 |          0 |          1 |         14 |
+| include/encoder/provider                                                                                       |         11 |        197 |          5 |         36 |        238 |
+| include/encoder/provider (Files)                                                                               |          3 |         44 |          1 |          4 |         49 |
+| include/encoder/provider/basic_block                                                                           |          6 |        129 |          4 |         30 |        163 |
+| include/encoder/provider/len_reader                                                                            |          2 |         24 |          0 |          2 |         26 |
+| include/video_pipe                                                                                             |          6 |         50 |          0 |          6 |         56 |
+| include/video_pipe (Files)                                                                                     |          3 |         19 |          0 |          2 |         21 |
+| include/video_pipe/ffmpeg_rtmp                                                                                 |          3 |         31 |          0 |          4 |         35 |
+| src                                                                                                            |         20 |        890 |          3 |        155 |      1,048 |
+| src (Files)                                                                                                    |          3 |        190 |          0 |         30 |        220 |
+| src/color_codec                                                                                                |          6 |        284 |          0 |         41 |        325 |
+| src/encoder                                                                                                    |          9 |        356 |          3 |         73 |        432 |
+| src/encoder (Files)                                                                                            |          1 |         12 |          0 |          3 |         15 |
+| src/encoder/provider                                                                                           |          8 |        344 |          3 |         70 |        417 |
+| src/encoder/provider (Files)                                                                                   |          2 |         16 |          0 |          7 |         23 |
+| src/encoder/provider/basic_block                                                                               |          5 |        290 |          3 |         57 |        350 |
+| src/encoder/provider/len_reader                                                                                |          1 |         38 |          0 |          6 |         44 |
+| src/video_pipe                                                                                                 |          2 |         60 |          0 |         11 |         71 |
+| src/video_pipe/ffmpeg_rtmp                                                                                     |          2 |         60 |          0 |         11 |         71 |
+| test                                                                                                           |         50 |     40,161 |         37 |        291 |     40,489 |
+| test/context                                                                                                   |         30 |     38,749 |          0 |          5 |     38,754 |
+| test/context/data                                                                                              |          4 |        197 |          0 |          5 |        202 |
+| test/context/data/color_codec                                                                                  |          3 |        136 |          0 |          0 |        136 |
+| test/context/data/config                                                                                       |          1 |         61 |          0 |          5 |         66 |
+| test/context/expected                                                                                          |         26 |     38,552 |          0 |          0 |     38,552 |
+| test/context/expected/frame                                                                                    |         26 |     38,552 |          0 |          0 |     38,552 |
+| test/include                                                                                                   |          4 |         44 |          0 |         10 |         54 |
+| test/lib                                                                                                       |          2 |        240 |          2 |         48 |        290 |
+| test/src                                                                                                       |          5 |        495 |         14 |         96 |        605 |
+| test/src (Files)                                                                                               |          2 |        304 |          8 |         56 |        368 |
+| test/src/color_codec                                                                                           |          1 |          9 |          0 |          7 |         16 |
+| test/src/encoder                                                                                               |          2 |        182 |          6 |         33 |        221 |
+| test/src/encoder/provider                                                                                      |          2 |        182 |          6 |         33 |        221 |
+| test/tool                                                                                                      |          9 |        633 |         21 |        132 |        786 |
+| test/tool (Files)                                                                                              |          4 |        223 |         15 |         68 |        306 |
+| test/tool/analyse_decode                                                                                       |          3 |        193 |          2 |         40 |        235 |
+| test/tool/analyse_decode (Files)                                                                               |          2 |        118 |          2 |         24 |        144 |
+| test/tool/analyse_decode/sql_scripts                                                                           |          1 |         75 |          0 |         16 |         91 |
+| test/tool/gen_frame                                                                                            |          2 |        217 |          4 |         24 |        245 |
+| tool                                                                                                           |          5 |         75 |          0 |         13 |         88 |
++----------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| filename                                                                                                       | language       | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| /home/admin/programming/C++/Korra/stegvideo/Makefile                                                           | Makefile       |         65 |          0 |          8 |         73 |
+| /home/admin/programming/C++/Korra/stegvideo/docs/README.md                                                     | Markdown       |         29 |          0 |          2 |         31 |
+| /home/admin/programming/C++/Korra/stegvideo/docs/arch_legend.svg                                               | XML            |        202 |         47 |          1 |        250 |
+| /home/admin/programming/C++/Korra/stegvideo/docs/architecture.dot                                              | Graphviz (DOT) |        183 |          0 |         45 |        228 |
+| /home/admin/programming/C++/Korra/stegvideo/docs/architecture_legend.dot                                       | Graphviz (DOT) |         65 |          0 |         19 |         84 |
+| /home/admin/programming/C++/Korra/stegvideo/docs/include_map.svg                                               | XML            |         75 |         16 |          1 |         92 |
+| /home/admin/programming/C++/Korra/stegvideo/docs/includes.dot                                                  | Graphviz (DOT) |         16 |          0 |          1 |         17 |
+| /home/admin/programming/C++/Korra/stegvideo/docs/map.svg                                                       | XML            |        510 |         97 |          1 |        608 |
+| /home/admin/programming/C++/Korra/stegvideo/include/color.hpp                                                  | C++            |         14 |          0 |          5 |         19 |
+| /home/admin/programming/C++/Korra/stegvideo/include/color_codec/codec_json.hpp                                 | C++            |          5 |          0 |          1 |          6 |
+| /home/admin/programming/C++/Korra/stegvideo/include/color_codec/color_codec.hpp                                | C++            |         13 |          0 |          0 |         13 |
+| /home/admin/programming/C++/Korra/stegvideo/include/color_codec/hsv_codec.hpp                                  | C++            |         14 |          0 |          2 |         16 |
+| /home/admin/programming/C++/Korra/stegvideo/include/color_codec/palette_codec.hpp                              | C++            |         15 |          0 |          1 |         16 |
+| /home/admin/programming/C++/Korra/stegvideo/include/color_codec/rgb_palette_codec.hpp                          | C++            |          7 |          0 |          1 |          8 |
+| /home/admin/programming/C++/Korra/stegvideo/include/color_codec/ycbcr_palette_codec.hpp                        | C++            |          7 |          0 |          1 |          8 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/compressor/compressor.hpp                          | C++            |          7 |          0 |          0 |          7 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/compressor/none_compressor.hpp                     | C++            |          6 |          0 |          1 |          7 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/corrector/corrector.hpp                            | C++            |          7 |          0 |          0 |          7 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/corrector/none_recoverer.hpp                       | C++            |          6 |          0 |          1 |          7 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/obfuscator/none_obfuscator.hpp                     | C++            |          6 |          0 |          1 |          7 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/obfuscator/obfuscator.hpp                          | C++            |          7 |          0 |          0 |          7 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/basic_block/basic_block_container.hpp     | C++            |         32 |          0 |          7 |         39 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/basic_block/basic_block_pointer.hpp       | C++            |         46 |          2 |         12 |         60 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/basic_block/basic_block_pointer_proxy.hpp | C++            |         19 |          2 |          4 |         25 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/basic_block/bit_area.h                    | C++            |          5 |          0 |          0 |          5 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/basic_block/rect.h                        | C++            |         14 |          0 |          4 |         18 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/basic_block/rgb_index.h                   | C++            |         13 |          0 |          3 |         16 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/basic_block_config.hpp                    | C++            |         16 |          1 |          2 |         19 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/basic_provider.hpp                        | C++            |         21 |          0 |          2 |         23 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/len_reader/data_length_reader.hpp         | C++            |          7 |          0 |          0 |          7 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/len_reader/raw_ip_length_reader.hpp       | C++            |         17 |          0 |          2 |         19 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/provider.hpp                              | C++            |          7 |          0 |          0 |          7 |
+| /home/admin/programming/C++/Korra/stegvideo/include/encoder/video_encoder.hpp                                  | C++            |         20 |          0 |          2 |         22 |
+| /home/admin/programming/C++/Korra/stegvideo/include/json.hpp                                                   | C++            |     18,408 |      4,566 |      3,138 |     26,112 |
+| /home/admin/programming/C++/Korra/stegvideo/include/math.h                                                     | C++            |          9 |          0 |          3 |         12 |
+| /home/admin/programming/C++/Korra/stegvideo/include/status_error.hpp                                           | C++            |         12 |          0 |          0 |         12 |
+| /home/admin/programming/C++/Korra/stegvideo/include/video_pipe/ffmpeg_rtmp/ffmpeg_rtmp_config.hpp              | C++            |          5 |          0 |          1 |          6 |
+| /home/admin/programming/C++/Korra/stegvideo/include/video_pipe/ffmpeg_rtmp/ffmpeg_rtmp_pipe_in.hpp             | C++            |         13 |          0 |          1 |         14 |
+| /home/admin/programming/C++/Korra/stegvideo/include/video_pipe/ffmpeg_rtmp/ffmpeg_rtmp_pipe_out.hpp            | C++            |         13 |          0 |          2 |         15 |
+| /home/admin/programming/C++/Korra/stegvideo/include/video_pipe/video_pipe_config.hpp                           | C++            |          5 |          0 |          0 |          5 |
+| /home/admin/programming/C++/Korra/stegvideo/include/video_pipe/video_pipe_in.hpp                               | C++            |          7 |          0 |          1 |          8 |
+| /home/admin/programming/C++/Korra/stegvideo/include/video_pipe/video_pipe_out.hpp                              | C++            |          7 |          0 |          1 |          8 |
+| /home/admin/programming/C++/Korra/stegvideo/include/video_socket.hpp                                           | C++            |          5 |          1 |          0 |          6 |
+| /home/admin/programming/C++/Korra/stegvideo/src/color.cpp                                                      | C++            |        127 |          0 |         14 |        141 |
+| /home/admin/programming/C++/Korra/stegvideo/src/color_codec/codec_json.cpp                                     | C++            |        116 |          0 |         15 |        131 |
+| /home/admin/programming/C++/Korra/stegvideo/src/color_codec/color_codec.cpp                                    | C++            |         23 |          0 |          6 |         29 |
+| /home/admin/programming/C++/Korra/stegvideo/src/color_codec/hsv_codec.cpp                                      | C++            |         93 |          0 |         10 |        103 |
+| /home/admin/programming/C++/Korra/stegvideo/src/color_codec/palette_codec.cpp                                  | C++            |         36 |          0 |          6 |         42 |
+| /home/admin/programming/C++/Korra/stegvideo/src/color_codec/rgb_palette_codec.cpp                              | C++            |          9 |          0 |          3 |         12 |
+| /home/admin/programming/C++/Korra/stegvideo/src/color_codec/ycbcr_palette_codec.cpp                            | C++            |          7 |          0 |          1 |          8 |
+| /home/admin/programming/C++/Korra/stegvideo/src/encoder/provider/basic_block/basic_block_container.cpp         | C++            |        116 |          1 |         21 |        138 |
+| /home/admin/programming/C++/Korra/stegvideo/src/encoder/provider/basic_block/basic_block_pointer.cpp           | C++            |        109 |          0 |         23 |        132 |
+| /home/admin/programming/C++/Korra/stegvideo/src/encoder/provider/basic_block/basic_block_pointer_proxy.cpp     | C++            |         45 |          2 |          8 |         55 |
+| /home/admin/programming/C++/Korra/stegvideo/src/encoder/provider/basic_block/rect.c                            | C              |         13 |          0 |          3 |         16 |
+| /home/admin/programming/C++/Korra/stegvideo/src/encoder/provider/basic_block/rgb_index.c                       | C              |          7 |          0 |          2 |          9 |
+| /home/admin/programming/C++/Korra/stegvideo/src/encoder/provider/basic_block_config.cpp                        | C++            |          5 |          0 |          1 |          6 |
+| /home/admin/programming/C++/Korra/stegvideo/src/encoder/provider/basic_provider.cpp                            | C++            |         11 |          0 |          6 |         17 |
+| /home/admin/programming/C++/Korra/stegvideo/src/encoder/provider/len_reader/raw_ip_length_reader.cpp           | C++            |         38 |          0 |          6 |         44 |
+| /home/admin/programming/C++/Korra/stegvideo/src/encoder/video_encoder.cpp                                      | C++            |         12 |          0 |          3 |         15 |
+| /home/admin/programming/C++/Korra/stegvideo/src/main.c                                                         | C              |         51 |          0 |         14 |         65 |
+| /home/admin/programming/C++/Korra/stegvideo/src/math.c                                                         | C              |         12 |          0 |          2 |         14 |
+| /home/admin/programming/C++/Korra/stegvideo/src/video_pipe/ffmpeg_rtmp/ffmpeg_rtmp_pipe_in.cpp                 | C++            |         29 |          0 |          6 |         35 |
+| /home/admin/programming/C++/Korra/stegvideo/src/video_pipe/ffmpeg_rtmp/ffmpeg_rtmp_pipe_out.cpp                | C++            |         31 |          0 |          5 |         36 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/data/color_codec/rgb_palette0.json                    | JSON           |         24 |          0 |          0 |         24 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/data/color_codec/rgb_palette1.json                    | JSON           |         40 |          0 |          0 |         40 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/data/color_codec/rgb_palette2.json                    | JSON           |         72 |          0 |          0 |         72 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/data/config/template.json                             | JSON           |         61 |          0 |          5 |         66 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_37.json                          | JSON           |      8,088 |          0 |          0 |      8,088 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_38.json                          | JSON           |        136 |          0 |          0 |        136 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_39.json                          | JSON           |      6,168 |          0 |          0 |      6,168 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_40.json                          | JSON           |         72 |          0 |          0 |         72 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_41.json                          | JSON           |         48 |          0 |          0 |         48 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_42.json                          | JSON           |        136 |          0 |          0 |        136 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_43.json                          | JSON           |      1,968 |          0 |          0 |      1,968 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_44.json                          | JSON           |        816 |          0 |          0 |        816 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_45.json                          | JSON           |         40 |          0 |          0 |         40 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_46.json                          | JSON           |      2,048 |          0 |          0 |      2,048 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_47.json                          | JSON           |         64 |          0 |          0 |         64 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_48.json                          | JSON           |         40 |          0 |          0 |         40 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_49.json                          | JSON           |         56 |          0 |          0 |         56 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_50.json                          | JSON           |      4,792 |          0 |          0 |      4,792 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_51.json                          | JSON           |      2,800 |          0 |          0 |      2,800 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_52.json                          | JSON           |         48 |          0 |          0 |         48 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_53.json                          | JSON           |        168 |          0 |          0 |        168 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_54.json                          | JSON           |        168 |          0 |          0 |        168 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_55.json                          | JSON           |        448 |          0 |          0 |        448 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_56.json                          | JSON           |      9,048 |          0 |          0 |      9,048 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_57.json                          | JSON           |        208 |          0 |          0 |        208 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_58.json                          | JSON           |        128 |          0 |          0 |        128 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_59.json                          | JSON           |        560 |          0 |          0 |        560 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_60.json                          | JSON           |        200 |          0 |          0 |        200 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_61.json                          | JSON           |        200 |          0 |          0 |        200 |
+| /home/admin/programming/C++/Korra/stegvideo/test/context/expected/frame/frame_62.json                          | JSON           |        104 |          0 |          0 |        104 |
+| /home/admin/programming/C++/Korra/stegvideo/test/include/frame_io.hpp                                          | C++            |          9 |          0 |          3 |         12 |
+| /home/admin/programming/C++/Korra/stegvideo/test/include/frame_meta.hpp                                        | C++            |         14 |          0 |          3 |         17 |
+| /home/admin/programming/C++/Korra/stegvideo/test/include/io.hpp                                                | C++            |          9 |          0 |          1 |         10 |
+| /home/admin/programming/C++/Korra/stegvideo/test/include/test.h                                                | C++            |         12 |          0 |          3 |         15 |
+| /home/admin/programming/C++/Korra/stegvideo/test/lib/frame_io.cpp                                              | C++            |        181 |          2 |         33 |        216 |
+| /home/admin/programming/C++/Korra/stegvideo/test/lib/test.c                                                    | C              |         59 |          0 |         15 |         74 |
+| /home/admin/programming/C++/Korra/stegvideo/test/src/color_codec/rgb_palette_codec_test.cpp                    | C++            |          9 |          0 |          7 |         16 |
+| /home/admin/programming/C++/Korra/stegvideo/test/src/color_test.cpp                                            | C++            |        231 |          8 |         30 |        269 |
+| /home/admin/programming/C++/Korra/stegvideo/test/src/encoder/provider/basic_block_test.cpp                     | C++            |        147 |          6 |         27 |        180 |
+| /home/admin/programming/C++/Korra/stegvideo/test/src/encoder/provider/len_reader_test.cpp                      | C++            |         35 |          0 |          6 |         41 |
+| /home/admin/programming/C++/Korra/stegvideo/test/src/math_test.cpp                                             | C++            |         73 |          0 |         26 |         99 |
+| /home/admin/programming/C++/Korra/stegvideo/test/tool/analyse_decode/database.py                               | Python         |         13 |          0 |          2 |         15 |
+| /home/admin/programming/C++/Korra/stegvideo/test/tool/analyse_decode/metric.cpp                                | C++            |        105 |          2 |         22 |        129 |
+| /home/admin/programming/C++/Korra/stegvideo/test/tool/analyse_decode/sql_scripts/init.sql                      | MS SQL         |         75 |          0 |         16 |         91 |
+| /home/admin/programming/C++/Korra/stegvideo/test/tool/color_test_helper.py                                     | Python         |         41 |          1 |         19 |         61 |
+| /home/admin/programming/C++/Korra/stegvideo/test/tool/fps_color.cpp                                            | C++            |        161 |         14 |         47 |        222 |
+| /home/admin/programming/C++/Korra/stegvideo/test/tool/gen_frame/argument_generator.cpp                         | C++            |         97 |          2 |         14 |        113 |
+| /home/admin/programming/C++/Korra/stegvideo/test/tool/gen_frame/frame_generator.cpp                            | C++            |        120 |          2 |         10 |        132 |
+| /home/admin/programming/C++/Korra/stegvideo/test/tool/gen_frames.py                                            | Python         |         14 |          0 |          1 |         15 |
+| /home/admin/programming/C++/Korra/stegvideo/test/tool/tgbi_helper.py                                           | Python         |          7 |          0 |          1 |          8 |
+| /home/admin/programming/C++/Korra/stegvideo/tool/analyse_decode.py                                             | Python         |          0 |          0 |          1 |          1 |
+| /home/admin/programming/C++/Korra/stegvideo/tool/cmake_init.py                                                 | Python         |         20 |          0 |          4 |         24 |
+| /home/admin/programming/C++/Korra/stegvideo/tool/fps_color.py                                                  | Python         |         27 |          0 |          4 |         31 |
+| /home/admin/programming/C++/Korra/stegvideo/tool/run.py                                                        | Python         |         14 |          0 |          2 |         16 |
+| /home/admin/programming/C++/Korra/stegvideo/tool/test.py                                                       | Python         |         14 |          0 |          2 |         16 |
+| Total                                                                                                          |                |     61,086 |      4,772 |      3,736 |     69,594 |
++----------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
