@@ -1,0 +1,14 @@
+"filename", "language", "C++", "comment", "blank", "total"
+"/home/admin/programming/C++/Korra/stegvideo/include/config/data/encoder_config.hpp", "C++", 10, 0, 1, 11
+"/home/admin/programming/C++/Korra/stegvideo/include/config/data/pipes_config.hpp", "C++", 6, 0, 1, 7
+"/home/admin/programming/C++/Korra/stegvideo/include/config/data/root_config.hpp", "C++", 8, 0, 1, 9
+"/home/admin/programming/C++/Korra/stegvideo/include/config/data/video_config.hpp", "C++", 5, 0, 0, 5
+"/home/admin/programming/C++/Korra/stegvideo/include/config/parser/encoder/basic_provider_parser.hpp", "C++", 7, 0, 1, 8
+"/home/admin/programming/C++/Korra/stegvideo/include/config/parser/encoder/len_reader_parser.hpp", "C++", 7, 0, 1, 8
+"/home/admin/programming/C++/Korra/stegvideo/include/config/parser/encoder/provider_parser.hpp", "C++", 7, 0, 1, 8
+"/home/admin/programming/C++/Korra/stegvideo/include/config/parser/encoder_parser.hpp", "C++", 4, 0, 1, 5
+"/home/admin/programming/C++/Korra/stegvideo/include/config/parser/parser.hpp", "C++", 8, 0, 1, 9
+"/home/admin/programming/C++/Korra/stegvideo/include/config/parser/pipes_parser.hpp", "C++", 7, 0, 1, 8
+"/home/admin/programming/C++/Korra/stegvideo/include/config/parser/root_parser.hpp", "C++", 7, 0, 1, 8
+"/home/admin/programming/C++/Korra/stegvideo/include/config/parser/video_parser.hpp", "C++", 7, 0, 1, 8
+"Total", "-", 83, 0, 11, 94

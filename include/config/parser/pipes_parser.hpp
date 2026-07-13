@@ -1,5 +1,8 @@
 #include "config/data/pipes_config.hpp"
-#include "parser.hpp"
+#include "config/parser/parser.hpp"
 
-pipes_config parse_pipes(json);
-json serialize_pipes(pipes_config);
+class pipes_parser : public json_parser<pipes_config>{
+public:
+    pipes_config parse(json) override;
+    json serialize(pipes_config) override;
+};
