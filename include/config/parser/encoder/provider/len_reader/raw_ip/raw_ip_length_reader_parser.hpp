@@ -1,3 +1,4 @@
+#pragma once
 #include "../len_reader_parser.hpp"
 
 class raw_ip_length_reader_parse : public data_length_reader_parser {

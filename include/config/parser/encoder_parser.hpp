@@ -1,3 +1,4 @@
+#pragma once
 #include "config/data/encoder_config.hpp"
 #include "config/parser/parser.hpp"
 

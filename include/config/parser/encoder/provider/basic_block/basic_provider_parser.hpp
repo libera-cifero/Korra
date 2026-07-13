@@ -1,3 +1,4 @@
+#pragma once
 #include "config/parser/encoder/provider/provider_parser.hpp"
 #include "encoder/provider/provider.hpp"
 

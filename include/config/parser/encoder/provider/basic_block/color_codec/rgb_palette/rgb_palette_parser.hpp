@@ -1,3 +1,4 @@
+#pragma once
 #include "../color_codec_parser.hpp"
 #include "color_codec/color_codec.hpp"
 

@@ -1,3 +1,4 @@
+#pragma once
 #include "encoder/provider/len_reader/data_length_reader.hpp"
 #include "config/parser/parser.hpp"
 

@@ -1,3 +1,4 @@
+#pragma once
 #include "../data/root_config.hpp"
 #include "parser.hpp"
 

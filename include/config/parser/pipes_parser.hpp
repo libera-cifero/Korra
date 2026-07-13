@@ -1,3 +1,4 @@
+#pragma once
 #include "config/data/pipes_config.hpp"
 #include "config/parser/parser.hpp"
 
