@@ -32,7 +32,11 @@ private:
     video_pipe_in_parser *_get_in_parser_by_pipe(video_pipe_in *pipe);
     video_pipe_out_parser *_get_out_parser_by_pipe(video_pipe_out *pipe);
 public:
+    video_pipe_in_parser *in;
+    video_pipe_out_parser *out;
+
     pipes_parser();
+
     pipes_config parse(json) override;
     json serialize(pipes_config) override;
     ~pipes_parser();

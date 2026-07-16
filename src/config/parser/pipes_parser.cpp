@@ -3,8 +3,6 @@
 #include "config/parser/pipes/video_pipe_out_parser.hpp"
 #include "status_error.hpp"
 #include "config/config_error.hpp"
-#include "video_pipe/ffmpeg_rtmp/ffmpeg_rtmp_pipe_in.hpp"
-#include "video_pipe/ffmpeg_rtmp/ffmpeg_rtmp_pipe_out.hpp"
 #include "video_pipe/video_pipe_in.hpp"
 
 template<typename T>
@@ -27,20 +25,12 @@ function<video_pipe_out_parser*(video_pipe_out*)> pipes_parser::_make_out_get_if
 }
 
 pipes_parser::pipes_parser(){
-    _parser_map["ffmpegRtmp"] = { new ffmpeg_rtmp_pipe_in_parser, new ffmpeg_rtmp_pipe_out_parser };
-    _parser_getters_in = {
-        _make_in_get_if_type<ffmpeg_rtmp_pipe_in>("ffmpegRtmp")
-    };
-    _parser_getters_out = {
-        _make_out_get_if_type<ffmpeg_rtmp_pipe_out>("ffmpegRtmp")
-    };
+    in = new video_pipe_in_parser;
+    out = new video_pipe_out_parser;
 }
 
 string pipes_parser::_get_available_types_string(){
     string availables = "";
-    for(){
-        
-    }
 }
 
 video_pipe_in_parser* pipes_parser::_get_in_parser_by_pipe(video_pipe_in *pipe) {
