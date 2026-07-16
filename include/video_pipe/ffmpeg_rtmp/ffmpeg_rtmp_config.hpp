@@ -1,3 +1,4 @@
+#pragma once
 #include "../video_pipe_config.hpp"
 #include <string>
 

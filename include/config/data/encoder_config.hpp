@@ -1,3 +1,4 @@
+#pragma once
 #include "encoder/provider/provider.hpp"
 #include "encoder/compressor/compressor.hpp"
 #include "encoder/corrector/corrector.hpp"

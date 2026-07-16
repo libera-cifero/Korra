@@ -2,8 +2,8 @@
 #include "video_pipe/video_pipe_in.hpp"
 #include "config/parser/parser.hpp"
 
-class video_pipe_in_parser : public json_parser<video_pipe_in*>{
+class video_pipe_in_parser : public abstract_parser<video_pipe_in*>{
 public:
-    virtual video_pipe_in* parse(json) override;
-    virtual json serialize(video_pipe_in*) override;
+    video_pipe_in* parse(json) override;
+    json serialize(video_pipe_in*) override;
 };

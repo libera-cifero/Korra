@@ -1,3 +1,4 @@
+#pragma once
 #include "encoder_config.hpp"
 #include "pipes_config.hpp"
 #include "video_config.hpp"

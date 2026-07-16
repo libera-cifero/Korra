@@ -2,8 +2,8 @@
 #include "encoder/provider/provider.hpp"
 #include "config/parser/parser.hpp"
 
-class provider_parser : public json_parser<provider*>{
+class provider_parser : public abstract_parser<provider*>{
 public:
-    virtual provider* parse(json) override;
-    virtual json serialize(provider*) override;
+    provider* parse(json) override;
+    json serialize(provider*) override;
 };
