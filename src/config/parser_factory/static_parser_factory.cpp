@@ -12,21 +12,12 @@ json_parser<root_config>* static_parser_factory::build(){
 
     auto basic_pp = new basic_provider_parser;
     basic_pp -> color_codec = new color_codec_parser;
-    basic_pp -> color_codec -> specific_parsers = {
-        { "rgbPalette", new rgb_palette_parser }
-    };
-    parser->provider->specific_parsers = {
-        { "basicBlock", basic_pp }
-    };
-    parser->provider->length_reader->specific_parsers = {
-        { "basicBlock.rawIp", new raw_ip_length_reader_parser }
-    };
-    parser->pipes->in->specific_parsers = {
-        { "ffmpegRtmp", new ffmpeg_rtmp_pipe_in_parser }
-    };
-    parser->pipes->out->specific_parsers = {
-        { "ffmpegRtmp", new ffmpeg_rtmp_pipe_out_parser }
-    };
-    
+    basic_pp -> color_codec -> specific_parsers = { new rgb_palette_parser };
+    parser->encoder->provider->specific_parsers = { basic_pp };
+
+    parser->encoder->provider->length_reader->specific_parsers = { new raw_ip_length_reader_parser };
+    parser->pipes->in->specific_parsers = { new ffmpeg_rtmp_pipe_in_parser };
+    parser->pipes->out->specific_parsers = { new ffmpeg_rtmp_pipe_out_parser };
+
     return parser;
 }

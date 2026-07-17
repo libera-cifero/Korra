@@ -1,0 +1,8 @@
+#include "config/parser/parser.hpp"
+#include "encoder/compressor/compressor.hpp"
+class none_compressor_parser : public specific_parser<compressor*> {
+public:
+    string type() override;
+    compressor* parse(json) override;
+    json serialize(compressor*) override;
+};

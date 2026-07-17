@@ -5,7 +5,7 @@
 
 class video_pipe_in_parser : public abstract_parser<video_pipe_in*>{
 public:
-    video_config *config;
+    video_config *video;
     video_pipe_in* parse(json) override;
     json serialize(video_pipe_in*) override;
 };

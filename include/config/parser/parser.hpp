@@ -1,6 +1,7 @@
 #pragma once
 #include "json.hpp"
 #include <string>
+#include <vector>
 using json = nlohmann::json;
 using namespace std;
 
@@ -13,8 +14,14 @@ public:
 };
 
 template<typename T>
+class specific_parser : public json_parser<T> {
+public:
+    virtual string type() = 0;
+};
+
+template<typename T>
 class abstract_parser : public json_parser<T> {
 public:
 //it sets up in parser_provider
-    map<string, json_parser<T>*> specific_parsers;
+    vector<specific_parser<T>*> specific_parsers;
 };

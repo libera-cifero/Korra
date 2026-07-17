@@ -1,10 +1,12 @@
 #pragma once
+#include "config/data/root_config.hpp"
 #include "config/parser/encoder/provider/len_reader/len_reader_parser.hpp"
 #include "encoder/provider/provider.hpp"
 #include "config/parser/parser.hpp"
 
 class provider_parser : public abstract_parser<provider*>{
 public:
+    video_config *video;
     data_length_reader_parser *length_reader;
 
     provider_parser();
