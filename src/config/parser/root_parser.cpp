@@ -1,5 +1,5 @@
 #include "config/parser/root_parser.hpp"
-#include "config/data/root_config.hpp"
+#include "config/data/video_config.hpp"
 #include "config/parser/video/encoder/encoder_parser.hpp"
 #include "config/parser/video/pipes/pipes_parser.hpp"
 #include "config/parser/video/video_parser.hpp"

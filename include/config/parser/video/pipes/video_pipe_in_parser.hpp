@@ -1,5 +1,5 @@
 #pragma once
-#include "config/data/root_config.hpp"
+#include "config/data/video_config.hpp"
 #include "video/pipe/video_pipe_in.hpp"
 #include "config/parser/parser.hpp"
 
