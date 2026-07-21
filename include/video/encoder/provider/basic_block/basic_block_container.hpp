@@ -16,7 +16,6 @@ private:
     uint32_t _block_count;
     int _bits_per_block;
 
-    size_t _get_block_count(size_t byte_size);
     basic_block_pointer _get_end(basic_block_pointer begin, size_t byte_count);
 
     bit_area _read_block(uint8_t *bytes, bit_area area, int block);

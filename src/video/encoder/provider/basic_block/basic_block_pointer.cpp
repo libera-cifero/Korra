@@ -1,4 +1,5 @@
 #include "video/encoder/provider/basic_block/basic_block_pointer.hpp"
+#include "video/encoder/provider/basic_block/basic_block_math.hpp"
 #include "color.hpp"
 #include <cstddef>
 #include <cstdint>
@@ -17,7 +18,7 @@ bbp::basic_block_pointer(uint8_t *blocks, uint32_t block_index, basic_block_sett
     _blocks = blocks;
     _block_index = block_index;
     _config = config;
-    _width_capacity = config->frame_width / config->block_size;
+    _width_capacity = get_width_capacity(config->frame_width, config->block_size);
     _rect = get_rect(block_index, _config->block_size, _width_capacity);
 }
 

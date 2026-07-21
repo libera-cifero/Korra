@@ -13,7 +13,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
 
 file(GLOB color_src "color.cpp")
 file(GLOB math_src "math.cpp")
-file(GLOB basic_block_config_src "video/encoder/provider/basic_block_config.cpp")
+file(GLOB basic_block_config_src "${BASIC_BLOCK_DIR}/basic_block_settings.cpp")
 file(GLOB bbc_src "${BASIC_BLOCK_DIR}/basic_block_container.cpp")
 file(GLOB bbp_src "${BASIC_BLOCK_DIR}/basic_block_pointer.cpp")
 file(GLOB bbpp_src "${BASIC_BLOCK_DIR}/basic_block_pointer_proxy.cpp")
@@ -26,13 +26,14 @@ file(GLOB rgb_palette_codec_src "${BASIC_BLOCK_DIR}/color_codec/rgb_palette_code
 file(GLOB ycbcr_palette_codec_src "${BASIC_BLOCK_DIR}/color_codec/ycbcr_palette_codec.cpp")
 file(GLOB codec_json_src "${BASIC_BLOCK_DIR}/color_codec/codec_json.cpp")
 file(GLOB len_reader_src "video/encoder/provider/len_reader/raw_ip_length_reader.cpp")
+file(GLOB bbpe_src "estimator/basic_block_plain_estimator.cpp")
 
 #base_utils
 add_library(base_utils STATIC ${color_src} ${math_src})
 target_include_directories(base_utils PUBLIC ../include)
 
 #color_codec
-add_library(color_codec STATIC ${color_codec_src} ${hsv_codec_src} ${palette_codec_src} ${rgb_palette_codec_src} ${ycbcr_palette_codec_src} ${color_src} ${codec_json_src})
+add_library(color_codec STATIC ${color_codec_src} ${hsv_codec_src} ${palette_codec_src} ${rgb_palette_codec_src} ${ycbcr_palette_codec_src} ${color_src} ${codec_json_src} ${bbpe_src})
 target_include_directories(color_codec PUBLIC ../include)
 
 #basic_block

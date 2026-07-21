@@ -2,6 +2,7 @@
 #include "video/encoder/provider/basic_block/basic_block_pointer.hpp"
 #include "video/encoder/provider/basic_block/basic_block_pointer_proxy.hpp"
 #include "video/encoder/provider/basic_block/basic_block_settings.hpp"
+#include "video/encoder/provider/basic_block/basic_block_math.hpp"
 #include "math.hpp"
 #include "status_error.hpp"
 #include <cstddef>
@@ -21,9 +22,7 @@ bbc::basic_block_container(){
 
 bbc::basic_block_container(uint8_t *frame, basic_block_settings config){
     _config = config;
-    uint32_t width_capacity = config.frame_width / config.block_size;
-    uint32_t height_capacity = config.frame_height / config.block_size;
-    _block_count = height_capacity * width_capacity;
+    _block_count = get_block_count(config.frame_width, config.frame_height, config.block_size);
     _bits_per_block = config.codec->bits_per_number();
     if(_block_count == 0 ||_block_count % 8 != 0 || _block_count % _bits_per_block != 0){
         const char *string_fmt = "The block_count (%d) must be divisible by 8 and bits_per_block(%d) without remainder and greater than 0!";
@@ -41,18 +40,11 @@ bbc::iterator bbc::end() { return _end; }
 
 size_t bbc::block_count() { return _block_count; }
 
-size_t bbc::byte_count() { return  _block_count * _bits_per_block / 8; }
+size_t bbc::byte_count() { return  get_basic_block_frame_payload_size(_bits_per_block, _block_count); }
 
 basic_block_pointer_proxy bbc::operator[](int index){ return *(_begin + index); }
 
 basic_block_settings bbc::config(){ return _config; }
-
-size_t bbc::_get_block_count(size_t byte_size) {
-    size_t bit_size = 8 * byte_size;
-    size_t count = bit_size / _bits_per_block;
-    if(bit_size % _bits_per_block > 0) count+=1;
-    return count;
-}
 
 int* bbc::_convert_to_blocks(uint8_t *data, size_t block_count){
     int *blocks = new int[block_count];
@@ -111,7 +103,7 @@ bit_area bbc::_read_block(uint8_t *bytes, bit_area area, int block) {
 basic_block_pointer bbc::read(basic_block_pointer begin, uint8_t *data_out, size_t byte_count){
     memset(data_out, 0, byte_count);
     basic_block_pointer end = _get_end(begin, byte_count);
-    size_t blocks_to_read = _get_block_count(byte_count);
+    size_t blocks_to_read = get_block_count(byte_count, _bits_per_block);
 
     int index1 = blocks_to_read - 1;
     bit_area area = { .bit0 = 0, .bit1 = (size_t)_bits_per_block };
@@ -128,7 +120,7 @@ basic_block_pointer bbc::read(basic_block_pointer begin, uint8_t *data_out, size
 
 basic_block_pointer bbc::write(basic_block_pointer begin, uint8_t *data_src, size_t byte_count){
     basic_block_pointer end = _get_end(begin, byte_count);
-    size_t blocks_to_write = _get_block_count(byte_count);
+    size_t blocks_to_write = get_block_count(byte_count, _bits_per_block);
     int *blocks = _convert_to_blocks(data_src, blocks_to_write);
     for(int i = 0; i < blocks_to_write; i++){
         *(begin + i) = blocks[i];

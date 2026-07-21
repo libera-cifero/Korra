@@ -51,13 +51,15 @@ int video_connection_tcp::recieve(void *bytes, size_t max_length) {
 void video_connection_tcp::send(void *bytes){
     size_t package_length = _read_package_length(bytes);
     int frame_count;
-    vector<video_frame> frames = _config->encoder->encode_package(bytes);
+    vector<video_frame> *frames_ptr = _config->encoder->encode_package(bytes);
+    auto frames = *frames_ptr;
     for(int index = 0; index < frame_count; index++){
         auto frame = frames[index];
         uint8_t *data = reinterpret_cast<uint8_t*>(frame.data);
         _config->pipe_out->write(data, frame.size);
     }
-
+    
+    delete frames_ptr;
     //boost::asio::write(_socket, boost::asio::buffer((char*)bytes, 2));
 }
 
