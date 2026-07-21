@@ -1,13 +1,14 @@
 #include "config/parser_factory/static_parser_factory.hpp"
-#include "config/parser/encoder/provider/basic_block/color_codec/color_codec_parser.hpp"
-#include "config/parser/encoder/provider/len_reader/raw_ip/raw_ip_length_reader_parser.hpp"
-#include "config/parser/pipes/ffmpeg_rtmp/ffmpeg_rtmp_pipe_in_parser.hpp"
-#include "config/parser/pipes/ffmpeg_rtmp/ffmpeg_rtmp_pipe_out_parser.hpp"
+#include "config/parser/video/encoder/provider/basic_block/color_codec/color_codec_parser.hpp"
+#include "config/parser/video/encoder/provider/len_reader/raw_ip/raw_ip_length_reader_parser.hpp"
+#include "config/parser/video/pipes/ffmpeg_rtmp/ffmpeg_rtmp_pipe_in_parser.hpp"
+#include "config/parser/video/pipes/ffmpeg_rtmp/ffmpeg_rtmp_pipe_out_parser.hpp"
 #include "config/parser/root_parser.hpp"
-#include "config/parser/encoder/provider/basic_block/basic_provider_parser.hpp"
-#include "config/parser/encoder/provider/basic_block/color_codec/rgb_palette/rgb_palette_parser.hpp"
+#include "config/parser/video/encoder/provider/basic_block/basic_provider_parser.hpp"
+#include "config/parser/video/encoder/provider/basic_block/color_codec/rgb_palette/rgb_palette_parser.hpp"
+#include "video/video_socket.hpp"
 
-json_parser<root_config>* static_parser_factory::build(){
+json_parser<video_listener*>* static_parser_factory::build(){
     auto parser = new root_parser();
 
     auto basic_pp = new basic_provider_parser;
