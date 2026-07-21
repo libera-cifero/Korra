@@ -1,4 +1,4 @@
-#include "config/parser/encoder/corrector/none_corrector_parser.hpp"
+#include "config/parser/video/encoder/corrector/none_corrector_parser.hpp"
 #include "config/parser/parser.hpp"
 #include "video/encoder/corrector/corrector.hpp"
 #include "video/encoder/corrector/none_corrector.hpp"

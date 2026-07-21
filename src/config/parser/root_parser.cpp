@@ -1,8 +1,8 @@
 #include "config/parser/root_parser.hpp"
 #include "config/data/root_config.hpp"
-#include "config/parser/encoder_parser.hpp"
-#include "config/parser/pipes_parser.hpp"
-#include "config/parser/video_parser.hpp"
+#include "config/parser/video/encoder/encoder_parser.hpp"
+#include "config/parser/video/pipes/pipes_parser.hpp"
+#include "config/parser/video/video_parser.hpp"
 #include "video/video_socket.hpp"
 
 root_parser::root_parser(){
@@ -17,7 +17,7 @@ video_listener* root_parser::parse(json j){
     pipes->out->video = &video_conf;
     encoder->video = &video_conf;
 
-    
+
 }
 
 root_parser::~root_parser(){

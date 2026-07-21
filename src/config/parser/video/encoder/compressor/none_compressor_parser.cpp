@@ -1,4 +1,4 @@
-#include "config/parser/encoder/compressor/none_compressor_parser.hpp"
+#include "config/parser/video/encoder/compressor/none_compressor_parser.hpp"
 #include "config/parser/parser.hpp"
 #include "video/encoder/compressor/compressor.hpp"
 #include "video/encoder/compressor/none_compressor.hpp"
