@@ -12,7 +12,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${BIN_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
 
 file(GLOB color_src "color.cpp")
-file(GLOB math_src "math.c")
+file(GLOB math_src "math.cpp")
 file(GLOB basic_block_config_src "encoder/provider/basic_block_config.cpp")
 file(GLOB bbc_src "${BASIC_BLOCK_DIR}/basic_block_container.cpp")
 file(GLOB bbp_src "${BASIC_BLOCK_DIR}/basic_block_pointer.cpp")

@@ -1,5 +1,11 @@
 # About
 This is the project to transmit and receive data throw RTMP streams. For example, over Rutube, VK video Live and WebRTC video channels in the future.
+Dependencies for development:
+- python
+- boost library
+- cmake
+- make
+- graphviz
 # IP package structure
 ```mermaid
 flowchart TB

@@ -187,6 +187,11 @@ digraph {
             ffmpeg_rtmp_config->ffmpeg_rtmp_pipe_out;
         }
 
+        subgraph cluster_config {
+            parser_factory [color=red; fontcolor=red;]
+            static_parser_factory [color=blue; fontcolor = blue;]
+        }
+
         video_socket [color=blue; fontcolor=blue;];
         
         video_encoder->video_socket [weight=2;];

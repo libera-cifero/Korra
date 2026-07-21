@@ -1,12 +1,11 @@
 #pragma once
-#include "../data/root_config.hpp"
-#include "config/parser/encoder/provider/provider_parser.hpp"
 #include "config/parser/encoder_parser.hpp"
 #include "config/parser/pipes_parser.hpp"
 #include "config/parser/video_parser.hpp"
+#include "video_socket.hpp"
 #include "parser.hpp"
 
-class root_parser : public json_parser<root_config>{
+class root_parser : public json_parser<video_listener*>{
 private:
     video_parser *_video;
 public:
@@ -14,8 +13,8 @@ public:
     pipes_parser *pipes;
 
     root_parser();
-    root_config parse(json) override;
-    json serialize(root_config) override;
+    video_listener* parse(json) override;
+    json serialize(video_listener*) override;
 
     ~root_parser();
 };

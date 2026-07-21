@@ -12,6 +12,10 @@ root_parser::root_parser(){
 
 root_config root_parser::parse(json j){
     video_config video_conf = _video->parse(j);
+    pipes->in->video = &video_conf;
+    pipes->out->video = &video_conf;
+    encoder->video = &video_conf;
+
     
 }
 
