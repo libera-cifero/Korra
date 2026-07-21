@@ -1,6 +1,6 @@
 #pragma once
-#include "encoder/provider/basic_block_config.hpp"
-#include "rect.h"
+#include "basic_block_settings.hpp"
+#include "rect.hpp"
 #include <cstdint>
 
 struct proxy_config{
@@ -8,7 +8,7 @@ struct proxy_config{
     uint32_t block_index;
     uint32_t width_capacity;
     rect *area;
-    basic_block_config *base;
+    basic_block_settings *base;
 };
 
 class basic_block_pointer_proxy {

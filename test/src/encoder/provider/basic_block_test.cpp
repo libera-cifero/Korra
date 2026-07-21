@@ -1,10 +1,10 @@
-#include "color_codec/rgb_palette_codec.hpp"
-#include "encoder/provider/basic_block/basic_block_container.hpp"
+#include "video/encoder/provider/basic_block/color_codec/rgb_palette_codec.hpp"
+#include "video/encoder/provider/basic_block/basic_block_container.hpp"
 #include "frame_meta.hpp"
 #include "frame_io.hpp"
 #include "io.hpp"
-#include "encoder/provider/basic_block/basic_block_pointer.hpp"
-#include "encoder/provider/basic_block_config.hpp"
+#include "video/encoder/provider/basic_block/basic_block_pointer.hpp"
+#include "video/encoder/provider/basic_block_settings.hpp"
 #include "test.h"
 #include <cstdint>
 #include <exception>
@@ -24,7 +24,7 @@ void test_ptr_equal(){
     printInfo(test_name);
     int palette[16]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
     rgb_palette_codec codec(palette, 4);
-    basic_block_config config = {
+    basic_block_settings config = {
         .block_size = 4,
         .frame_width = 10,
         .frame_height = 12,

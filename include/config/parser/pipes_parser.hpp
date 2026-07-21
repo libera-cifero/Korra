@@ -3,8 +3,8 @@
 #include "config/parser/parser.hpp"
 #include "config/parser/pipes/video_pipe_in_parser.hpp"
 #include "config/parser/pipes/video_pipe_out_parser.hpp"
-#include "video_pipe/video_pipe_in.hpp"
-#include "video_pipe/video_pipe_out.hpp"
+#include "video/pipe/video_pipe_in.hpp"
+#include "video/pipe/video_pipe_out.hpp"
 #include <map>
 #include <string>
 #include <tuple>

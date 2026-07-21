@@ -1,7 +1,4 @@
-#include "encoder/provider/basic_block/basic_block_pointer_proxy.hpp"
-#include "encoder/provider/basic_block/basic_block_pointer.hpp"
-#include "encoder/provider/basic_block/rect.h"
-#include "encoder/provider/basic_block_config.hpp"
+#include "video/encoder/provider/basic_block/basic_block_pointer.hpp"
 #include "color.hpp"
 #include <cstddef>
 #include <cstdint>
@@ -15,7 +12,7 @@ bbp::basic_block_pointer(std::nullptr_t) {
 
 bbp::basic_block_pointer():basic_block_pointer(nullptr) { }
 
-bbp::basic_block_pointer(uint8_t *blocks, uint32_t block_index, basic_block_config *config) {
+bbp::basic_block_pointer(uint8_t *blocks, uint32_t block_index, basic_block_settings *config) {
     _is_null = false;
     _blocks = blocks;
     _block_index = block_index;
@@ -129,4 +126,4 @@ bool bbp::operator>=(const basic_block_pointer& ref){
     return _compare(ref, [](size_t a, size_t b){return  a >= b;});
 }
 
-basic_block_config bbp::config() { return *_config; }
+basic_block_settings bbp::config() { return *_config; }

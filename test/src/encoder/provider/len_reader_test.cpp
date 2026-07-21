@@ -1,5 +1,5 @@
-#include "encoder/provider/basic_block/basic_block_container.hpp"
-#include "encoder/provider/len_reader/raw_ip_length_reader.hpp"
+#include "video/encoder/provider/basic_block/basic_block_container.hpp"
+#include "video/encoder/provider/len_reader/raw_ip_length_reader.hpp"
 #include "frame_io.hpp"
 #include "test.h"
 #include "frame_io.hpp"

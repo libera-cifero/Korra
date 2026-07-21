@@ -1,9 +1,9 @@
-#include "video_pipe/ffmpeg_rtmp/ffmpeg_rtmp_pipe_out.hpp"
+#include "video/pipe/ffmpeg_rtmp/ffmpeg_rtmp_pipe_out.hpp"
 #include <cstdio>
 #include <chrono>
 #include <thread>
 
-ffmpeg_rtmp_pipe_out::ffmpeg_rtmp_pipe_out(ffmpeg_rtmp_config config){
+ffmpeg_rtmp_pipe_out::ffmpeg_rtmp_pipe_out(ffmpeg_rtmp_settings config){
     _config = config;
     char command[1024];
     sprintf(command, 

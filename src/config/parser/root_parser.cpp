@@ -3,6 +3,7 @@
 #include "config/parser/encoder_parser.hpp"
 #include "config/parser/pipes_parser.hpp"
 #include "config/parser/video_parser.hpp"
+#include "video/video_socket.hpp"
 
 root_parser::root_parser(){
     encoder = new encoder_parser;
@@ -10,7 +11,7 @@ root_parser::root_parser(){
     _video = new video_parser;
 }
 
-root_config root_parser::parse(json j){
+video_listener* root_parser::parse(json j){
     video_config video_conf = _video->parse(j);
     pipes->in->video = &video_conf;
     pipes->out->video = &video_conf;

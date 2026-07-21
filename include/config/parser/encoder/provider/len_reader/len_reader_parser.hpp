@@ -1,5 +1,5 @@
 #pragma once
-#include "encoder/provider/len_reader/data_length_reader.hpp"
+#include "video/encoder/provider/len_reader/data_length_reader.hpp"
 #include "config/parser/parser.hpp"
 
 class data_length_reader_parser : public abstract_parser<data_length_reader*>{

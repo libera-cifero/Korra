@@ -1,4 +1,4 @@
-#include "encoder/provider/basic_block/rgb_index.h"
+#include "video/encoder/provider/basic_block/rgb_index.hpp"
 
 struct rgb_index get_index_by_point(int frame_width, int x, int y){
     int b_pos = 3 * (y * frame_width + x);

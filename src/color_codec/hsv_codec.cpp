@@ -1,5 +1,5 @@
-#include "color_codec/hsv_codec.hpp"
-#include "color_codec/color_codec.hpp"
+#include "video/encoder/provider/basic_block/color_codec/hsv_codec.hpp"
+#include "video/encoder/provider/basic_block/color_codec/color_codec.hpp"
 #include "color.hpp"
 #include <cstdio>
 #include <algorithm>

@@ -1,4 +1,4 @@
-#include "encoder/provider/basic_block/rect.h"
+#include "video/encoder/provider/basic_block/rect.hpp"
 
 struct rect get_rect(int block_index, int block_size, int width_capacity){
     int index_y = block_index / width_capacity, index_x = block_index % width_capacity;

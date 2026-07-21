@@ -1,8 +1,8 @@
 #pragma once
-#include "encoder/provider/provider.hpp"
-#include "encoder/compressor/compressor.hpp"
-#include "encoder/corrector/corrector.hpp"
-#include "encoder/obfuscator/obfuscator.hpp"
+#include "video/encoder/provider/provider.hpp"
+#include "video/encoder/compressor/compressor.hpp"
+#include "video/encoder/corrector/corrector.hpp"
+#include "video/encoder/obfuscator/obfuscator.hpp"
 
 struct encoder_config {
     obfuscator *obfuscator;

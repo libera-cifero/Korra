@@ -1,4 +1,4 @@
-#include "encoder/video_encoder.hpp"
+#include "video/encoder/video_frame.hpp"
 #include <cstddef>
 #include <vector>
 class estimator {

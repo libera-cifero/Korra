@@ -1,6 +1,6 @@
 #pragma once
 #include "config/data/root_config.hpp"
-#include "video_pipe/video_pipe_in.hpp"
+#include "video/pipe/video_pipe_in.hpp"
 #include "config/parser/parser.hpp"
 
 class video_pipe_in_parser : public abstract_parser<video_pipe_in*>{

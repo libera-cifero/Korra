@@ -1,5 +1,5 @@
 #include "test.h"
-#include "color_codec/rgb_palette_codec.hpp"
+#include "video/encoder/provider/basic_block/color_codec/rgb_palette_codec.hpp"
 
 void test_color_to_number() {
 

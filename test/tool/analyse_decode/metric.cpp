@@ -1,6 +1,6 @@
 //input: file_in file_out
 //output: error_percent average_error median_error decoding_time_ms
-#include "encoder/provider/basic_block/basic_block_container.hpp"
+#include "video/encoder/provider/basic_block/basic_block_container.hpp"
 #include "frame_io.hpp"
 #include "frame_meta.hpp"
 #include "io.hpp"

@@ -1,5 +1,5 @@
 #pragma once
-#include "color_codec/color_codec.hpp"
+#include "video/encoder/provider/basic_block/color_codec/color_codec.hpp"
 #include "config/parser/parser.hpp"
 
 class color_codec_parser : public abstract_parser<color_codec*> {

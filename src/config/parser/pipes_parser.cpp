@@ -3,7 +3,7 @@
 #include "config/parser/pipes/video_pipe_out_parser.hpp"
 #include "status_error.hpp"
 #include "config/config_error.hpp"
-#include "video_pipe/video_pipe_in.hpp"
+#include "video/pipe/video_pipe_in.hpp"
 
 template<typename T>
 function<video_pipe_in_parser*(video_pipe_in*)> pipes_parser::_make_in_get_if_type(string key){

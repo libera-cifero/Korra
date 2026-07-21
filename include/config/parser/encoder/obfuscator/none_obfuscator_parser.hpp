@@ -1,5 +1,5 @@
 #include "config/parser/parser.hpp"
-#include "encoder/obfuscator/obfuscator.hpp"
+#include "video/encoder/obfuscator/obfuscator.hpp"
 class none_obfuscator_parser : public specific_parser<obfuscator*> {
 public:
     string type() override;

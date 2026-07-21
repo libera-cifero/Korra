@@ -1,5 +1,5 @@
 #pragma once
-#include "../data/video_config.hpp"
+#include "config/data/video_config.hpp"
 #include "parser.hpp"
 
 class video_parser : public json_parser<video_config>{

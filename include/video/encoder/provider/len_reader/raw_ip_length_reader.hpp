@@ -1,6 +1,6 @@
 #pragma once
 #include "data_length_reader.hpp"
-#include "encoder/provider/basic_block/basic_block_pointer.hpp"
+#include "video/encoder/provider/basic_block/basic_block_pointer.hpp"
 
 class raw_ip_length_reader : public data_length_reader
 {

@@ -38,7 +38,7 @@
 "/home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/basic_block/bit_area.h", "C++", 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 5
 "/home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/basic_block/rect.h", "C++", 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 4, 18
 "/home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/basic_block/rgb_index.h", "C++", 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 3, 16
-"/home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/basic_block_config.hpp", "C++", 0, 0, 16, 0, 0, 0, 0, 0, 0, 1, 2, 19
+"/home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/basic_block_settings.hpp", "C++", 0, 0, 16, 0, 0, 0, 0, 0, 0, 1, 2, 19
 "/home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/basic_provider.hpp", "C++", 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 2, 23
 "/home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/len_reader/data_length_reader.hpp", "C++", 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
 "/home/admin/programming/C++/Korra/stegvideo/include/encoder/provider/len_reader/raw_ip_length_reader.hpp", "C++", 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 2, 19

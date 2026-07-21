@@ -1,4 +1,4 @@
-#include "math.h"
+#include "math.hpp"
 
 static size_t get_gcd(size_t a, size_t b) {
     if (b == 0)

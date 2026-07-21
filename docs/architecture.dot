@@ -41,7 +41,7 @@ digraph {
 
                     bit_area->basic_block_container;              
                     
-                    basic_block_config [color=green;fontcolor=green;];
+                    basic_block_settings [color=green;fontcolor=green;];
                     rect [color=green;fontcolor=green;];
                     rgb_index[color=green;fontcolor=green;];
                     

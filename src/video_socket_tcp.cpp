@@ -1,7 +1,6 @@
-#include "video_socket_tcp.hpp"
-#include "encoder/provider/len_reader/data_length_reader.hpp"
-#include "encoder/video_encoder.hpp"
-#include "video_socket.hpp"
+#include "video/video_socket_tcp.hpp"
+#include "video/encoder/provider/len_reader/data_length_reader.hpp"
+#include "video/encoder/video_encoder.hpp"
 #include <boost/asio.hpp>
 #include <cstddef>
 #include <cstdint>

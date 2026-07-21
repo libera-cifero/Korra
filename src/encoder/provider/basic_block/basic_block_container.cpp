@@ -1,8 +1,8 @@
-#include "encoder/provider/basic_block/basic_block_container.hpp"
-#include "encoder/provider/basic_block/basic_block_pointer.hpp"
-#include "encoder/provider/basic_block/basic_block_pointer_proxy.hpp"
-#include "encoder/provider/basic_block_config.hpp"
-#include "math.h"
+#include "video/encoder/provider/basic_block/basic_block_container.hpp"
+#include "video/encoder/provider/basic_block/basic_block_pointer.hpp"
+#include "video/encoder/provider/basic_block/basic_block_pointer_proxy.hpp"
+#include "video/encoder/provider/basic_block/basic_block_settings.hpp"
+#include "math.hpp"
 #include "status_error.hpp"
 #include <cstddef>
 #include <cstdint>
@@ -19,7 +19,7 @@ bbc::basic_block_container(){
     _block_count = 0;
 }
 
-bbc::basic_block_container(uint8_t *frame, basic_block_config config){
+bbc::basic_block_container(uint8_t *frame, basic_block_settings config){
     _config = config;
     uint32_t width_capacity = config.frame_width / config.block_size;
     uint32_t height_capacity = config.frame_height / config.block_size;
@@ -45,7 +45,7 @@ size_t bbc::byte_count() { return  _block_count * _bits_per_block / 8; }
 
 basic_block_pointer_proxy bbc::operator[](int index){ return *(_begin + index); }
 
-basic_block_config bbc::config(){ return _config; }
+basic_block_settings bbc::config(){ return _config; }
 
 size_t bbc::_get_block_count(size_t byte_size) {
     size_t bit_size = 8 * byte_size;

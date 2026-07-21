@@ -1,5 +1,5 @@
 #include "frame_io.hpp"
-#include "color_codec/codec_json.hpp"
+#include "video/encoder/provider/basic_block/color_codec/codec_json.hpp"
 #include "json.hpp"
 #include "io.hpp"
 #include "test.h"

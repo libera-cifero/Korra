@@ -1,3 +1,4 @@
+#pragma once
 #include "estimator.hpp"
 
 class basic_block_plain_estimator : public estimator {

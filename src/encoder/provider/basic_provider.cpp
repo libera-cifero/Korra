@@ -1,4 +1,4 @@
-#include "encoder/provider/basic_provider.hpp"
+#include "video/encoder/provider/basic_provider.hpp"
 
 basic_provider::basic_provider(basic_provider_config config){
     _config = config;

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "encoder/provider/basic_block_config.hpp"
+#include "basic_block_settings.hpp"
 #include "basic_block_pointer_proxy.hpp"
-#include "rect.h"
+#include "rect.hpp"
 #include <iterator>
 #include <cstddef>
 #include <cstdint>
@@ -13,7 +13,7 @@ private:
     uint8_t *_blocks;
     uint32_t _block_index;
 
-    basic_block_config *_config;
+    basic_block_settings *_config;
     uint32_t _width_capacity;
 
     rect _rect;
@@ -28,7 +28,7 @@ public:
     using pointer = basic_block_pointer;
     using reference = basic_block_pointer_proxy;
 
-    basic_block_pointer(uint8_t *blocks, uint32_t block_index, basic_block_config *config);
+    basic_block_pointer(uint8_t *blocks, uint32_t block_index, basic_block_settings *config);
     basic_block_pointer(std::nullptr_t);
     basic_block_pointer();
     basic_block_pointer_proxy operator*();
@@ -56,5 +56,5 @@ public:
     bool operator<=(const basic_block_pointer& ref);
     bool operator>=(const basic_block_pointer& ref);
 
-    basic_block_config config();
+    basic_block_settings config();
 };
