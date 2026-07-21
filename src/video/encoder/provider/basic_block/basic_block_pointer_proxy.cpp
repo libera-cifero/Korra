@@ -1,5 +1,5 @@
 #include "video/encoder/provider/basic_block/basic_block_pointer_proxy.hpp"
-#include "video/encoder/provider/basic_block/rgb_index.h"
+#include "video/encoder/provider/basic_block/rgb_index.hpp"
 #include "color.hpp"
 #include <cstdint>
 
