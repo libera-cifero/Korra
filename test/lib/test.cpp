@@ -1,7 +1,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "test.h"
+#include "test.hpp"
 
 const char *pattern="\x1b[1m%s\x1b[0m";
 

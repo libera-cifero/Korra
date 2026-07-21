@@ -1,5 +1,5 @@
 #pragma once
-#include "video/encoder/provider/basic_block_settings.hpp"
+#include "video/encoder/provider/basic_block/basic_block_settings.hpp"
 #include <vector>
 #include <string>
 

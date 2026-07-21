@@ -1,6 +1,6 @@
 #include "color.hpp"
 #include "../include/status_error.hpp"
-#include "test.h"
+#include "test.hpp"
 #include <cstdint>
 #include <stdint.h>
 

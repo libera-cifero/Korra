@@ -2,7 +2,7 @@
 #include "video/encoder/provider/basic_block/color_codec/codec_json.hpp"
 #include "json.hpp"
 #include "io.hpp"
-#include "test.h"
+#include "test.hpp"
 #include <fstream>
 #include <ios>
 #include <regex>

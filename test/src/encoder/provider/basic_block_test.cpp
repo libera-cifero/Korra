@@ -4,8 +4,8 @@
 #include "frame_io.hpp"
 #include "io.hpp"
 #include "video/encoder/provider/basic_block/basic_block_pointer.hpp"
-#include "video/encoder/provider/basic_block_settings.hpp"
-#include "test.h"
+#include "video/encoder/provider/basic_block/basic_block_settings.hpp"
+#include "test.hpp"
 #include <cstdint>
 #include <exception>
 #include <stdint.h>
@@ -26,10 +26,10 @@ void test_ptr_equal(){
     rgb_palette_codec codec(palette, 4);
     basic_block_settings config = {
         .block_size = 4,
-        .frame_width = 10,
-        .frame_height = 12,
         .codec = &codec
     };
+    config.frame_width = 10;
+    config.frame_height = 12;
     const int frame_size = 3 * config.frame_width * config.frame_height;
     uint8_t frame[frame_size];
 

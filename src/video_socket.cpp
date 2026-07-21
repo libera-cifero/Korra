@@ -1,4 +1,4 @@
-#include "video_socket.hpp"
+#include "video/video_socket.hpp"
 video_connection::video_connection(video_socket_config *config){ _config = config; }
 ip_endpoint video_connection::endpoint(){ return _config->socket; }
 video_connection::~video_connection(){
