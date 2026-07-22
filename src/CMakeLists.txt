@@ -27,17 +27,18 @@ file(GLOB ycbcr_palette_codec_src "${BASIC_BLOCK_DIR}/color_codec/ycbcr_palette_
 file(GLOB codec_json_src "${BASIC_BLOCK_DIR}/color_codec/codec_json.cpp")
 file(GLOB len_reader_src "video/encoder/provider/len_reader/raw_ip_length_reader.cpp")
 file(GLOB bbpe_src "estimator/basic_block_plain_estimator.cpp")
+file(GLOB basic_block_math_src "${BASIC_BLOCK_DIR}/basic_block_math.cpp")
 
 #base_utils
 add_library(base_utils STATIC ${color_src} ${math_src})
 target_include_directories(base_utils PUBLIC ../include)
 
 #color_codec
-add_library(color_codec STATIC ${color_codec_src} ${hsv_codec_src} ${palette_codec_src} ${rgb_palette_codec_src} ${ycbcr_palette_codec_src} ${color_src} ${codec_json_src} ${bbpe_src})
+add_library(color_codec STATIC ${color_codec_src} ${hsv_codec_src} ${palette_codec_src} ${rgb_palette_codec_src} ${ycbcr_palette_codec_src} ${color_src} ${codec_json_src} ${bbpe_src} ${basic_block_math_src})
 target_include_directories(color_codec PUBLIC ../include)
 
 #basic_block
-add_library(basic_block SHARED ${bbc_src} ${bbp_src} ${bbpp_src} ${basic_block_config_src} ${rect_src} ${rgb_index_src})
+add_library(basic_block SHARED ${bbc_src} ${bbp_src} ${bbpp_src} ${basic_block_config_src} ${rect_src} ${rgb_index_src} ${basic_block_math_src})
 target_link_libraries(basic_block PUBLIC base_utils color_codec)
 target_include_directories(basic_block PUBLIC ../include)
 

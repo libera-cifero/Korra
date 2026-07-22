@@ -11,7 +11,7 @@ private:
     uint8_t *_frame;
     basic_block_pointer _begin;
     basic_block_pointer _end;
-    basic_block_settings _config;
+    basic_block_settings *_config;
 
     uint32_t _block_count;
     int _bits_per_block;
@@ -23,13 +23,17 @@ private:
     int* _convert_to_blocks(uint8_t *data, size_t byte_size);
 public:
     using iterator = basic_block_pointer;
+
+    uint8_t *frame_bitmap();
+    void frame_bitmap(uint8_t*);
+
     basic_block_container();
-    basic_block_container(uint8_t *frame, basic_block_settings config);
+    basic_block_container(uint8_t *frame, basic_block_settings *config);
     iterator begin();
     iterator end();
     size_t block_count();
     size_t byte_count();
-    basic_block_settings config();
+    basic_block_settings* config();
     basic_block_pointer_proxy operator[](int index);
 
     basic_block_pointer read(basic_block_pointer begin, uint8_t *data_out, size_t byte_count);

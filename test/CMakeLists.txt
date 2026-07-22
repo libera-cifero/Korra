@@ -8,7 +8,7 @@ set(INCLUDE_DIR "../include" "include")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-file(GLOB test_lib_src "lib/test.c")
+file(GLOB test_lib_src "lib/test.cpp")
 file(GLOB frame_io_src "lib/frame_io.cpp")
 
 file(GLOB color_test_src "src/color_test.cpp")

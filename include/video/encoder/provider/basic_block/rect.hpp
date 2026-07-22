@@ -1,11 +1,11 @@
 #pragma once
 
-struct rect{
+typedef struct rect{
     int x0;
     int x1;
     int y0; 
     int y1;
-};
+} rect;
 
 #ifdef __cplusplus
 extern "C" {

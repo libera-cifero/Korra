@@ -68,11 +68,11 @@ int main(int argc, char **argv) {
     string frame_path = DATA_FRAME_PATH / args.frame_path;
     int width, height;
     uint8_t *data_frame = read_frame_data(frame_path, width, height);
-    basic_block_container frame0(data_frame, args);
+    basic_block_container frame0(data_frame, &args);
 
     string frame_path1 = DATA_FRAME_PATH / argv[2];
     uint8_t *data_frame1 = read_frame_data(frame_path1, width, height);
-    basic_block_container frame1(data_frame1, args);
+    basic_block_container frame1(data_frame1, &args);
 
 
     if(frame0.byte_count() != frame1.byte_count()){

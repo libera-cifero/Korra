@@ -20,18 +20,19 @@ bbc::basic_block_container(){
     _block_count = 0;
 }
 
-bbc::basic_block_container(uint8_t *frame, basic_block_settings config){
+bbc::basic_block_container(uint8_t *frame, basic_block_settings *config){
     _config = config;
-    _block_count = get_block_count(config.frame_width, config.frame_height, config.block_size);
-    _bits_per_block = config.codec->bits_per_number();
+    _block_count = get_block_count(config->frame_width, config->frame_height, config->block_size);
+    _bits_per_block = config->codec->bits_per_number();
     if(_block_count == 0 ||_block_count % 8 != 0 || _block_count % _bits_per_block != 0){
         const char *string_fmt = "The block_count (%d) must be divisible by 8 and bits_per_block(%d) without remainder and greater than 0!";
         char msg[256];
         sprintf(msg,string_fmt, _block_count, _bits_per_block);
         throw status_error(msg, 1);
     }
-    _begin = basic_block_pointer(frame, 0, &_config);
-    _end = basic_block_pointer(frame, _block_count - 1, &_config);
+    _frame = frame;
+    _begin = basic_block_pointer(_frame, 0, _config);
+    _end = basic_block_pointer(_frame, _block_count - 1, _config);
 }
 
 bbc::iterator bbc::begin() { return _begin; }
@@ -44,7 +45,7 @@ size_t bbc::byte_count() { return  get_basic_block_frame_payload_size(_bits_per_
 
 basic_block_pointer_proxy bbc::operator[](int index){ return *(_begin + index); }
 
-basic_block_settings bbc::config(){ return _config; }
+basic_block_settings* bbc::config(){ return _config; }
 
 int* bbc::_convert_to_blocks(uint8_t *data, size_t block_count){
     int *blocks = new int[block_count];
@@ -127,4 +128,10 @@ basic_block_pointer bbc::write(basic_block_pointer begin, uint8_t *data_src, siz
     }
     delete[] blocks;
     return end;
+}
+
+uint8_t* bbc::frame_bitmap(){ return _frame; }
+void bbc::frame_bitmap(uint8_t *frame){
+    delete _frame;
+    _frame = frame;
 }

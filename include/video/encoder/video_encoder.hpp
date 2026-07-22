@@ -5,6 +5,7 @@
 #include "provider/provider.hpp"
 #include "video_frame.hpp"
 #include <cstddef>
+#include <cstdint>
 #include <vector>
 
 using namespace std;
@@ -20,8 +21,8 @@ private:
     video_encoder_config *_config;
 public:
     video_encoder(video_encoder_config *config);
-    vector<video_frame>* encode_bytes(void *bytes, size_t bytes_size);
-    void *decode_bytes(vector<video_frame> &frames, size_t &bytes_size);
+    vector<video_frame>* encode_bytes(void *bytes, uint32_t bytes_size);
+    void *decode_bytes(vector<video_frame> &frames, uint32_t &bytes_size);
     video_encoder_config *config();
     ~video_encoder();
 };

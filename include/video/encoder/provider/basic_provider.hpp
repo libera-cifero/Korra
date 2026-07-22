@@ -1,23 +1,17 @@
 #pragma once
 #include "provider.hpp"
 #include "len_reader/data_length_reader.hpp"
-struct basic_provider_config {
-    int window_width;
-    int window_height;
-    int block_size;
-    int bit_color_resolution;
-    int fps_payload;
-    int fps_video;
-
-    data_length_reader *reader;
-};
+#include "video/encoder/provider/basic_block/basic_block_container.hpp"
+#include "video/encoder/provider/basic_block/basic_block_settings.hpp"
 
 class basic_provider : public provider {
 private:
-    basic_provider_config _config;
+    basic_block_settings *_settings;
+    basic_block_container *_container;
+    uint8_t *_frame;
 public:
-    basic_provider(basic_provider_config config);
-    char *pull_data(char **frames, int *date_count) override;
-    char **push_frames(char *data, int *frame_count) override;
-    virtual ~basic_provider();
+    basic_provider(basic_block_settings *settings, data_length_reader *length_reader);
+    char* to_data(vector<video_frame>*) override;
+    vector<video_frame> *to_frames(char*) override;
+    ~basic_provider();
 };

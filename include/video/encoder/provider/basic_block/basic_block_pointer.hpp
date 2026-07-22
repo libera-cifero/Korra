@@ -7,16 +7,21 @@
 #include <cstddef>
 #include <cstdint>
 
+struct basic_block_pointer_context {
+    bool is_null;
+    uint8_t *blocks;
+    uint32_t block_index;
+
+    basic_block_settings *config;
+    uint32_t width_capacity;
+
+    struct rect rect;
+};
+
 class basic_block_pointer {
 private:
-    bool _is_null;
-    uint8_t *_blocks;
-    uint32_t _block_index;
+    basic_block_pointer_context *_context;
 
-    basic_block_settings *_config;
-    uint32_t _width_capacity;
-
-    rect _rect;
     bool _compare(
         const basic_block_pointer& b_ptr,
         bool (*compare)(size_t a, size_t b)
@@ -56,5 +61,7 @@ public:
     bool operator<=(const basic_block_pointer& ref);
     bool operator>=(const basic_block_pointer& ref);
 
-    basic_block_settings config();
+    basic_block_settings* config();
+
+    ~basic_block_pointer();
 };

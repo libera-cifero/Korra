@@ -1,9 +1,17 @@
 #pragma once
 #include "len_reader/data_length_reader.hpp"
+#include "video/encoder/video_frame.hpp"
+#include <vector>
+using namespace std;
 class provider {
+private:
+    data_length_reader *_length_reader;
 public:
-    data_length_reader *length_reader();    
-    virtual char *pull_data(char **frames, int *data_count) = 0;
-    virtual char **push_frames(char *data, int *frame_count) = 0;
+    provider(data_length_reader*);
+    data_length_reader *length_reader();
+    //First 4 bytes of output is total size of data
+    virtual char* to_data(vector<video_frame>*) = 0;
+    //First 4 bytes of input is total size of data
+    virtual vector<video_frame>* to_frames(char*) = 0;
     virtual ~provider();
 };

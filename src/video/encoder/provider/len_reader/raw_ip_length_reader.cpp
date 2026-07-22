@@ -5,7 +5,7 @@
 raw_ip_length_reader::raw_ip_length_reader(basic_block_pointer package_begin){
     _package_begin = package_begin;
     auto config = _package_begin.config();
-    _bits_per_number = _package_begin.config().codec->bits_per_number();
+    _bits_per_number = _package_begin.config()->codec->bits_per_number();
 }
 
 int raw_ip_length_reader::_get_first(int block_data, int shift){
