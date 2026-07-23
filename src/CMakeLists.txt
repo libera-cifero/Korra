@@ -1,15 +1,7 @@
 cmake_minimum_required(VERSION 4.3.1)
-project(stegvideo)
+project(korra.src)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(BIN_DIR ../../bin)
-set(PROVIDER_DIR encoder/provider)
 set(BASIC_BLOCK_DIR "video/encoder/provider/basic_block")
-
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${BIN_DIR}/lib)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${BIN_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
 
 file(GLOB color_src "color.cpp")
 file(GLOB math_src "math.cpp")
@@ -31,21 +23,22 @@ file(GLOB basic_block_math_src "${BASIC_BLOCK_DIR}/basic_block_math.cpp")
 
 #base_utils
 add_library(base_utils STATIC ${color_src} ${math_src})
-target_include_directories(base_utils PUBLIC ../include)
+target_include_directories(base_utils PUBLIC ${INCLUDE_DIR})
 
 #color_codec
 add_library(color_codec STATIC ${color_codec_src} ${hsv_codec_src} ${palette_codec_src} ${rgb_palette_codec_src} ${ycbcr_palette_codec_src} ${color_src} ${codec_json_src} ${bbpe_src} ${basic_block_math_src})
-target_include_directories(color_codec PUBLIC ../include)
+target_include_directories(color_codec PUBLIC ${INCLUDE_DIR})
 
 #basic_block
 add_library(basic_block SHARED ${bbc_src} ${bbp_src} ${bbpp_src} ${basic_block_config_src} ${rect_src} ${rgb_index_src} ${basic_block_math_src})
 target_link_libraries(basic_block PUBLIC base_utils color_codec)
-target_include_directories(basic_block PUBLIC ../include)
+target_include_directories(basic_block PUBLIC ${INCLUDE_DIR})
 
 #len_reader
 add_library(len_reader SHARED ${len_reader_src})
 target_link_libraries(len_reader PUBLIC basic_block)
-target_include_directories(len_reader PUBLIC ../include)
+target_include_directories(len_reader PUBLIC ${INCLUDE_DIR})
 
 #timer
 add_library(timer OBJECT "video/timer.cpp")
+target_include_directories(timer PUBLIC ${INCLUDE_DIR})

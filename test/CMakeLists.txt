@@ -1,12 +1,7 @@
 cmake_minimum_required(VERSION 4.3.1)
+project(korra.test)
 
-project(stegvideo.test)
-
-set(BIN_DIR ../../bin)
-set(INCLUDE_DIR "../include" "include")
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(INCLUDE_DIR ${INCLUDE_DIR} "include")
 
 file(GLOB test_lib_src "lib/test.cpp")
 file(GLOB frame_io_src "lib/frame_io.cpp")
@@ -15,6 +10,7 @@ file(GLOB color_test_src "src/color_test.cpp")
 file(GLOB basic_block_test_src "src/encoder/provider/basic_block_test.cpp")
 file(GLOB math_test_src "src/math_test.cpp")
 file(GLOB len_reader_test_src "src/encoder/provider/len_reader_test.cpp")
+file(GLOB timer_test_src "src/timer_test.cpp")
 
 file(GLOB frame_gen_tool_src "tool/gen_frame/frame_generator.cpp")
 file(GLOB args_frame_gen_tool_src "tool/gen_frame/argument_generator.cpp")
@@ -22,7 +18,7 @@ file(GLOB fps_color_tool_src "tool/fps_color.cpp")
 file(GLOB adm_tool_src "tool/analyse_decode/metric.cpp")
 
 macro(target_setup target)
-    target_link_directories(${target} PUBLIC ../bin/lib)
+    target_link_directories(${target} PUBLIC ${LIB_DIR})
     target_include_directories(${target} PUBLIC ${INCLUDE_DIR})
 endmacro()
 
@@ -54,6 +50,11 @@ target_link_libraries(basic_block_test PRIVATE basic_block base_utils color_code
 add_executable(len_reader_test ${test_lib_src} ${frame_io_src} ${len_reader_test_src})
 target_setup(len_reader_test)
 target_link_libraries(len_reader_test PUBLIC base_utils color_codec basic_block len_reader)
+
+#timer_test
+add_executable(timer_test ${test_lib_src} ${timer_test_src})
+target_setup(timer_test)
+target_link_libraries(timer_test PUBLIC timer Boost::filesystem)
 #======END======
 
 #TEST TOOLS

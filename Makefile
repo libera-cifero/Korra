@@ -31,7 +31,7 @@ basic_block: base_utils color_codec
 len_reader: basic_block
 	cmake --build build/src --target len_reader
 timer: 
-	cmake --build build/src --target timer
+	cmake --build build --target timer
 #======END======
 
 #TESTS
@@ -41,20 +41,20 @@ init_test_debug:
 init_test_release:
 	python3 tool/cmake_init.py test Release
 build_test: build_src
-	cmake --build build/test
+	cmake --build build
 
 test: build_test
 	python3 tool/test.py
 color_test: color
-	cmake --build build/test --target color_test && python3 tool/run.py color_test
+	cmake --build build --target color_test && python3 tool/run.py color_test
 basic_block_test: basic_block
-	cmake --build build/test --target basic_block_test && python3 tool/run.py basic_block_test
+	cmake --build build --target basic_block_test && python3 tool/run.py basic_block_test
 math_test: math
 	cmake --build build/test --target math_test && python3 tool/run.py math_test
 len_reader_test: len_reader
 	cmake --build build/test --target len_reader_test && python3 tool/run.py len_reader_test
 timer_test: timer
-	cmake --build build/test --target timer_test && python3 tool/run.py timer_test
+	cmake --build build --target timer_test && python3 tool/run.py timer_test
 #======END======
 
 #TEST TOOLS

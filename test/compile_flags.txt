@@ -1,3 +1,0 @@
--I../include
--Iinclude
--std=c++26

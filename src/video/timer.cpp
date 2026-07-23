@@ -72,6 +72,7 @@ timer::~timer(){
     if(_is_running){
         _is_destroying = true;
         reset();       
+        _thread.join();
         delete _cancellable_clock;
     }
 }
