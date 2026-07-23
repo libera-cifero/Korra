@@ -3,12 +3,9 @@
 #include "obfuscator/obfuscator.hpp"
 #include "corrector/corrector.hpp"
 #include "provider/provider.hpp"
-#include "video_frame.hpp"
-#include <cstddef>
-#include <cstdint>
-#include <vector>
+#include "timer.hpp"
+#include <queue>
 
-using namespace std;
 typedef struct video_encoder_config {
     provider *provider;
     corrector *corrector;
@@ -19,10 +16,16 @@ typedef struct video_encoder_config {
 class video_encoder {
 private:
     video_encoder_config *_config;
+    queue<char> _payload_in_bytes;
+    queue<char> _payload_out_bytes;
+    char *_frame;
+    timer *_timer;
 public:
     video_encoder(video_encoder_config *config);
-    vector<video_frame>* encode_bytes(void *bytes, uint32_t bytes_size);
-    void *decode_bytes(vector<video_frame> &frames, uint32_t &bytes_size);
     video_encoder_config *config();
+    timer *timer();
+    char *eject_frame();
+    char *encode(char *data);
+    char *decode(char *frame);
     ~video_encoder();
 };
