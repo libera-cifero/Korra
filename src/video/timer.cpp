@@ -1,4 +1,4 @@
-#include "video/encoder/timer.hpp"
+#include "video/timer.hpp"
 #include <boost/system/system_error.hpp>
 #include <chrono>
 #include <exception>

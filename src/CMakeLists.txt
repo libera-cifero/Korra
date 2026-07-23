@@ -46,3 +46,6 @@ target_include_directories(basic_block PUBLIC ../include)
 add_library(len_reader SHARED ${len_reader_src})
 target_link_libraries(len_reader PUBLIC basic_block)
 target_include_directories(len_reader PUBLIC ../include)
+
+#timer
+add_library(timer OBJECT "video/timer.cpp")
