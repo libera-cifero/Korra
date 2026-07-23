@@ -193,8 +193,8 @@ void iterate_frame_test_cases(const char *test_name, void (*test)(const char *te
         path file_path = entry.path();
         string file_name = file_path.filename();
         if(entry.is_regular_file() && regex_match(file_name, match, pattern)){
-            int width, height;
             frame_meta expected = read_frame_expected(file_path);
+            int width, height;
             string frame_data_path = DATA_FRAME_PATH / expected.frame_path;
             uint8_t *data = read_frame_data(frame_data_path, width, height);
             if(expected.frame_width != width){

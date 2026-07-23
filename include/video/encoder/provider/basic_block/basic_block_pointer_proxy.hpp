@@ -11,6 +11,8 @@ struct proxy_config{
     basic_block_settings *base;
 };
 
+//{blocks, base, width_capacity}, rect to {2 byte, 2 byte, 2 byte, 2 byte}
+
 class basic_block_pointer_proxy {
 private:
     proxy_config _config;

@@ -21,7 +21,7 @@ bbp::basic_block_pointer(uint8_t *blocks, uint32_t block_index, basic_block_sett
     _context->block_index = block_index;
     _context->config = config;
     _context->width_capacity = get_width_capacity(config->frame_width, config->block_size);
-    _context->rect = get_rect(block_index, _context->config->block_size, _context->width_capacity);;
+    _context->rect = get_rect(block_index, _context->config->block_size, _context->width_capacity);
 }
 
 basic_block_pointer_proxy bbp::operator*() {

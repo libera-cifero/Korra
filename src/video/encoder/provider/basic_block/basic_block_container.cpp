@@ -43,7 +43,11 @@ size_t bbc::block_count() { return _block_count; }
 
 size_t bbc::byte_count() { return  get_basic_block_frame_payload_size(_bits_per_block, _block_count); }
 
-basic_block_pointer_proxy bbc::operator[](int index){ return *(_begin + index); }
+basic_block_pointer_proxy bbc::operator[](int index){ 
+    basic_block_pointer new_ptr = _begin + index;
+    basic_block_pointer_proxy proxy = *new_ptr;
+    return proxy; 
+}
 
 basic_block_settings* bbc::config(){ return _config; }
 

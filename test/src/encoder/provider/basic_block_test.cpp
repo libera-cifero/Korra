@@ -90,7 +90,7 @@ void test_get_block_by_index() {
 
     iterate_frame_test_cases(test_name, [](const char *test_name, frame_meta expected, uint8_t *data, string file_name)
     {
-        basic_block_container container(data, expected);
+        basic_block_container container(data, &expected);
         if(container.block_count() != expected.blocks.size()){
             delete[] data;
             printInfo(file_name.c_str());
@@ -121,7 +121,7 @@ void test_block_byte_io() {
     iterate_frame_test_cases(test_name, [](const char *test_name, frame_meta expected, uint8_t *data, string file_name) 
     {
         const char *cfile_name = file_name.c_str();
-        basic_block_container container(data, expected);
+        basic_block_container container(data, &expected);
         size_t byte_count = container.byte_count();
         uint8_t *read_buffer0 = (uint8_t*)calloc(byte_count, 1);
         auto end = container.read(container.begin(), read_buffer0, byte_count);

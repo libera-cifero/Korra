@@ -5,7 +5,7 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/timer_test",
+            "target": "./bin/basic_block_test",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
             "arguments": ""
