@@ -27,6 +27,7 @@ int mosaic_provider::_read_block_from_frame(char *frame, int block_index){
     int frame_width = _settings->frame_width;
 
     rgb_index index;
+    uint8_t *uframe = reinterpret_cast<uint8_t*>(frame);
     for(int y = p0.y; y < p1.y; y++) 
     {
         for(int x = p0.x; x < p1.x; x++)
@@ -34,9 +35,9 @@ int mosaic_provider::_read_block_from_frame(char *frame, int block_index){
             p.x = x;
             p.y = y;
             get_index_by_point(frame_width, p, index);
-            r_sum += frame[index.r_index];
-            g_sum += frame[index.g_index];
-            b_sum += frame[index.b_index];
+            r_sum += uframe[index.r_index];
+            g_sum += uframe[index.g_index];
+            b_sum += uframe[index.b_index];
         }
     }
 
@@ -97,8 +98,8 @@ void mosaic_provider::_block_index_to_area(int block_index, point &begin, point 
     begin.x = x;
     begin.y = y;
 
-    end.x = x + _frame_size;
-    end.y = y + _frame_size;
+    end.x = x + _settings->block_size;
+    end.y = y + _settings->block_size;
 }
 
 void mosaic_provider::_draw_block(int block_index, int block_data, char *frame) {
@@ -120,7 +121,8 @@ void mosaic_provider::_draw_block(int block_index, int block_data, char *frame) 
 }
 
 char* mosaic_provider::to_frame(char* data) {
-    char *frame = (char*)calloc(_frame_size, 1);
+    char *frame = new char[_frame_size];
+    memset(frame, 0, _frame_size);
     bit_area area = {0, _bits_per_block};
     for(int i = 0; i < _block_count; i++) {
         int block = _get_block(data, i);
