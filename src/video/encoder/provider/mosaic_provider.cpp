@@ -1,5 +1,4 @@
 #include "video/encoder/provider/mosaic_provider.hpp"
-#include "video/encoder/provider/basic_block/basic_block_container.hpp"
 #include "video/encoder/provider/basic_block/basic_block_math.hpp"
 #include "color.hpp"
 #include "video/encoder/provider/basic_block/rgb_index.hpp"

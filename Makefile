@@ -6,6 +6,8 @@ init_debug:
 	python3 tool/cmake_init.py Debug
 init_release:
 	python3 tool/cmake_init.py Release
+clean:
+	cmake --build build --target clean
 
 arch:
 	dot -Tsvg docs/architecture.dot > docs/map.svg
@@ -43,6 +45,8 @@ len_reader_test: len_reader
 	cmake --build build --target len_reader_test && python3 tool/run.py len_reader_test
 timer_test: timer
 	cmake --build build --target timer_test && python3 tool/run.py timer_test
+mosaic_test:
+	cmake --build build --target mosaic_test
 
 test: color_test math_test timer_test basic_block_test len_reader_test
 #======END======

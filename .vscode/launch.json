@@ -5,7 +5,7 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/basic_block_test",
+            "target": "./bin/mosaic_test",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
             "arguments": ""

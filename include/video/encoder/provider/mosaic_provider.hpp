@@ -1,7 +1,7 @@
 #pragma once
 #include "provider.hpp"
-#include "video/encoder/provider/basic_block/basic_block_container.hpp"
 #include "video/encoder/provider/basic_block/basic_block_settings.hpp"
+#include "video/encoder/provider/basic_block/bit_area.hpp"
 #include "video/encoder/provider/basic_block/point.hpp"
 #include <cstddef>
 #include <cstdint>
