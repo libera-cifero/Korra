@@ -111,7 +111,7 @@ basic_block_pointer bbc::read(basic_block_pointer begin, uint8_t *data_out, size
     size_t blocks_to_read = get_block_count(byte_count, _bits_per_block);
 
     int index1 = blocks_to_read - 1;
-    bit_area area = { .bit0 = 0, .bit1 = (size_t)_bits_per_block };
+    bit_area area = { .bit0 = 0, .bit1 = (unsigned int)_bits_per_block };
     for(int i = 0; i < blocks_to_read; i++) {
 
         int block = *(begin + i);

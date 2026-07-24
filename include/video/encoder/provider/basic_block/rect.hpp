@@ -7,12 +7,4 @@ typedef struct rect{
     int y1;
 } rect;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 struct rect get_rect(int block_index, int block_size, int width_capacity);
-
-#ifdef __cplusplus
-}
-#endif

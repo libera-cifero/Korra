@@ -1,5 +1,5 @@
 #include <stddef.h>
 struct bit_area{
-    size_t bit0; //including
-    size_t bit1; //excluding
+    unsigned int bit0; //including
+    unsigned int bit1; //excluding
 };
