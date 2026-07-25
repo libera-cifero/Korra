@@ -1,14 +1,14 @@
 #pragma once
 #include "provider.hpp"
-#include "video/encoder/provider/basic_block/basic_block_settings.hpp"
-#include "video/encoder/provider/basic_block/bit_area.hpp"
-#include "video/encoder/provider/basic_block/point.hpp"
+#include "video/encoder/provider/mosaic/mosaic_settings.hpp"
+#include "video/encoder/provider/mosaic/bit_area.hpp"
+#include "video/encoder/provider/mosaic/point.hpp"
 #include <cstddef>
 #include <cstdint>
 
 class mosaic_provider : public provider {
 private:
-    basic_block_settings *_settings;
+    mosaic_settings *_settings;
     size_t _payload_size;
     size_t _frame_size;
     uint32_t _bits_per_block;
@@ -24,7 +24,7 @@ private:
     bit_area _write_block_to_out(char *bytes, bit_area area, int block);
 
 public:
-    mosaic_provider(basic_block_settings *settings);
+    mosaic_provider(mosaic_settings *settings);
     size_t frame_size() override;
     size_t payload_size() override;
 

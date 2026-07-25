@@ -1,4 +1,4 @@
-#include "video/encoder/provider/basic_block/color_codec/rgb_palette_codec.hpp"
+#include "video/encoder/provider/mosaic/color_codec/rgb_palette_codec.hpp"
 #include "color.hpp"
 
 rgb_palette_codec::rgb_palette_codec(int *palette, int bits_per_number):palette_codec(palette, bits_per_number) { }

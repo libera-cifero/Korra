@@ -1,10 +1,10 @@
 #pragma once
-#include "video/encoder/provider/basic_block/color_codec/color_codec.hpp"
+#include "video/encoder/provider/mosaic/color_codec/color_codec.hpp"
 #include "config/data/video_config.hpp"
 #include <stdint.h>
 
 //basic block container config
-struct basic_block_settings : public video_config {
+struct mosaic_settings : public video_config {
     uint32_t block_size;
     color_codec *codec;
 };
@@ -12,7 +12,7 @@ struct basic_block_settings : public video_config {
 #ifdef __cplusplus
 extern "C" {
 #endif
-uint8_t *alloc_by_config(struct basic_block_settings config);
+uint8_t *alloc_by_config(struct mosaic_settings config);
 #ifdef __cplusplus
 }
 #endif

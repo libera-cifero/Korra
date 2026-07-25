@@ -1,4 +1,4 @@
-#include "video/encoder/provider/basic_block/color_codec/color_codec.hpp"
+#include "video/encoder/provider/mosaic/color_codec/color_codec.hpp"
 #include "status_error.hpp"
 
 color_codec::color_codec(int bits_per_number) {

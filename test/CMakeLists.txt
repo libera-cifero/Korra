@@ -7,7 +7,7 @@ file(GLOB test_lib_src "lib/test.cpp")
 file(GLOB frame_io_src "lib/frame_io.cpp")
 
 file(GLOB color_test_src "src/color_test.cpp")
-file(GLOB basic_block_test_src "src/encoder/provider/basic_block_test.cpp")
+file(GLOB mosaic_test_src "src/encoder/provider/mosaic_test.cpp")
 file(GLOB math_test_src "src/math_test.cpp")
 file(GLOB len_reader_test_src "src/encoder/provider/len_reader_test.cpp")
 file(GLOB timer_test_src "src/timer_test.cpp")
@@ -42,16 +42,6 @@ add_executable(math_test ${test_lib_src} ${math_test_src})
 target_setup(math_test)
 target_link_libraries(math_test PUBLIC base_utils)
 
-#basic_block_test
-add_executable(basic_block_test ${test_lib_src} ${basic_block_test_src} ${frame_io_src})
-target_setup(basic_block_test)
-target_link_libraries(basic_block_test PRIVATE basic_block base_utils color_codec)
-
-#len_reader_test
-add_executable(len_reader_test ${test_lib_src} ${frame_io_src} ${len_reader_test_src})
-target_setup(len_reader_test)
-target_link_libraries(len_reader_test PUBLIC base_utils color_codec basic_block len_reader)
-
 #timer_test
 add_executable(timer_test ${test_lib_src} ${timer_test_src})
 target_setup(timer_test)
@@ -70,7 +60,7 @@ target_link_libraries(mosaic_test PUBLIC mosaic color_codec)
 #frame_gen_tool
 add_executable(frame_gen_tool ${test_lib_src} ${frame_gen_tool_src} ${frame_io_src})
 target_setup_tool(frame_gen_tool)
-target_link_libraries(frame_gen_tool PRIVATE basic_block base_utils color_codec)
+target_link_libraries(frame_gen_tool PRIVATE mosaic color_codec)
 
 #args_frame_gen_tool
 add_executable(args_frame_gen_tool ${args_frame_gen_tool_src})
@@ -80,9 +70,4 @@ target_link_libraries(args_frame_gen_tool PRIVATE color_codec)
 #fps_color_tool
 add_executable(fps_color_tool ${fps_color_tool_src})
 target_setup_tool(fps_color_tool)
-
-#analyse_decode_metric_tool
-add_executable(analyse_decode_metric_tool ${adm_tool_src} ${frame_io_src} ${test_lib_src})
-target_setup_tool(analyse_decode_metric_tool)
-target_link_libraries(analyse_decode_metric_tool PRIVATE basic_block color_codec)
 #======END======

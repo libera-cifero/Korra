@@ -1,7 +1,7 @@
-#include "video/encoder/provider/basic_block/color_codec/codec_json.hpp"
-#include "video/encoder/provider/basic_block/color_codec/hsv_codec.hpp"
-#include "video/encoder/provider/basic_block/color_codec/rgb_palette_codec.hpp"
-#include "video/encoder/provider/basic_block/color_codec/ycbcr_palette_codec.hpp"
+#include "video/encoder/provider/mosaic/color_codec/codec_json.hpp"
+#include "video/encoder/provider/mosaic/color_codec/hsv_codec.hpp"
+#include "video/encoder/provider/mosaic/color_codec/rgb_palette_codec.hpp"
+#include "video/encoder/provider/mosaic/color_codec/ycbcr_palette_codec.hpp"
 #include "color.hpp"
 #include <regex>
 #include <stdexcept>

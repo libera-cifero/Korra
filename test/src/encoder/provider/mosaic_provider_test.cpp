@@ -1,4 +1,4 @@
-#include "video/encoder/provider/basic_block/basic_block_settings.hpp"
+#include "video/encoder/provider/mosaic/mosaic_settings.hpp"
 #include "video/encoder/provider/mosaic_provider.hpp"
 #include "frame_io.hpp"
 #include "test.hpp"
@@ -31,8 +31,8 @@ void test_to_frame() {
     iterate_frame_test_cases(test_name, [](const char *test_name, frame_meta expected, uint8_t *data, string file_name) 
     {
         char *payload = convert_blocks_to_data(expected.blocks, expected.codec->bits_per_number());
-        basic_block_settings *settings = new basic_block_settings;
-        memcpy(settings, (basic_block_settings*)&expected, sizeof(basic_block_settings));
+        mosaic_settings *settings = new mosaic_settings;
+        memcpy(settings, (mosaic_settings*)&expected, sizeof(mosaic_settings));
         mosaic_provider provider(settings);
 
         timespec t0, t1;
@@ -65,8 +65,8 @@ void test_to_payload(){
     iterate_frame_test_cases(test_name, [](const char *test_name, frame_meta expected, uint8_t *data, string file_name) 
     {
         char *payload_expected = convert_blocks_to_data(expected.blocks, expected.codec->bits_per_number());
-        basic_block_settings *settings = new basic_block_settings;
-        memcpy(settings, (basic_block_settings*)&expected, sizeof(basic_block_settings));
+        mosaic_settings *settings = new mosaic_settings;
+        memcpy(settings, (mosaic_settings*)&expected, sizeof(mosaic_settings));
         mosaic_provider provider(settings);
         
         timespec t0, t1;

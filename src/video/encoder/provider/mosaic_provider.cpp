@@ -1,16 +1,15 @@
 #include "video/encoder/provider/mosaic_provider.hpp"
-#include "video/encoder/provider/basic_block/basic_block_math.hpp"
+#include "video/encoder/provider/mosaic/mosaic_math.hpp"
 #include "color.hpp"
-#include "video/encoder/provider/basic_block/rgb_index.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
 
-mosaic_provider::mosaic_provider(basic_block_settings *settings){
+mosaic_provider::mosaic_provider(mosaic_settings *settings){
     _settings = settings;
     _block_count = get_block_count(settings->frame_width, settings->frame_height, settings->block_size);
-    _payload_size = get_basic_block_frame_payload_size(settings->codec->bits_per_number(), _block_count);
+    _payload_size = get_mosaic_frame_payload_size(settings->codec->bits_per_number(), _block_count);
     _frame_size = settings->frame_width * settings->frame_height * 3;
     _bits_per_block = _settings->codec->bits_per_number();
 }
@@ -26,7 +25,6 @@ int mosaic_provider::_read_block_from_frame(char *frame, int block_index){
     uint32_t r_sum = 0, g_sum = 0, b_sum = 0, c = _settings->block_size * _settings->block_size;
     int frame_width = _settings->frame_width;
 
-    rgb_index index;
     uint8_t *uframe = reinterpret_cast<uint8_t*>(frame);
     for(int y = p0.y; y < p1.y; y++) 
     {

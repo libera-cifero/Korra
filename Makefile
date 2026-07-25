@@ -23,9 +23,9 @@ base_utils:
 	cmake --build build --target base_utils
 color_codec:
 	cmake --build build --target color_codec
-basic_block: base_utils color_codec
-	cmake --build build --target basic_block
-len_reader: basic_block
+mosaic:
+	cmake --build build --target mosaic
+len_reader: mosaic
 	cmake --build build --target len_reader
 timer: 
 	cmake --build build --target timer
@@ -37,29 +37,25 @@ build_src: base_utils color_codec len_reader timer
 #=====BEGIN=====
 color_test: color
 	cmake --build build --target color_test && python3 tool/run.py color_test
-basic_block_test: basic_block
-	cmake --build build --target basic_block_test && python3 tool/run.py basic_block_test
+mosaic_test: mosaic
+	cmake --build build --target mosaic_test && python3 tool/run.py mosaic_test
 math_test: math
 	cmake --build build --target math_test && python3 tool/run.py math_test
-len_reader_test: len_reader
-	cmake --build build --target len_reader_test && python3 tool/run.py len_reader_test
 timer_test: timer
 	cmake --build build --target timer_test && python3 tool/run.py timer_test
-mosaic_test:
-	cmake --build build --target mosaic_test
 
-test: color_test math_test timer_test basic_block_test len_reader_test
+test: color_test math_test timer_test mosaic_test
 #======END======
 
 #TEST TOOLS
 #=====BEGIN=====
-frame_gen_tool: basic_block color rect rgb_index color_codec
+frame_gen_tool: mosaic color rect rgb_index color_codec
 	cmake --build build --target frame_gen_tool
 args_frame_gen_tool: color_codec
 	cmake --build build --target args_frame_gen_tool
 fps_color_tool:
 	cmake --build build --target fps_color_tool
-adm_tool: basic_block color_codec
+adm_tool: mosaic color_codec
 	cmake --build build --target analyse_decode_metric_tool
 gen_frame: frame_gen_tool
 	python3 tool/run.py tool/frame_gen_tool $(ARGS)

@@ -1,5 +1,5 @@
-#include "video/encoder/provider/basic_block/color_codec/palette_codec.hpp"
-#include "video/encoder/provider/basic_block/color_codec/color_codec.hpp"
+#include "video/encoder/provider/mosaic/color_codec/palette_codec.hpp"
+#include "video/encoder/provider/mosaic/color_codec/color_codec.hpp"
 #include <cmath>
 #include <cstring>
 

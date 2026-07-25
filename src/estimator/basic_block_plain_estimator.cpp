@@ -1,14 +1,14 @@
-#include "estimator/basic_block_plain_estimator.hpp"
-#include "video/encoder/provider/basic_block/basic_block_settings.hpp"
-#include "video/encoder/provider/basic_block/basic_block_math.hpp"
+#include "estimator/mosaic_plain_estimator.hpp"
+#include "video/encoder/provider/mosaic/mosaic_settings.hpp"
+#include "video/encoder/provider/mosaic/mosaic_math.hpp"
 
-basic_block_plain_estimator::basic_block_plain_estimator(basic_block_settings *settings) : estimator() {
+mosaic_plain_estimator::mosaic_plain_estimator(mosaic_settings *settings) : estimator() {
     _bits_per_number = settings->codec->bits_per_number();
     _blocks_per_frame = get_block_count(settings->frame_width, settings->frame_height, settings->block_size);
-    _frame_payload_capacity  = get_basic_block_frame_payload_size(_bits_per_number, _blocks_per_frame);
+    _frame_payload_capacity  = get_mosaic_frame_payload_size(_bits_per_number, _blocks_per_frame);
 }
 
-float basic_block_plain_estimator::put_package(void *ip_package) {
+float mosaic_plain_estimator::put_package(void *ip_package) {
     estimator::put_package(ip_package);
 
     int block_count = get_block_count($payload_byte_count_total, _bits_per_number);

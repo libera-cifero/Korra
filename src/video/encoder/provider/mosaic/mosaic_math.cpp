@@ -1,4 +1,4 @@
-#include "video/encoder/provider/basic_block/basic_block_math.hpp"
+#include "video/encoder/provider/mosaic/mosaic_math.hpp"
 #include <cstdint>
 #include <cstddef>
 
@@ -12,7 +12,7 @@ uint32_t get_block_count(int frame_width, int frame_height, int block_size){
     return height_capacity * width_capacity;
 }
 
-uint32_t get_basic_block_frame_payload_size(int bits_per_block, int block_count) {
+uint32_t get_mosaic_frame_payload_size(int bits_per_block, int block_count) {
     return bits_per_block * block_count / 8;
 }
 

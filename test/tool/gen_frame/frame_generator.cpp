@@ -1,13 +1,12 @@
 //input: frame_width, frame_height, color_codec_path, block_size, name of expected data file, name of frame file
 //output: array of random expected blocks, path to frame in binary format
 #include "color.hpp"
-#include "video/encoder/provider/basic_block/color_codec/color_codec.hpp"
-#include "video/encoder/provider/basic_block/color_codec/codec_json.hpp"
-#include "video/encoder/provider/basic_block/color_codec/palette_codec.hpp"
-#include "video/encoder/provider/basic_block/rgb_index.h"
+#include "video/encoder/provider/mosaic/color_codec/color_codec.hpp"
+#include "video/encoder/provider/mosaic/color_codec/codec_json.hpp"
+#include "video/encoder/provider/mosaic/color_codec/palette_codec.hpp"
+#include "video/encoder/provider/mosaic/rgb_index.hpp"
 #include "math.hpp"
-#include "video/encoder/provider/basic_block_settings.hpp"
-#include "video/encoder/provider/basic_block/rect.h"
+#include "video/encoder/provider/mosaic/mosaic_settings.hpp"
 #include "frame_io.hpp"
 #include "io.hpp"
 #include "json.hpp"
@@ -98,9 +97,11 @@ output generate(frame_gen_args in){
         blocks[i] = block_data;
         int color = codec->number_to_color(block_data);
         uint8_t r = get_r(color), g = get_g(color), b = get_b(color);
-        rect area = get_rect(i, in.block_size, width_capacity);
-        for(int y = area.y0; y < area.y1; y++){
-            for(int x = area.x0; x < area.x1; x++) {
+        int index_y = i / width_capacity, index_x = i % width_capacity;
+        uint32_t y0 = index_y * in.block_size, x0 = index_x * in.block_size;
+        uint32_t y1 = y0 + in.block_size, x1 = x0 + in.block_size;
+        for(int y = y0; y < y1; y++){
+            for(int x = x0; x < x1; x++) {
                 rgb_index rgb = get_index_by_point(in.frame_width, x, y);
                 data[rgb.r_index] = r;
                 data[rgb.g_index] = g;

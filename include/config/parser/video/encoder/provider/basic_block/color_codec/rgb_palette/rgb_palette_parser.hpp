@@ -1,5 +1,5 @@
 #pragma once
-#include "video/encoder/provider/basic_block/color_codec/color_codec.hpp"
+#include "video/encoder/provider/mosaic/color_codec/color_codec.hpp"
 #include "config/parser/parser.hpp"
 
 class rgb_palette_parser : public specific_parser<color_codec*> {
