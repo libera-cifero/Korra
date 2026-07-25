@@ -30,14 +30,11 @@ int mosaic_provider::_read_block_from_frame(char *frame, int block_index){
     uint8_t *uframe = reinterpret_cast<uint8_t*>(frame);
     for(int y = p0.y; y < p1.y; y++) 
     {
-        for(int x = p0.x; x < p1.x; x++)
-        {
-            p.x = x;
-            p.y = y;
-            get_index_by_point(frame_width, p, index);
-            r_sum += uframe[index.r_index];
-            g_sum += uframe[index.g_index];
-            b_sum += uframe[index.b_index];
+        int row_base = 3 * (y * frame_width + p0.x);
+        for(int x = p0.x; x < p1.x; x++, row_base += 3) {
+            b_sum += uframe[row_base];
+            g_sum += uframe[row_base + 1];
+            r_sum += uframe[row_base + 2];
         }
     }
 

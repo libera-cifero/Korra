@@ -17,6 +17,10 @@
 using namespace std;
 using namespace filesystem;
 
+double get_delta_millis(timespec t0, timespec t1){
+    return ((t1.tv_sec - t0.tv_sec) + (t1.tv_nsec - t0.tv_nsec) / 1e9) * 1000.0;
+}
+
 //basic_block_pointer
 //=====BEGIN=====
 void test_ptr_equal(){
@@ -124,7 +128,13 @@ void test_block_byte_io() {
         basic_block_container container(data, &expected);
         size_t byte_count = container.byte_count();
         uint8_t *read_buffer0 = (uint8_t*)calloc(byte_count, 1);
+
+        timespec t0, t1;
+        clock_gettime(CLOCK_MONOTONIC, &t0);
         auto end = container.read(container.begin(), read_buffer0, byte_count);
+        clock_gettime(CLOCK_MONOTONIC, &t0);
+        double delta_read = get_delta_millis(t0, t1);
+
         if(end != nullptr) {
             delete[] read_buffer0;
             delete[] data;
@@ -134,7 +144,10 @@ void test_block_byte_io() {
 
         for(int i = 0; i < byte_count; i++) read_buffer0[i] = rand() % 256;
         
+        clock_gettime(CLOCK_MONOTONIC, &t0);
         end = container.write(container.begin(), read_buffer0, byte_count);
+        clock_gettime(CLOCK_MONOTONIC, &t1);
+        double delta_write = get_delta_millis(t0, t1);
 
         if(end != nullptr) {
             delete[] read_buffer0;
@@ -157,6 +170,7 @@ void test_block_byte_io() {
 
         delete [] read_buffer0;
         delete [] read_buffer1;
+        printInfo("%s ");
     });
 
     printPass(test_name);

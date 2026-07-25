@@ -4,6 +4,11 @@
 #include "test.hpp"
 #include <cstdint>
 #include <cstring>
+#include <ctime>
+
+double get_delta_millis(timespec t0, timespec t1){
+    return ((t1.tv_sec - t0.tv_sec) + (t1.tv_nsec - t0.tv_nsec) / 1e9) * 1000.0;
+}
 
 char *convert_blocks_to_data(vector<int> &blocks, int bits_per_block){
     int byte_length = blocks.size() * bits_per_block / 8;
@@ -29,7 +34,12 @@ void test_to_frame() {
         basic_block_settings *settings = new basic_block_settings;
         memcpy(settings, (basic_block_settings*)&expected, sizeof(basic_block_settings));
         mosaic_provider provider(settings);
+
+        timespec t0, t1;
+        clock_gettime(CLOCK_MONOTONIC, &t0);
         uint8_t *frame = reinterpret_cast<uint8_t*>(provider.to_frame(payload));
+        clock_gettime(CLOCK_MONOTONIC, &t1);
+        double delta_ms = get_delta_millis(t0, t1);
         free(payload);
         for(int i = 0; i < provider.frame_size(); i++){
             uint8_t expected = data[i], fact = frame[i];
@@ -40,7 +50,9 @@ void test_to_frame() {
                 fail(test_name, "%s frame[%d] expected %d, but got %d!", 1, file_name.c_str(), i, expected, fact);
             }
         }
-
+        int payload_size = provider.payload_size(), frame_size = provider.frame_size(), block_count = expected.blocks.size(), block_size = expected.block_size;
+        double speed = provider.payload_size() / delta_ms;
+        printInfo("%s\t%.3lfms\t%.3lfKB/s\t%d\t%d\t%d\t%d", file_name.c_str(), delta_ms, speed, payload_size, frame_size, block_count, block_size);
         delete [] frame;
     });
 
@@ -56,7 +68,13 @@ void test_to_payload(){
         basic_block_settings *settings = new basic_block_settings;
         memcpy(settings, (basic_block_settings*)&expected, sizeof(basic_block_settings));
         mosaic_provider provider(settings);
+        
+        timespec t0, t1;
+        clock_gettime(CLOCK_MONOTONIC, &t0);
         char *payload = provider.to_payload(reinterpret_cast<char*>(data));
+        clock_gettime(CLOCK_MONOTONIC, &t1);
+        double delta_ms = get_delta_millis(t0, t1);
+
         for(int i = 0; i < provider.payload_size(); i++){
             uint8_t expected = payload_expected[i], fact = payload[i];
             if(expected != fact){
@@ -67,6 +85,10 @@ void test_to_payload(){
                 fail(test_name, "%s frame[%d] expected %d, but got %d!", 1, file_name.c_str(), i, expected, fact);
             }
         }
+
+        int payload_size = provider.payload_size(), frame_size = provider.frame_size(), block_count = expected.blocks.size(), block_size = expected.block_size;
+        double speed = provider.payload_size() / delta_ms;
+        printInfo("%s\t%.3lfms\t%.3lfKB/s\t%d\t%d\t%d\t%d", file_name.c_str(), delta_ms, speed, payload_size, frame_size, block_count, block_size);
 
         delete[] payload_expected;
         delete [] payload;
