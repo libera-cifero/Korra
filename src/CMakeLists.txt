@@ -7,7 +7,6 @@ file(GLOB color_src "color.cpp")
 file(GLOB math_src "math.cpp")
 
 file(GLOB mosaic_config_src "${mosaic_DIR}/mosaic_settings.cpp")
-file(GLOB rgb_index_src "${mosaic_DIR}/rgb_index.cpp")
 file(GLOB color_codec_src "${mosaic_DIR}/color_codec/color_codec.cpp")
 file(GLOB hsv_codec_src "${mosaic_DIR}/color_codec/hsv_codec.cpp")
 file(GLOB palette_codec_src "${mosaic_DIR}/color_codec/palette_codec.cpp")
@@ -15,7 +14,6 @@ file(GLOB rgb_palette_codec_src "${mosaic_DIR}/color_codec/rgb_palette_codec.cpp
 file(GLOB ycbcr_palette_codec_src "${mosaic_DIR}/color_codec/ycbcr_palette_codec.cpp")
 file(GLOB codec_json_src "${mosaic_DIR}/color_codec/codec_json.cpp")
 file(GLOB mosaic_math_src "${mosaic_DIR}/mosaic_math.cpp")
-file(GLOB mosaic_settings_src "${mosaic_DIR}/mosaic_settings.cpp")
 file(GLOB mosaic_provider_src "video/encoder/provider/mosaic_provider.cpp")
 
 file(GLOB len_reader_src "video/encoder/provider/len_reader/raw_ip_length_reader.cpp")
@@ -35,5 +33,5 @@ add_library(timer OBJECT "video/timer.cpp")
 target_include_directories(timer PUBLIC ${INCLUDE_DIR})
 
 #mosaic
-add_library(mosaic STATIC ${mosaic_provider_src} ${rgb_index_src} ${mosaic_math_src} ${mosaic_settings_src})
+add_library(mosaic STATIC ${mosaic_provider_src} ${mosaic_math_src})
 target_include_directories(mosaic PUBLIC ${INCLUDE_DIR})

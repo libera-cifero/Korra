@@ -12,88 +12,58 @@ digraph {
                     color=red;
                     fontcolor=red;
                 ];
-                basic_provider[
+                mosaic_provider[
                     color=blue;
                     fontcolor=blue;
                 ];
-                subgraph mosaic{
-                    mosaic_container [color=blue;fontcolor=blue;];
-                    mosaic_pointer [color=blue;fontcolor=blue;];
-                    mosaic_pointer_proxy [color=blue;fontcolor=blue;];
-                    data_length_reader [
-                        color=red;
-                        fontcolor=red;
-                    ];
-                    raw_ip_length_reader[
-                        color=blue;
-                        fontcolor=blue;
-                    ];
-                    bit_area [color=green;fontcolor=green;];
-                    
-                    basic_provider->provider [color=blue;];
-                    
-                    mosaic_container->basic_provider [weight=1000; ];
 
-                    mosaic_pointer->mosaic_container [weight=1000;];
+                subgraph mosaic {
+                    bit_area [fontcolor=green; color = green;];
+                    point [fontcolor=green; color = green;];
+                    mosaic_math;
+                    mosaic_settings [fontcolor=green; color = green;];
                     
-                    mosaic_pointer_proxy->mosaic_pointer;
-                    mosaic_pointer_proxy->mosaic_container;
-
-                    bit_area->mosaic_container;              
+                    mosaic_settings->mosaic_provider;
                     
-                    mosaic_settings [color=green;fontcolor=green;];
-                    rect [color=green;fontcolor=green;];
-                    rgb_index[color=green;fontcolor=green;];
+                    point->mosaic_provider;
+
+                    bit_area->mosaic_provider;
+
+                    mosaic_math->mosaic_provider;
                     
-                    mosaic_config->mosaic_container;
-                    mosaic_config->mosaic_pointer;
-                    mosaic_config->mosaic_pointer_proxy;
-                    mosaic_config->raw_ip_length_reader;
 
-                    rect->mosaic_pointer_proxy;
-                    rect->mosaic_pointer;
-
-                    rgb_index->mosaic_pointer_proxy;  
+                    
+                    subgraph cluster_color_codecs{
+                        label="color_codecs";
+                        color_codec [
+                            color=purple;
+                            fontcolor=purple;
+                        ];
+                        hsv_codec [
+                            color=blue;
+                            fontcolor=blue;
+                        ];
+                        palette_codec[
+                            color=purple;
+                            fontcolor=purple;
+                        ];
+                        rgb_palette_codec[
+                            color=blue;
+                            fontcolor=blue;
+                        ];
+                        ycbcr_palette_codec[
+                            color=blue;
+                            fontcolor=blue;
+                        ];
+                        hsv_codec->color_codec [color=blue; ];
+                        palette_codec->color_codec[color=purple;];   
+                        rgb_palette_codec->palette_codec [color=blue;];
+                        ycbcr_palette_codec->palette_codec [color=blue];
+                    }
+                    color_codec->mosaic_provider [minlen=2;];
                 }
 
-                subgraph data_length_reader{
-                    raw_ip_length_reader->data_length_reader [color = blue;];
-                    data_length_reader->basic_provider;
-
-                    mosaic_pointer->raw_ip_length_reader [minlen=2;];
-                }
-
-
-                subgraph cluster_color_codecs{
-                    label="color_codecs";
-                    color_codec [
-                        color=purple;
-                        fontcolor=purple;
-                    ];
-                    hsv_codec [
-                        color=blue;
-                        fontcolor=blue;
-                    ];
-                    palette_codec[
-                        color=purple;
-                        fontcolor=purple;
-                    ];
-                    rgb_palette_codec[
-                        color=blue;
-                        fontcolor=blue;
-                    ];
-                    ycbcr_palette_codec[
-                        color=blue;
-                        fontcolor=blue;
-                    ];
-                    hsv_codec->color_codec [color=blue; ];
-                    palette_codec->color_codec[color=purple;];   
-                    rgb_palette_codec->palette_codec [color=blue;];
-                    ycbcr_palette_codec->palette_codec [color=blue];
-                }
-
-                color_codec->mosaic_pointer_proxy [minlen=2;];
-                
+                mosaic_provider->provider[color = blue;];
             }
             subgraph cluster_compressors {
                 label="compressors";
@@ -156,16 +126,11 @@ digraph {
             obfuscator->video_encoder;
             corrector->video_encoder;
 
-            color->mosaic_pointer_proxy [minlen=1];
-            color->mosaic_pointer [minlen=1];
             color->rgb_palette_codec;
             color->hsv_codec;
             
             status_error->color;
             status_error->color_codec;
-
-            math->mosaic_container;
-
 
         }
         subgraph video_pipes {
@@ -187,11 +152,6 @@ digraph {
             ffmpeg_rtmp_config->ffmpeg_rtmp_pipe_out;
         }
 
-        subgraph cluster_config {
-            parser_factory [color=red; fontcolor=red;]
-            static_parser_factory [color=blue; fontcolor = blue;]
-        }
-
         video_socket [color=blue; fontcolor=blue;];
         
         video_encoder->video_socket [weight=2;];
@@ -207,27 +167,20 @@ digraph {
         }
 
         color_test;
-        mosaic_test;
-        len_reader_test;
+        mosaic_provider_test;
         math_test;
         
         test->color_test;
-        test->mosaic_test;
-        test->len_reader_test;
+        test->mosaic_provider_test;
         test->math_test;
     }
 
+    color->mosaic_provider_test;
+    mosaic_settings->mosaic_provider_test;
+    mosaic_provider->mosaic_provider_test [color=orange;];
 
-    color->mosaic_test;
     color->color_test [color=orange;];
 
     math->math_test [color=orange;];
 
-    mosaic_pointer_proxy->mosaic_test [color=orange;];
-    mosaic_container->mosaic_test [color=orange;];
-    mosaic_pointer->mosaic_test [color=orange;];
-
-    raw_ip_length_reader->len_reader_test [color=orange;];
-    mosaic_pointer->len_reader_test;
-    mosaic_container->len_reader_test;
 }

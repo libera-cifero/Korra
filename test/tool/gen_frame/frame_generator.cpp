@@ -4,7 +4,7 @@
 #include "video/encoder/provider/mosaic/color_codec/color_codec.hpp"
 #include "video/encoder/provider/mosaic/color_codec/codec_json.hpp"
 #include "video/encoder/provider/mosaic/color_codec/palette_codec.hpp"
-#include "video/encoder/provider/mosaic/rgb_index.hpp"
+#include "video/encoder/provider/mosaic/point.hpp"
 #include "math.hpp"
 #include "video/encoder/provider/mosaic/mosaic_settings.hpp"
 #include "frame_io.hpp"
@@ -34,6 +34,35 @@ struct output {
     vector<int> blocks;
     uint8_t *frame;
 };
+
+struct rgb_index{
+    int r_index;
+    int g_index;
+    int b_index;
+};
+
+uint8_t *alloc_by_config(mosaic_settings config){
+    return (uint8_t*)malloc(3 * config.frame_width * config.frame_height);
+}
+
+struct rgb_index get_index_by_point(int frame_width, int x, int y){
+    int b_pos = 3 * (y * frame_width + x);
+    int g_pos = b_pos + 1, r_pos = b_pos + 2;
+
+    struct rgb_index index = { r_pos, g_pos, b_pos };
+    return index;
+}
+
+void get_index_by_point(int frame_width, point p, rgb_index &index){
+    int b_pos = 3 * (p.y * frame_width + p.x);
+    int g_pos = b_pos + 1, r_pos = b_pos + 2;
+
+    index.r_index = r_pos;
+    index.g_index = g_pos;
+    index.b_index = b_pos;
+}
+
+
 static color_codec *read_color_codec(string path) {
     string text;
     fstream codec_file(path, ios_base::in);

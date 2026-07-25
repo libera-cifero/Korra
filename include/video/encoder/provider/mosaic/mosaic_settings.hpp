@@ -8,11 +8,3 @@ struct mosaic_settings : public video_config {
     uint32_t block_size;
     color_codec *codec;
 };
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-uint8_t *alloc_by_config(struct mosaic_settings config);
-#ifdef __cplusplus
-}
-#endif
