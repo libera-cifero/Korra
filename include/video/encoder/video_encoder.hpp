@@ -1,5 +1,4 @@
 #pragma once
-#include "compressor/compressor.hpp"
 #include "obfuscator/obfuscator.hpp"
 #include "corrector/corrector.hpp"
 #include "provider/provider.hpp"
@@ -8,7 +7,6 @@
 typedef struct video_encoder_config {
     provider *provider;
     corrector *corrector;
-    compressor *compressor;
     obfuscator *obfuscator;
 } video_encoder_config;
 

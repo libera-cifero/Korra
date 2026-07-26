@@ -1,4 +1,4 @@
-#include "video/timer.hpp"
+#include "ip_boxer/timer.hpp"
 #include <boost/system/system_error.hpp>
 #include <chrono>
 #include <exception>
@@ -64,7 +64,7 @@ int timer::timeout_millis(){
     return _timeout_millis;
 }
 
-void timer::on_timed_out(function<void()> &event){
+void timer::on_timeout(function<void()> event){
     _events.push_back(event);
 }
 

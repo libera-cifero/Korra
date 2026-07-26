@@ -29,7 +29,7 @@ add_library(color_codec OBJECT ${color_codec_src} ${hsv_codec_src} ${palette_cod
 target_include_directories(color_codec PUBLIC ${INCLUDE_DIR})
 
 #timer
-add_library(timer OBJECT "video/timer.cpp")
+add_library(timer OBJECT "ip_boxer/timer.cpp")
 target_include_directories(timer PUBLIC ${INCLUDE_DIR})
 
 #mosaic

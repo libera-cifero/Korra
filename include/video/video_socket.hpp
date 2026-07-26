@@ -2,7 +2,6 @@
 #include "video/encoder/video_encoder.hpp"
 #include "video/pipe/video_pipe_in.hpp"
 #include "video/pipe/video_pipe_out.hpp"
-#include "estimator/estimator.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <string>
@@ -24,7 +23,6 @@ struct video_socket_config {
     video_pipe_in *pipe_in;
     video_pipe_out *pipe_out;
     ip_endpoint socket;
-    estimator *estimator;
 };
 
 class video_connection {

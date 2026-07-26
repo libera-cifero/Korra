@@ -173,11 +173,13 @@ digraph {
         test->color_test;
         test->mosaic_provider_test;
         test->math_test;
+
+        frame_io->mosaic_provider_test;
     }
 
     color->mosaic_provider_test;
     mosaic_settings->mosaic_provider_test;
-    mosaic_provider->mosaic_provider_test [color=orange;];
+    mosaic_provider->mosaic_provider_test [color=orange; minlen=10;];
 
     color->color_test [color=orange;];
 

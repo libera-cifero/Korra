@@ -28,6 +28,6 @@ public:
     int timeout_millis();
     void launch();
     void reset();
-    void on_timed_out(function<void()> &event);
+    void on_timeout(function<void()> event);
     ~timer();
 };

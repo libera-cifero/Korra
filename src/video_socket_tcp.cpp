@@ -1,6 +1,4 @@
 #include "video/video_socket_tcp.hpp"
-#include "video/encoder/provider/len_reader/data_length_reader.hpp"
-#include "video/encoder/video_encoder.hpp"
 #include <boost/asio.hpp>
 #include <cstddef>
 #include <cstdint>
@@ -43,24 +41,11 @@ uint16_t video_connection_tcp::_read_package_length(void *data){
 }
 
 int video_connection_tcp::recieve(void *bytes, size_t max_length) {
-    vector<video_frame> frames;
-    data_length_reader *len_reader = _config->encoder->config()->provider->length_reader();
-    _config->encoder->encode_package(bytes);
+
 }
 
 void video_connection_tcp::send(void *bytes){
-    size_t package_length = _read_package_length(bytes);
-    int frame_count;
-    vector<video_frame> *frames_ptr = _config->encoder->encode_package(bytes);
-    auto frames = *frames_ptr;
-    for(int index = 0; index < frame_count; index++){
-        auto frame = frames[index];
-        uint8_t *data = reinterpret_cast<uint8_t*>(frame.data);
-        _config->pipe_out->write(data, frame.size);
-    }
-    
-    delete frames_ptr;
-    //boost::asio::write(_socket, boost::asio::buffer((char*)bytes, 2));
+
 }
 
 video_connection_tcp::~video_connection_tcp() {

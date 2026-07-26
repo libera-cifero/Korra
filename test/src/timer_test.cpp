@@ -1,4 +1,4 @@
-#include "video/timer.hpp"
+#include "ip_boxer/timer.hpp"
 #include <chrono>
 #include <exception>
 #include <functional>
@@ -26,7 +26,7 @@ void test_running(){
             function<void()> event = [&](){
                 counter++;
             };
-            t.on_timed_out(event);
+            t.on_timeout(event);
             t.launch();
 
             this_thread::sleep_for(chrono::milliseconds(total_delay));
