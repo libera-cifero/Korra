@@ -1,4 +1,4 @@
-#include "ip_boxer/data/ip_data.hpp"
+#include "data_boxer/data/ip_data.hpp"
 #include <cstdint>
 #include <cstring>
 #include <stdexcept>
@@ -10,6 +10,8 @@ ip_data::ip_data() : korra_data() {
 ip_data::ip_data(char *ip_package){
     _ip_package = ip_package;
 }
+
+bool ip_data::is_splittable() { return true; }
 
 uint16_t ip_data::type() { return 0; }
 

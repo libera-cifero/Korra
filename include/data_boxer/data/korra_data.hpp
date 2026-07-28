@@ -1,9 +1,12 @@
-#include "data_checker.hpp"
+#pragma once
 #include <cstdint>
 
 class korra_data {
 public:
     korra_data();
+
+    virtual bool is_splittable() = 0;
+
     virtual uint16_t type() = 0;
     uint16_t type(char *bytes);
 
@@ -14,6 +17,6 @@ public:
     
     virtual char *to_bytes();
     virtual void from_bytes(char *bytes);
-    
+
     virtual ~korra_data();
 };

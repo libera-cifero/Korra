@@ -1,3 +1,4 @@
+#pragma once
 #include "korra_data.hpp"
 #include <cstdint>
 class ip_data : public korra_data {
@@ -8,6 +9,8 @@ public:
     ip_data(char *ip_package);
 
     char *ip_package();
+
+    bool is_splittable() override;
 
     int size() override;
     int size(char *bytes) override;

@@ -1,4 +1,5 @@
-#include "ip_boxer/ip_boxer.hpp"
+#include "data_boxer/ip_boxer.hpp"
+#include "ip_boxer/data/checker/ip_data_checker.hpp"
 #include <cstring>
 #include <functional>
 #include <mutex>
@@ -7,6 +8,9 @@
 ip_boxer::ip_boxer(int max_sending_size, int timeout){
     _max_sending_size = max_sending_size;
     _timeout = timeout;
+    _checkers = {
+        new ip_data_checker<iterator>
+    };
 }
 
 char *ip_boxer::_pop_bytes_for_boxing(){
@@ -59,6 +63,9 @@ void ip_boxer::box(korra_data *data, vector<char*> &frame_payloads_buffer) {
 void ip_boxer::unbox(char *decoded_data, vector<korra_data*> &buffer) {
     _clear_list<korra_data>(buffer, [](korra_data *data){ delete data; });
     for(int i = 0; i < _max_sending_size; i++) _package_receive_pieces.push_back(decoded_data[i]);
+    while(_package_receive_pieces.size() >= _max_sending_size) {
+        
+    }
 }
 
 void ip_boxer::on_timeout(function<void(char*)> event){
