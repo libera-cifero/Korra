@@ -4,6 +4,8 @@
 #include <cstring>
 #include <stdexcept>
 
+korra_data::korra_data() { }
+
 char* korra_data::to_bytes(){
     int total_size = 2 + size();
     char *bytes = new char[total_size];

@@ -1,10 +1,21 @@
 #pragma once
 #include <cstdint>
 
+
+/*
+    Abstract wrapper over raw bytes
+
+    BYTE's STRUCTURE
+    +-----------+----------------+
+    |   TYPE    |  PAYLOAD DATA  |
+    |  2 bytes  |    N bytes     |
+    +-----------+----------------+
+*/
 class korra_data {
 public:
     korra_data();
 
+    //It specifies, could data be splitted inside a few frames or not
     virtual bool is_splittable() = 0;
 
     virtual uint16_t type() = 0;
