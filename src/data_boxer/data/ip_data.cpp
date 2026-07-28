@@ -7,6 +7,12 @@ ip_data::ip_data() : korra_data() {
     _ip_package = nullptr;
 }
 
+ip_data::ip_data(uint16_t package_size){
+    _package_size = package_size;
+    _ip_package = new char[_package_size];
+    _current_piece = _ip_package;
+}
+
 ip_data::ip_data(char *ip_package){
     _ip_package = ip_package;
 }
@@ -44,6 +50,11 @@ void ip_data::from_bytes(char *bytes) {
     _ip_package = new char[length];
 
     memcpy(_ip_package, bytes + 2, length);
+}
+
+void ip_data::append_piece(char *piece, int piece_size) {
+    memcpy(_current_piece, piece, piece_size);
+    _current_piece += piece_size;
 }
 
 ip_data::~ip_data(){
