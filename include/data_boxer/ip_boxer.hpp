@@ -32,6 +32,8 @@ private:
 public:
     ip_boxer(int max_sending_size, int timeout);
 
+    char *make_frame_payload_buffer();
+
     //Put package to send_queue and push pices from send_queue to frame_payloads_buffer if queue is overfilled
     void box(korra_data *data, vector<char*> &frame_payloads_buffer) override;
 

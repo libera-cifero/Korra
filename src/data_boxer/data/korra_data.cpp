@@ -6,6 +6,10 @@
 
 korra_data::korra_data() { }
 
+int korra_data::total_size(){
+    return 2 + size();
+}
+
 char* korra_data::to_bytes(){
     int total_size = 2 + size();
     char *bytes = new char[total_size];

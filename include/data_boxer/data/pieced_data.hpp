@@ -27,8 +27,6 @@ public:
     char *piece();
     uint16_t index();
 
-    bool is_splittable() override;
-
     int size() override;
     int size(char *bytes) override;
 

@@ -1,5 +1,5 @@
 #include "data_boxer/ip_boxer.hpp"
-#include "ip_boxer/data/checker/ip_data_checker.hpp"
+#include "data_boxer/checker/ip_data_checker.hpp"
 #include <cstring>
 #include <functional>
 #include <mutex>

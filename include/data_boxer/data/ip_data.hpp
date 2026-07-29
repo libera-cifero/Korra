@@ -1,6 +1,5 @@
 #pragma once
-#include "korra_data.hpp"
-#include "base/piecable.hpp"
+#include "piecable_data.hpp"
 #include <cstdint>
 
 
@@ -16,7 +15,7 @@
                 |   N bytes    |
                 +--------------+
 */
-class ip_data : public korra_data, public piceable {
+class ip_data : public piceable_data {
 private:
     char *_ip_package;
     uint16_t _package_size;
@@ -28,8 +27,6 @@ public:
 
     char *ip_package();
 
-    bool is_splittable() override;
-
     int size() override;
     int size(char *bytes) override;
 
@@ -37,6 +34,7 @@ public:
     char *to_bytes() override;
     void from_bytes(char *bytes) override;
 
+    void read_piece(char* piece_buffer, int piece_size, int &byte_index) override;
     void append_piece(char *piece, int piece_size) override;
 
     ~ip_data();

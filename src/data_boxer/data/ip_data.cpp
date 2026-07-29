@@ -3,7 +3,7 @@
 #include <cstring>
 #include <stdexcept>
 
-ip_data::ip_data() : korra_data() { 
+ip_data::ip_data() : piceable_data() { 
     _ip_package = nullptr;
 }
 
@@ -16,8 +16,6 @@ ip_data::ip_data(uint16_t package_size){
 ip_data::ip_data(char *ip_package){
     _ip_package = ip_package;
 }
-
-bool ip_data::is_splittable() { return true; }
 
 uint16_t ip_data::type() { return 0; }
 
@@ -50,6 +48,10 @@ void ip_data::from_bytes(char *bytes) {
     _ip_package = new char[length];
 
     memcpy(_ip_package, bytes + 2, length);
+}
+
+void ip_data::read_piece(char* piece_buffer, int piece_size, int &byte_index){
+    
 }
 
 void ip_data::append_piece(char *piece, int piece_size) {

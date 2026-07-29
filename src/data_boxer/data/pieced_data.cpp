@@ -8,8 +8,6 @@ pieced_data::pieced_data() { }
 char *pieced_data::piece() { return _piece; }
 uint16_t pieced_data::index() { return _index; }
 
-bool pieced_data::is_splittable() { return false; }
-
 int pieced_data::size() { return 8 + data_size(); }
 int pieced_data::size(char *bytes) {
     int data_size;

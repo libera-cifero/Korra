@@ -26,8 +26,6 @@ public:
 
     uint16_t payload_type();
 
-    bool is_splittable() override;
-
     int size() override;
     int size(char *bytes) override;
 

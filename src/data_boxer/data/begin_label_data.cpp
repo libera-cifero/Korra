@@ -16,8 +16,6 @@ begin_label_data::begin_label_data(uint16_t package_type, uint16_t total_size) :
 
 uint16_t begin_label_data::payload_type(){ return _payload_type; }
 
-bool begin_label_data::is_splittable(){ return false; }
-
 int begin_label_data::size() { 
     return 8;
 }

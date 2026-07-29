@@ -15,11 +15,10 @@ class korra_data {
 public:
     korra_data();
 
-    //It specifies, could data be splitted inside a few frames or not
-    virtual bool is_splittable() = 0;
-
     virtual uint16_t type() = 0;
     uint16_t type(char *bytes);
+
+    int total_size();
 
     //Return size of payload data in bytes
     virtual int size() = 0;
