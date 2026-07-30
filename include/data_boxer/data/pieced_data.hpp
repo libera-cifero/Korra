@@ -1,3 +1,4 @@
+#pragma once
 #include "korra_data.hpp"
 #include "base/identifiable.hpp"
 #include <cstdint>
@@ -23,6 +24,11 @@ private:
 public:
     pieced_data();
     pieced_data(int id, uint16_t piece_size, char *piece);
+
+    //min size of payload
+    static const int MIN_SIZE = 8;
+
+    static const int MIN_TOTAL_SIZE = 10;
 
     char *piece();
     uint16_t index();

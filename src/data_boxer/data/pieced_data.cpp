@@ -5,6 +5,10 @@
 
 pieced_data::pieced_data() { }
 
+pieced_data::pieced_data(int id, uint16_t piece_size, char *piece) : identifiable(id, piece_size){
+    _piece = piece;
+}
+
 char *pieced_data::piece() { return _piece; }
 uint16_t pieced_data::index() { return _index; }
 

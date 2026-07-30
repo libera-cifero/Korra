@@ -15,7 +15,7 @@
                 |   N bytes    |
                 +--------------+
 */
-class ip_data : public piceable_data {
+class ip_data : public piecable_data {
 private:
     char *_ip_package;
     uint16_t _package_size;
@@ -34,7 +34,8 @@ public:
     char *to_bytes() override;
     void from_bytes(char *bytes) override;
 
-    void read_piece(char* piece_buffer, int piece_size, int &byte_index) override;
+    bool is_assmebling() override;
+    void read_piece(char *piece_buffer, int piece_size, int &byte_index) override;
     void append_piece(char *piece, int piece_size) override;
 
     ~ip_data();

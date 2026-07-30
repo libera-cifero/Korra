@@ -3,7 +3,7 @@
 #include <cstring>
 #include <stdexcept>
 
-ip_data::ip_data() : piceable_data() { 
+ip_data::ip_data() : piecable_data() { 
     _ip_package = nullptr;
 }
 
@@ -51,7 +51,7 @@ void ip_data::from_bytes(char *bytes) {
 }
 
 void ip_data::read_piece(char* piece_buffer, int piece_size, int &byte_index){
-    
+
 }
 
 void ip_data::append_piece(char *piece, int piece_size) {
