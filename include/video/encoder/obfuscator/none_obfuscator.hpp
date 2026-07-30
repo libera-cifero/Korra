@@ -2,6 +2,6 @@
 
 class none_obfuscator : public obfuscator {
 public:
-    char *obfuscate(char *data, int *data_length) override;
-    char *extract(char *obfuscated, int data_length) override;
+    char *obfuscate(char *data) override;
+    char *deobfuscate(char *obfuscated) override;
 };

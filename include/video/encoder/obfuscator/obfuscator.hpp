@@ -1,7 +1,10 @@
 #pragma once
 class obfuscator {
 public:
-    virtual char *obfuscate(char *data, int *data_length) = 0;
-    virtual char *extract(char *obfuscated, int data_length) = 0;
+    int payload_size();
+    int frame_size();
+
+    virtual char *obfuscate(char *data) = 0;
+    virtual char *deobfuscate(char *obfuscated) = 0;
     virtual ~obfuscator() { };
 };
