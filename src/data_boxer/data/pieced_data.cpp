@@ -36,7 +36,6 @@ char *pieced_data::from_bytes(char *bytes) {
     memcpy(&$id, bytes, 4);
     memcpy(&$data_size,bytes + 4, 2);
     memcpy(&_index,bytes + 6, 2);
-    if(_piece != nullptr) delete [] _piece;
     _piece = new char[$data_size];
     memcpy(_piece, bytes + 8, $data_size);
 
@@ -44,5 +43,5 @@ char *pieced_data::from_bytes(char *bytes) {
 }
 
 pieced_data::~pieced_data() {
-    if(_piece != nullptr) delete [] _piece;
+    //_piece is not deleting, because _piece is processing by out agent
 }

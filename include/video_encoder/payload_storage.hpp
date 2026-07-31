@@ -13,16 +13,20 @@ private:
     mutex _payloads_access, _frame_access;
     deque<char*> _payloads;
     char *_frame;
+
+    char *_pop_payload();
+
 public:
+    int payload_index;
+
     payload_storage(frame_encoder *encoder, binary_semaphore *ready_request, binary_semaphore *ready_response, binary_semaphore *get_frame_request);
 
     int payload_size();
     int frame_size();
 
-    char *frame();
+    char *pop_frame();
     char *current_payload();
 
-    char *pop_payload();
     char *begin_new_payload();
     void begin_frame_updating();
 };

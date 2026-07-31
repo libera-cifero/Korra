@@ -51,15 +51,6 @@ char *ip_data::from_bytes(char *bytes) {
     return bytes + size();
 }
 
-void ip_data::read_piece(char* piece_buffer, int piece_size, int &byte_index){
-
-}
-
-void ip_data::append_piece(char *piece, int piece_size) {
-    memcpy(_current_piece, piece, piece_size);
-    _current_piece += piece_size;
-}
-
-ip_data::~ip_data(){
-    if(_ip_package != nullptr) delete [] _ip_package;
+ip_data::~ip_data() { 
+    //_ip_package is not deleting, because _ip_package is processing by out agent
 }

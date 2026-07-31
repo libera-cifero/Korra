@@ -6,11 +6,11 @@
 
 begin_label_data::begin_label_data() { }
 
-begin_label_data::begin_label_data(uint16_t package_type, int id, uint16_t total_size): identifiable(id, total_size) {
+begin_label_data::begin_label_data(uint16_t package_type, int id, uint16_t data_size): identifiable(id, data_size) {
     _payload_type = package_type;
 }
 
-begin_label_data::begin_label_data(uint16_t package_type, uint16_t total_size) : identifiable(total_size) {
+begin_label_data::begin_label_data(uint16_t package_type, uint16_t data_size) : identifiable(data_size) {
     _payload_type = package_type;
 }
 

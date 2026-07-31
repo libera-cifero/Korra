@@ -21,8 +21,8 @@ private:
     uint16_t _payload_type;
 public:
     begin_label_data();
-    begin_label_data(uint16_t package_type, int id, uint16_t total_size);
-    begin_label_data(uint16_t package_type, uint16_t total_size);
+    begin_label_data(uint16_t package_type, int id, uint16_t data_size);
+    begin_label_data(uint16_t package_type, uint16_t data_size);
 
     uint16_t payload_type();
 

@@ -34,9 +34,5 @@ public:
     char *to_bytes(char *buffer) override;
     char *from_bytes(char *bytes) override;
 
-    bool is_assmebling() override;
-    void read_piece(char *piece_buffer, int piece_size, int &byte_index) override;
-    void append_piece(char *piece, int piece_size) override;
-
     ~ip_data();
 };

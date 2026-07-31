@@ -1,7 +1,5 @@
 #include "data_boxer/data/korra_data.hpp"
-#include "data_boxer/data/piecable_data.hpp"
 #include "video_encoder/payload_storage.hpp"
-#include <deque>
 
 using namespace std;
 
@@ -11,12 +9,19 @@ private:
     uint16_t _data_frame_counter;
 
     payload_storage *_storage;
+    char *_current_payload;
     
-    void _put_conitinioused_data(korra_data *data, int total_size);
+    void _increment_data_count();
+    void _begin_new_payload();
+    char *_put_conitinioused_data(korra_data *data);
+    int _get_free_space();
 
-    char *_box_case_A(korra_data *data, int total_size, int free_count);
-    char *_box_case_B(korra_data *data, int total_size, int free_count);
-    char *_box_case_C(piecable_data *data, int total_size, int free_count);
+    bool _is_case_A(korra_data *data);
+    bool _is_case_B(korra_data *data); //if case isn't case_A, case_B, then case_C
+
+    void _box_case_A(korra_data *data);
+    void _box_case_B(korra_data *data);
+    void _box_case_C(korra_data *data);
 public:
     data_boxer(payload_storage *storage);
     
