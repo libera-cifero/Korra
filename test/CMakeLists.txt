@@ -7,7 +7,6 @@ file(GLOB test_lib_src "lib/test.cpp")
 file(GLOB frame_io_src "lib/frame_io.cpp")
 
 file(GLOB color_test_src "src/color_test.cpp")
-file(GLOB timer_test_src "src/timer_test.cpp")
 file(GLOB mosaic_test_src "src/video_encoder/provider/mosaic_provider_test.cpp")
 file(GLOB clock_gen_test_src "src/video_encoder/clock_generator_test.cpp")
 
@@ -33,11 +32,6 @@ endmacro()
 add_executable(color_test ${test_lib_src} ${color_test_src})
 target_setup(color_test)
 target_link_libraries(color_test PUBLIC base_utils)
-
-#timer_test
-add_executable(timer_test ${test_lib_src} ${timer_test_src})
-target_setup(timer_test)
-target_link_libraries(timer_test PUBLIC timer Boost::filesystem)
 
 #mosaic_test
 add_executable(mosaic_test ${mosaic_test_src} ${frame_io_src} ${test_lib_src})

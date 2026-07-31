@@ -23,10 +23,6 @@ target_include_directories(base_utils PUBLIC ${INCLUDE_DIR})
 add_library(color_codec OBJECT ${color_codec_src} ${hsv_codec_src} ${palette_codec_src} ${rgb_palette_codec_src} ${ycbcr_palette_codec_src} ${color_src} ${codec_json_src} ${mosaic_math_src})
 target_include_directories(color_codec PUBLIC ${INCLUDE_DIR})
 
-#timer
-add_library(timer OBJECT "data_boxer/timer.cpp")
-target_include_directories(timer PUBLIC ${INCLUDE_DIR})
-
 #mosaic
 add_library(mosaic STATIC ${mosaic_provider_src} ${mosaic_math_src})
 target_include_directories(mosaic PUBLIC ${INCLUDE_DIR})
