@@ -1,6 +1,5 @@
 #include "data_boxer/data/korra_data.hpp"
 #include "data_boxer/data/piecable_data.hpp"
-#include "data_boxer/timer.hpp"
 #include "video_encoder/payload_storage.hpp"
 #include <deque>
 #include <functional>
@@ -14,7 +13,6 @@ private:
     deque<char> _payload_buffer;
     int _payload_size_per_frame;
     vector<function<void(char*)>> _events;
-    timer *_timer;
 
     int _last_frame_index();
     int _free_bytes_count();

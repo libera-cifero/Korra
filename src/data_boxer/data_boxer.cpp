@@ -4,6 +4,7 @@
 #include "data_boxer/data/begin_label_data.hpp"
 #include "data_boxer/data/pieced_data.hpp"
 #include <cstring>
+#include <format>
 #include <stdexcept>
 
 data_boxer::data_boxer(int payload_size_per_frame){
@@ -111,19 +112,9 @@ char *data_boxer::_box_case_C(piecable_data *data, int total_size, int free_coun
 }
 
 char* data_boxer::box(korra_data *data) {
-    int free_count = _free_bytes_count();
-    int total_size = data->total_size();
-    _timer->reset();
-    if(total_size <= free_count) 
-        return _box_case_A(data, total_size, free_count);
     
-
-    auto piecable = dynamic_cast<piecable_data*>(data);
-    if(piecable == nullptr)
-        return _box_case_B(data, total_size, free_count);
-    return _box_case_C(piecable, total_size, free_count);
 }
 
 data_boxer::~data_boxer() {
-    if(_timer != nullptr) delete _timer;
+    
 }
