@@ -25,9 +25,9 @@
 <text text-anchor="middle" x="643.04" y="-445.8" font-family="Times,serif" font-size="14.00">compressors</text>
 </g>
 <g id="clust7" class="cluster">
-<title>cluster_obfuscators</title>
+<title>cluster_ciphers</title>
 <path fill="none" stroke="black" d="M744.04,-438C744.04,-438 876.04,-438 876.04,-438 882.04,-438 888.04,-444 888.04,-450 888.04,-450 888.04,-573 888.04,-573 888.04,-579 882.04,-585 876.04,-585 876.04,-585 744.04,-585 744.04,-585 738.04,-585 732.04,-579 732.04,-573 732.04,-573 732.04,-450 732.04,-450 732.04,-444 738.04,-438 744.04,-438"/>
-<text text-anchor="middle" x="810.04" y="-445.8" font-family="Times,serif" font-size="14.00">obfuscators</text>
+<text text-anchor="middle" x="810.04" y="-445.8" font-family="Times,serif" font-size="14.00">ciphers</text>
 </g>
 <g id="clust8" class="cluster">
 <title>cluster_correctors</title>
@@ -219,27 +219,27 @@
 <path fill="none" stroke="blue" d="M645.51,-505.3C646.62,-513.02 647.94,-522.29 649.17,-530.89"/>
 <polygon fill="blue" stroke="blue" points="645.72,-531.49 650.6,-540.9 652.65,-530.5 645.72,-531.49"/>
 </g>
-<!-- obfuscator -->
+<!-- cipher -->
 <g id="node14" class="node">
-<title>obfuscator</title>
+<title>cipher</title>
 <ellipse fill="none" stroke="red" cx="799.04" cy="-559" rx="48.19" ry="18"/>
-<text text-anchor="middle" x="799.04" y="-555.3" font-family="Times,serif" font-size="14.00" fill="red">obfuscator</text>
+<text text-anchor="middle" x="799.04" y="-555.3" font-family="Times,serif" font-size="14.00" fill="red">cipher</text>
 </g>
-<!-- obfuscator&#45;&gt;video_encoder -->
+<!-- cipher&#45;&gt;video_encoder -->
 <g id="edge16" class="edge">
-<title>obfuscator&#45;&gt;video_encoder</title>
+<title>cipher&#45;&gt;video_encoder</title>
 <path fill="none" stroke="black" d="M783.27,-576.24C774.64,-585.12 763.79,-596.29 754.21,-606.15"/>
 <polygon fill="black" stroke="black" points="751.66,-603.76 747.2,-613.37 756.68,-608.63 751.66,-603.76"/>
 </g>
-<!-- none_obfuscator -->
+<!-- none_cipher -->
 <g id="node15" class="node">
-<title>none_obfuscator</title>
+<title>none_cipher</title>
 <ellipse fill="none" stroke="blue" cx="810.04" cy="-487" rx="69.59" ry="18"/>
-<text text-anchor="middle" x="810.04" y="-483.3" font-family="Times,serif" font-size="14.00" fill="blue">none_obfuscator</text>
+<text text-anchor="middle" x="810.04" y="-483.3" font-family="Times,serif" font-size="14.00" fill="blue">none_cipher</text>
 </g>
-<!-- none_obfuscator&#45;&gt;obfuscator -->
+<!-- none_cipher&#45;&gt;cipher -->
 <g id="edge12" class="edge">
-<title>none_obfuscator&#45;&gt;obfuscator</title>
+<title>none_cipher&#45;&gt;cipher</title>
 <path fill="none" stroke="blue" d="M807.32,-505.3C806.11,-513.02 804.65,-522.29 803.3,-530.89"/>
 <polygon fill="blue" stroke="blue" points="799.82,-530.47 801.73,-540.9 806.74,-531.56 799.82,-530.47"/>
 </g>

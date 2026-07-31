@@ -13,7 +13,7 @@ flowchart TB
         direction TB
         subgraph Layer2 ["Layer 2: Corrected data"]
             direction TB
-            subgraph Layer3 ["Layer 3: Obfuscated data"]
+            subgraph Layer3 ["Layer 3: encryptd data"]
                 direction TB
                 subgraph Layer4 ["Layer 4: Compressed data"]
                     direction TB

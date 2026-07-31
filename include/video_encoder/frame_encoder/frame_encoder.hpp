@@ -1,13 +1,13 @@
 #pragma once
-#include "obfuscator/obfuscator.hpp"
+#include "cipher/cipher.hpp"
 #include "provider/provider.hpp"
 
 class frame_encoder {
 private:
     provider *_provider;
-    obfuscator *_obfuscator;
+    cipher *_cipher;
 public:
-    frame_encoder(provider *provider, obfuscator *obfuscator);
+    frame_encoder(provider *provider, cipher *cipher);
 
     int payload_size();
     int frame_size();

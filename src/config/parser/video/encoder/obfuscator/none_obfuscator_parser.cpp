@@ -1,14 +1,14 @@
-#include "config/parser/video_encoder/obfuscator/none_obfuscator_parser.hpp"
+#include "config/parser/video_encoder/cipher/none_cipher_parser.hpp"
 #include "config/parser/parser.hpp"
-#include "video_encoder/obfuscator/obfuscator.hpp"
-#include "video_encoder/obfuscator/none_obfuscator.hpp"
+#include "video_encoder/cipher/cipher.hpp"
+#include "video_encoder/cipher/none_cipher.hpp"
 
-string none_obfuscator_parser::type(){ return "none"; }
+string none_cipher_parser::type(){ return "none"; }
 
-obfuscator* none_obfuscator_parser::parse(json j){
-    return new none_obfuscator;
+cipher* none_cipher_parser::parse(json j){
+    return new none_cipher;
 }
 
-json none_obfuscator_parser::serialize(obfuscator*){
+json none_cipher_parser::serialize(cipher*){
     return json::object({{"type", type()}});
 }

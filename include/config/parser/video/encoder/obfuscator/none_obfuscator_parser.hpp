@@ -1,8 +1,8 @@
 #include "config/parser/parser.hpp"
-#include "video_encoder/obfuscator/obfuscator.hpp"
-class none_obfuscator_parser : public specific_parser<obfuscator*> {
+#include "video_encoder/cipher/cipher.hpp"
+class none_cipher_parser : public specific_parser<cipher*> {
 public:
     string type() override;
-    obfuscator* parse(json) override;
-    json serialize(obfuscator*) override;
+    cipher* parse(json) override;
+    json serialize(cipher*) override;
 };

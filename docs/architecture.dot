@@ -80,22 +80,22 @@ digraph {
                 none_compressor->compressor [color=blue];
             }
 
-            subgraph cluster_obfuscators 
+            subgraph cluster_ciphers 
             {
-                label="obfuscators";
+                label="ciphers";
                 style=rounded;
                 color=black;
 
-                obfuscator[
+                cipher[
                     color = red;
                     fontcolor=red;
                 ];
-                none_obfuscator [
+                none_cipher [
                     color=blue;
                     fontcolor=blue;
                 ];
 
-                none_obfuscator->obfuscator [color=blue];
+                none_cipher->cipher [color=blue];
             }
 
             subgraph cluster_correctors{
@@ -123,7 +123,7 @@ digraph {
             
             provider->video_encoder; 
             compressor->video_encoder;
-            obfuscator->video_encoder;
+            cipher->video_encoder;
             corrector->video_encoder;
 
             color->rgb_palette_codec;
