@@ -52,6 +52,8 @@ void timer::launch(){
             _cancellable_clock = _make_clock();
         }
     });
+
+    _thread.detach();
 }
 
 void timer::reset(){

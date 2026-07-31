@@ -11,7 +11,10 @@ payload_storage::payload_storage(video_encoder *encoder, binary_semaphore *ready
     _get_frame_request = get_frame_request;
 }
 
-char *payload_storage::current_payload(){ return _payloads.back(); }
+char *payload_storage::current_payload(){ 
+    lock_guard<mutex> payloads_lock(_payloads_access);
+    return _payloads.back(); 
+}
 
 char *payload_storage::begin_new_payload(){
     int size = payload_size();
