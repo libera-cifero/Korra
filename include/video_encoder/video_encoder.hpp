@@ -7,7 +7,6 @@ private:
     clock_generator *_clock_generator;   
     frame_encoder *_frame_encoder;
     payload_storage *_payload_storage;
-
 public:
     video_encoder(frame_encoder *encoder, int fps, int gap_timeout);
     void launch();
