@@ -12,7 +12,7 @@ pieced_data::pieced_data(int id, uint16_t piece_size, char *piece) : identifiabl
 char *pieced_data::piece() { return _piece; }
 uint16_t pieced_data::index() { return _index; }
 
-int pieced_data::size() { return 8 + data_size(); }
+int pieced_data::size() { return 8 + $data_size; }
 int pieced_data::size(char *bytes) {
     int data_size;
     memcpy(&data_size, bytes + 8, 2);
@@ -21,24 +21,26 @@ int pieced_data::size(char *bytes) {
 
 uint16_t pieced_data::type() { return 2; }
 
-char *pieced_data::to_bytes() {
-    char *bytes = korra_data::to_bytes();
-    memcpy(bytes + 2, &$id, 4);
-    memcpy(bytes + 6, &$data_size, 2);
-    memcpy(bytes + 8, &_index, 2);
-    memcpy(bytes + 10, _piece, $data_size);
-    return bytes;
+char *pieced_data::to_bytes(char *buffer) {
+    buffer = korra_data::to_bytes(buffer);
+    memcpy(buffer, &$id, 4);
+    memcpy(buffer + 4, &$data_size, 2);
+    memcpy(buffer + 6, &_index, 2);
+    memcpy(buffer + 8, _piece, $data_size);
+    return buffer + size();
 }
 
-void pieced_data::from_bytes(char *bytes) {
-    korra_data::from_bytes(bytes);
+char *pieced_data::from_bytes(char *bytes) {
+    bytes = korra_data::from_bytes(bytes);
 
-    memcpy(&$id, bytes + 2, 4);
-    memcpy(&$data_size,bytes + 6, 2);
-    memcpy(&_index,bytes + 8, 2);
+    memcpy(&$id, bytes, 4);
+    memcpy(&$data_size,bytes + 4, 2);
+    memcpy(&_index,bytes + 6, 2);
     if(_piece != nullptr) delete [] _piece;
     _piece = new char[$data_size];
-    memcpy(_piece, bytes + 10, $data_size);
+    memcpy(_piece, bytes + 8, $data_size);
+
+    return bytes + size();
 }
 
 pieced_data::~pieced_data() {

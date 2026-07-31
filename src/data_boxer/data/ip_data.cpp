@@ -33,21 +33,22 @@ int ip_data::size(char *raw_bytes){
 
 char *ip_data::ip_package() { return _ip_package; }
 
-char *ip_data::to_bytes() {
+char *ip_data::to_bytes(char *buffer) {
     if(_ip_package == nullptr) throw std::runtime_error("IP package is not defined!");
-    char *bytes = korra_data::to_bytes();
-    memcpy(bytes + 2, _ip_package, size());
-    return bytes;
+    char *bytes = korra_data::to_bytes(buffer);
+    memcpy(bytes, _ip_package, size());
+    return bytes + size();
 }
 
-void ip_data::from_bytes(char *bytes) {
-    korra_data::from_bytes(bytes);
+char *ip_data::from_bytes(char *bytes) {
+    bytes = korra_data::from_bytes(bytes);
     uint16_t length = size(bytes);
 
     if(_ip_package != nullptr) delete [] _ip_package;
     _ip_package = new char[length];
 
-    memcpy(_ip_package, bytes + 2, length);
+    memcpy(_ip_package, bytes, length);
+    return bytes + size();
 }
 
 void ip_data::read_piece(char* piece_buffer, int piece_size, int &byte_index){

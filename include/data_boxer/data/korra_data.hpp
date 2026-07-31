@@ -25,8 +25,9 @@ public:
     //Return size of payload data of raw_bytes
     virtual int size(char *raw_bytes) = 0;
     
-    virtual char *to_bytes();
-    virtual void from_bytes(char *bytes);
+    virtual char *to_bytes(char *buffer);
+
+    virtual char *from_bytes(char *bytes);
 
     virtual ~korra_data();
 };

@@ -19,6 +19,7 @@ uint16_t begin_label_data::payload_type(){ return _payload_type; }
 int begin_label_data::size() { 
     return 8;
 }
+
 int begin_label_data::size(char *bytes) {
     int data_size;
     memcpy(&data_size, bytes + 8, 2);
@@ -26,20 +27,22 @@ int begin_label_data::size(char *bytes) {
 }
 
 uint16_t begin_label_data::type() { return 1; }
-char *begin_label_data::to_bytes() {
-    char *bytes = korra_data::to_bytes();
+char *begin_label_data::to_bytes(char *buffer) {
+    buffer = korra_data::to_bytes(buffer);
 
-    memcpy(bytes + 2, &_payload_type, 2);
-    memcpy(bytes + 4, &$id, 4);
-    memcpy(bytes + 8, &$data_size, 2);
+    memcpy(buffer, &_payload_type, 2);
+    memcpy(buffer + 2, &$id, 4);
+    memcpy(buffer + 6, &$data_size, 2);
 
-    return bytes;
+    return buffer + size();
 }
 
-void begin_label_data::from_bytes(char *bytes) {
-    korra_data::from_bytes(bytes);
+char *begin_label_data::from_bytes(char *bytes) {
+    bytes = korra_data::from_bytes(bytes);
 
-    memcpy(&_payload_type, bytes + 2, 2);
-    memcpy(&$id, bytes + 4, 4);
-    memcpy(&$data_size, bytes + 8, 2);
+    memcpy(&_payload_type, bytes, 2);
+    memcpy(&$id, bytes + 2, 4);
+    memcpy(&$data_size, bytes + 6, 2);
+
+    return bytes + size();
 }

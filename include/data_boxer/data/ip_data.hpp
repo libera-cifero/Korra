@@ -31,8 +31,8 @@ public:
     int size(char *bytes) override;
 
     uint16_t type() override;
-    char *to_bytes() override;
-    void from_bytes(char *bytes) override;
+    char *to_bytes(char *buffer) override;
+    char *from_bytes(char *bytes) override;
 
     bool is_assmebling() override;
     void read_piece(char *piece_buffer, int piece_size, int &byte_index) override;

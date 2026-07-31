@@ -37,8 +37,8 @@ public:
     int size(char *bytes) override;
 
     uint16_t type() override;
-    char *to_bytes() override;
-    void from_bytes(char *bytes) override;
+    char *to_bytes(char *buffer) override;
+    char *from_bytes(char *bytes) override;
 
     ~pieced_data();
 };
