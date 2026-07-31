@@ -1,6 +1,6 @@
 #include "frame_io.hpp"
-#include "video/encoder/provider/mosaic/color_codec/codec_json.hpp"
-#include "json.hpp"
+#include "video_encoder/frame_encoder/provider/mosaic/color_codec/codec_json.hpp"
+#include "lib/json.hpp"
 #include "io.hpp"
 #include "test.hpp"
 #include <fstream>

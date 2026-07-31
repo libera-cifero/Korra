@@ -1,8 +1,10 @@
 #include "data_boxer/data/korra_data.hpp"
 #include "data_boxer/data/piecable_data.hpp"
 #include "data_boxer/timer.hpp"
+#include "video_encoder/payload_storage.hpp"
 #include <deque>
 #include <functional>
+
 using namespace std;
 
 class data_boxer {
@@ -31,6 +33,8 @@ public:
     
     //Convert data to bytes and check, free space count in frame is greater than zero or not.
     char* box(korra_data *data);
+
+    void box(korra_data *data, payload_storage *storage);
 
     void on_timeout(function<void(char*)> event);
 

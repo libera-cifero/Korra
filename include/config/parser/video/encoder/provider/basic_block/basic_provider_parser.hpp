@@ -1,7 +1,7 @@
 #pragma once
 #include "config/data/video_config.hpp"
 #include "color_codec/color_codec_parser.hpp"
-#include "video/encoder/provider/provider.hpp"
+#include "video_encoder/frame_encoder/provider/provider.hpp"
 #include "config/parser/parser.hpp"
 
 class basic_provider_parser : public specific_parser<provider*> {

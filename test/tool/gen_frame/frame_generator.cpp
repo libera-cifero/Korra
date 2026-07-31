@@ -1,15 +1,14 @@
 //input: frame_width, frame_height, color_codec_path, block_size, name of expected data file, name of frame file
 //output: array of random expected blocks, path to frame in binary format
-#include "color.hpp"
-#include "video/encoder/provider/mosaic/color_codec/color_codec.hpp"
-#include "video/encoder/provider/mosaic/color_codec/codec_json.hpp"
-#include "video/encoder/provider/mosaic/color_codec/palette_codec.hpp"
-#include "video/encoder/provider/mosaic/point.hpp"
-#include "math.hpp"
-#include "video/encoder/provider/mosaic/mosaic_settings.hpp"
+#include "lib/color.hpp"
+#include "video_encoder/frame_encoder/provider/mosaic/color_codec/color_codec.hpp"
+#include "video_encoder/frame_encoder/provider/mosaic/color_codec/codec_json.hpp"
+#include "video_encoder/frame_encoder/provider/mosaic/color_codec/palette_codec.hpp"
+#include "video_encoder/frame_encoder/provider/mosaic/point.hpp"
+#include "video_encoder/frame_encoder/provider/mosaic/mosaic_settings.hpp"
 #include "frame_io.hpp"
 #include "io.hpp"
-#include "json.hpp"
+#include "lib/json.hpp"
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>

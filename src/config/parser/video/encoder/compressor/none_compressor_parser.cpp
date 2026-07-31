@@ -1,7 +1,7 @@
-#include "config/parser/video/encoder/compressor/none_compressor_parser.hpp"
+#include "config/parser/video_encoder/compressor/none_compressor_parser.hpp"
 #include "config/parser/parser.hpp"
-#include "video/encoder/compressor/compressor.hpp"
-#include "video/encoder/compressor/none_compressor.hpp"
+#include "video_encoder/compressor/compressor.hpp"
+#include "video_encoder/compressor/none_compressor.hpp"
 
 string none_compressor_parser::type(){ return "none"; }
 

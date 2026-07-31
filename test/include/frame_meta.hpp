@@ -1,5 +1,5 @@
 #pragma once
-#include "video/encoder/provider/mosaic/mosaic_settings.hpp"
+#include "video_encoder/frame_encoder/provider/mosaic/mosaic_settings.hpp"
 #include <vector>
 #include <string>
 

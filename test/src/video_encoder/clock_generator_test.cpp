@@ -1,0 +1,35 @@
+#include "video_encoder/clock_generator.hpp"
+#include <chrono>
+#include <ctime>
+#include <iostream>
+#include <thread>
+
+double get_delta_millis(timespec t0, timespec t1){
+    return ((t1.tv_sec - t0.tv_sec) + (t1.tv_nsec - t0.tv_nsec) / 1e9) * 1000.0;
+}
+
+int main(){
+    clock_generator gen(1000, 200);
+
+    gen.launch();
+
+    for(int i = 0; i < 5; i++){
+        cout<<i<<endl;
+        timespec t0, t1;
+        clock_gettime(CLOCK_MONOTONIC, &t0);
+        gen.ready_request()->acquire();
+        this_thread::sleep_for(std::chrono::milliseconds(140));
+        clock_gettime(CLOCK_MONOTONIC, &t1);
+        double millis0 = get_delta_millis(t0, t1);
+        cout << "TIME: " << millis0 << "ms Preparing..." << endl;
+        gen.ready_response()->release();
+        clock_gettime(CLOCK_MONOTONIC, &t0);
+        gen.frame_request()->acquire();
+        clock_gettime(CLOCK_MONOTONIC, &t1);
+        double millis1 = get_delta_millis(t0, t1);
+        cout << "TIME: "<<millis1 <<"ms Done!"<<endl;
+        cout << "TOTAL: "<< millis0 + millis1<<endl;
+    }
+
+    return 0;
+}

@@ -1,7 +1,7 @@
 #pragma once
 #include "config/data/video_config.hpp"
 #include "len_reader/len_reader_parser.hpp"
-#include "video/encoder/provider/provider.hpp"
+#include "video_encoder/frame_encoder/provider/provider.hpp"
 #include "config/parser/parser.hpp"
 
 class provider_parser : public abstract_parser<provider*>{

@@ -1,7 +1,7 @@
-#include "config/parser/video/encoder/obfuscator/none_obfuscator_parser.hpp"
+#include "config/parser/video_encoder/obfuscator/none_obfuscator_parser.hpp"
 #include "config/parser/parser.hpp"
-#include "video/encoder/obfuscator/obfuscator.hpp"
-#include "video/encoder/obfuscator/none_obfuscator.hpp"
+#include "video_encoder/obfuscator/obfuscator.hpp"
+#include "video_encoder/obfuscator/none_obfuscator.hpp"
 
 string none_obfuscator_parser::type(){ return "none"; }
 

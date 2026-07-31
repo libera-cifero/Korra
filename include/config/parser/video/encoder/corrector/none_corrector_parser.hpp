@@ -1,5 +1,5 @@
 #include "config/parser/parser.hpp"
-#include "video/encoder/corrector/corrector.hpp"
+#include "video_encoder/corrector/corrector.hpp"
 class none_corrector_parser : public specific_parser<corrector*> {
 public:
     string type() override;

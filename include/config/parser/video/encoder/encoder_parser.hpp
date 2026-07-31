@@ -2,7 +2,7 @@
 #include "config/data/video_config.hpp"
 #include "provider/provider_parser.hpp"
 #include "config/parser/parser.hpp"
-#include "video/encoder/video_encoder.hpp"
+#include "video_encoder/video_encoder.hpp"
 
 class encoder_parser : public json_parser<video_encoder*>{
 public:
