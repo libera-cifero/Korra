@@ -5,7 +5,7 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/mosaic_test",
+            "target": "./bin/clock_generator_test",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
             "arguments": ""

@@ -43,6 +43,8 @@ math_test: math
 	cmake --build build --target math_test && python3 tool/run.py math_test
 timer_test: timer
 	cmake --build build --target timer_test && python3 tool/run.py timer_test
+clock_gen_test:
+	cmake --build build --target clock_generator_test && python3 tool/run.py clock_generator_test
 
 test: color_test math_test timer_test mosaic_test
 #======END======

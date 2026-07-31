@@ -5,7 +5,7 @@
 using namespace std;
 class clock_generator{
 private:
-    binary_semaphore *_ready_request, *_ready_response, *_frame_request;
+    binary_semaphore *_ready_request, *_ready_response, *_frame_request, *_breaker;
     uint32_t _timeout, _ready_gap_timeout;
     bool _is_running;
     thread *_clock_thread;

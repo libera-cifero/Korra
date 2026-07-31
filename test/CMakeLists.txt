@@ -12,6 +12,7 @@ file(GLOB math_test_src "src/math_test.cpp")
 file(GLOB len_reader_test_src "src/encoder/provider/len_reader_test.cpp")
 file(GLOB timer_test_src "src/timer_test.cpp")
 file(GLOB mosaic_test_src "src/encoder/provider/mosaic_provider_test.cpp")
+file(GLOB clock_gen_test_src "src/clock_generator_test.cpp")
 
 file(GLOB frame_gen_tool_src "tool/gen_frame/frame_generator.cpp")
 file(GLOB args_frame_gen_tool_src "tool/gen_frame/argument_generator.cpp")
@@ -52,6 +53,11 @@ add_executable(mosaic_test ${mosaic_test_src} ${frame_io_src} ${test_lib_src})
 target_setup(mosaic_test)
 target_link_libraries(mosaic_test PUBLIC mosaic color_codec)
 #target_link_libraries(mosaic PUBLIC base_utils color_codec)
+
+#clock_generator_test
+add_executable(clock_generator_test ${clock_gen_test_src})
+target_setup(clock_generator_test)
+target_link_libraries(clock_generator_test PUBLIC oscillator)
 
 #======END======
 

@@ -35,3 +35,7 @@ target_include_directories(timer PUBLIC ${INCLUDE_DIR})
 #mosaic
 add_library(mosaic STATIC ${mosaic_provider_src} ${mosaic_math_src})
 target_include_directories(mosaic PUBLIC ${INCLUDE_DIR})
+
+#oscillator
+add_library(oscillator STATIC "oscillator/clock_generator.cpp")
+target_include_directories(oscillator PUBLIC ${INCLUDE_DIR})
