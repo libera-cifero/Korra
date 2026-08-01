@@ -31,8 +31,6 @@ char *payload_storage::current_payload(){
     return _payloads.back(); 
 }
 
-
-
 char *payload_storage::_pop_payload(){
     lock_guard<mutex> payloads_lock(_payloads_access);
     char *first = _payloads.front();
@@ -45,31 +43,32 @@ char *payload_storage::pop_frame(){
     _ready_request->acquire();
     if(_payloads.size() == 1) {
         char *data = _pop_payload();
+        lock_guard<mutex> frame_lock(_frame_access);
         _frame = _encoder -> encode(data);
     }
     _ready_response->release();
     _get_frame_request->acquire();
 
-    lock_guard<mutex> frame_lock(_frame_access);
+    _frame_access.lock();
     char *result = _frame;
+    _frame_access.unlock();
+    
     if(_payloads.size() > 1) begin_frame_updating();
     return result;
 }
 
 void payload_storage::begin_frame_updating(){
     std::thread thread([&]() {
-        char *payload, *frame;
-        {
-            lock_guard<mutex> payloads_lock(_payloads_access);
-            payload = _pop_payload();
-        }
-        
-        frame = _encoder -> encode(payload);
-        {
+        char *payload = payload = _pop_payload();
+        try{
             lock_guard<mutex> frame_lock(_frame_access);
-            _frame = frame;
+            _frame = _encoder -> encode(payload);
         }
-        
+        catch(...) { 
+            delete [] payload;
+            throw;
+        }
+
         delete [] payload;
     });
     thread.detach();

@@ -7,7 +7,7 @@ file(GLOB test_lib_src "lib/test.cpp")
 file(GLOB frame_io_src "lib/frame_io.cpp")
 
 file(GLOB color_test_src "src/color_test.cpp")
-file(GLOB mosaic_test_src "src/video_encoder/provider/mosaic_provider_test.cpp")
+file(GLOB mosaic_test_src "src/video_encoder/frame_encoder/provider/mosaic_provider_test.cpp")
 file(GLOB clock_gen_test_src "src/video_encoder/clock_generator_test.cpp")
 
 file(GLOB frame_gen_tool_src "tool/gen_frame/frame_generator.cpp")

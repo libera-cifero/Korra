@@ -1,7 +1,7 @@
 #pragma once
 #include "video_encoder/video_encoder.hpp"
-#include "video/pipe/video_pipe_in.hpp"
-#include "video/pipe/video_pipe_out.hpp"
+#include "pipe/video_pipe_in.hpp"
+#include "pipe/video_pipe_out.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <string>
