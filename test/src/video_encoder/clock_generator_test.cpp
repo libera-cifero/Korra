@@ -9,22 +9,22 @@ double get_delta_millis(timespec t0, timespec t1){
 }
 
 int main(){
-    clock_generator gen(1000, 200);
+    clock_generator gen(33, 12);
 
     gen.launch();
 
-    for(int i = 0; i < 5; i++){
+    for(int i = 0; i < 50; i++){
         cout<<i<<endl;
         timespec t0, t1;
         clock_gettime(CLOCK_MONOTONIC, &t0);
-        gen.ready_request()->acquire();
-        this_thread::sleep_for(std::chrono::milliseconds(140));
+        gen.signals()->ready_request()->acquire();
+        this_thread::sleep_for(std::chrono::milliseconds(10));
         clock_gettime(CLOCK_MONOTONIC, &t1);
         double millis0 = get_delta_millis(t0, t1);
         cout << "TIME: " << millis0 << "ms Preparing..." << endl;
-        gen.ready_response()->release();
+        gen.signals()->ready_response()->release();
         clock_gettime(CLOCK_MONOTONIC, &t0);
-        gen.frame_request()->acquire();
+        gen.signals()->frame_request()->acquire();
         clock_gettime(CLOCK_MONOTONIC, &t1);
         double millis1 = get_delta_millis(t0, t1);
         cout << "TIME: "<<millis1 <<"ms Done!"<<endl;

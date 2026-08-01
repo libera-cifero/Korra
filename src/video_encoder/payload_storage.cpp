@@ -1,4 +1,5 @@
 #include "video_encoder/payload_storage.hpp"
+#include "video_encoder/sync_signals.hpp"
 #include "video_encoder/frame_encoder/frame_encoder.hpp"
 #include <cstring>
 #include <mutex>
@@ -17,11 +18,9 @@ char *payload_storage::begin_new_payload(){
     return payload;
 }
 
-payload_storage::payload_storage(frame_encoder *encoder, binary_semaphore *ready_request, binary_semaphore *ready_response, binary_semaphore *get_frame_request) {
+payload_storage::payload_storage(frame_encoder *encoder, sync_signals *signals) {
     _encoder = encoder;
-    _ready_request = ready_request;
-    _ready_response = ready_response;
-    _get_frame_request = get_frame_request;
+    _signals = signals;
 
     begin_new_payload();
 }
@@ -40,19 +39,19 @@ char *payload_storage::_pop_payload(){
 }
 
 char *payload_storage::pop_frame(){
-    _ready_request->acquire();
+    _signals->ready_request()->acquire();
     if(_payloads.size() == 1) {
         char *data = _pop_payload();
         lock_guard<mutex> frame_lock(_frame_access);
         _frame = _encoder -> encode(data);
     }
-    _ready_response->release();
-    _get_frame_request->acquire();
+    _signals->ready_response()->release();
+    _signals->frame_request()->acquire();
 
     _frame_access.lock();
     char *result = _frame;
     _frame_access.unlock();
-    
+
     if(_payloads.size() > 1) begin_frame_updating();
     return result;
 }

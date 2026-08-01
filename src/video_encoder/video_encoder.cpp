@@ -5,7 +5,7 @@
 video_encoder::video_encoder(frame_encoder *encoder, int fps, int gap_timeout){
     _frame_encoder = encoder;
     _clock_generator = new clock_generator((int)round(1000.0f / fps), gap_timeout);
-    _payload_storage = new payload_storage(encoder, _clock_generator->ready_request(), _clock_generator->ready_response(), _clock_generator->frame_request());
+    _payload_storage = new payload_storage(encoder, _clock_generator->signals());
 }
 
 void video_encoder::launch(){

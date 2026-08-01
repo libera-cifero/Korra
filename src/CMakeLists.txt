@@ -28,5 +28,5 @@ add_library(mosaic STATIC ${mosaic_provider_src} ${mosaic_math_src})
 target_include_directories(mosaic PUBLIC ${INCLUDE_DIR})
 
 #oscillator
-add_library(oscillator STATIC "video_encoder/clock_generator.cpp")
+add_library(oscillator STATIC "video_encoder/clock_generator.cpp" "video_encoder/sync_signals.cpp")
 target_include_directories(oscillator PUBLIC ${INCLUDE_DIR})
