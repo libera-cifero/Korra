@@ -9,6 +9,7 @@ file(GLOB frame_io_src "lib/frame_io.cpp")
 file(GLOB color_test_src "src/color_test.cpp")
 file(GLOB mosaic_test_src "src/video_encoder/frame_encoder/provider/mosaic_provider_test.cpp")
 file(GLOB clock_gen_test_src "src/video_encoder/clock_generator_test.cpp")
+file(GLOB video_encoder_test_src "src/video_encoder/video_encoder_test.cpp")
 
 file(GLOB frame_gen_tool_src "tool/gen_frame/frame_generator.cpp")
 file(GLOB args_frame_gen_tool_src "tool/gen_frame/argument_generator.cpp")
@@ -44,6 +45,10 @@ add_executable(clock_generator_test ${clock_gen_test_src})
 target_setup(clock_generator_test)
 target_link_libraries(clock_generator_test PUBLIC oscillator)
 
+#video_encoder_test
+add_executable(video_encoder_test ${video_encoder_test_src} ${test_lib_src} ${frame_io_src})
+target_setup(video_encoder_test)
+target_link_libraries(video_encoder_test PUBLIC video_encoder)
 #======END======
 
 #TEST TOOLS

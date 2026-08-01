@@ -14,6 +14,13 @@ file(GLOB ycbcr_palette_codec_src "${mosaic_DIR}/color_codec/ycbcr_palette_codec
 file(GLOB codec_json_src "${mosaic_DIR}/color_codec/codec_json.cpp")
 file(GLOB mosaic_math_src "${mosaic_DIR}/mosaic_math.cpp")
 file(GLOB mosaic_provider_src "video_encoder/frame_encoder/provider/mosaic_provider.cpp")
+file(GLOB cipher_src "video_encoder/frame_encoder/cipher/cipher.cpp")
+file(GLOB none_cipher_src "video_encoder/frame_encoder/cipher/none_cipher.cpp")
+file(GLOB frame_encoder_src "video_encoder/frame_encoder/frame_encoder.cpp")
+file(GLOB clock_src "video_encoder/clock_generator.cpp")
+file(GLOB sync_signals_src "video_encoder/sync_signals.cpp")
+file(GLOB payload_storage_src "video_encoder/payload_storage.cpp")
+file(GLOB video_encoder_src "video_encoder/video_encoder.cpp")
 
 #base_utils
 add_library(base_utils OBJECT ${color_src})
@@ -27,6 +34,7 @@ target_include_directories(color_codec PUBLIC ${INCLUDE_DIR})
 add_library(mosaic STATIC ${mosaic_provider_src} ${mosaic_math_src})
 target_include_directories(mosaic PUBLIC ${INCLUDE_DIR})
 
-#oscillator
-add_library(oscillator STATIC "video_encoder/clock_generator.cpp" "video_encoder/sync_signals.cpp")
-target_include_directories(oscillator PUBLIC ${INCLUDE_DIR})
+#video_encoder
+add_library(video_encoder STATIC ${sync_signals_src} ${clock_src} ${payload_storage_src} ${frame_encoder_src} ${video_encoder_src} ${cipher_src} ${none_cipher_src})
+target_include_directories(video_encoder PUBLIC ${INCLUDE_DIR})
+target_link_libraries(video_encoder PUBLIC color_codec base_utils mosaic)

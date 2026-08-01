@@ -10,25 +10,10 @@ double get_delta_millis(timespec t0, timespec t1){
     return ((t1.tv_sec - t0.tv_sec) + (t1.tv_nsec - t0.tv_nsec) / 1e9) * 1000.0;
 }
 
-char *convert_blocks_to_data(vector<int> &blocks, int bits_per_block){
-    int byte_length = blocks.size() * bits_per_block / 8;
-    char *bytes = (char*)calloc(byte_length, 1);
-    for(int i = 0; i < blocks.size(); i++) {
-        int block = blocks[i];
-        for(int b = 0; b < bits_per_block; b++) {
-            int bit_global = i * bits_per_block + b;
-            int byte_index = bit_global / 8, bit_index = bit_global % 8;
-            char bit = (char)(((block >> b) & 1) << bit_index);
-            bytes[byte_index] |= bit;
-        }
-    }
-    return bytes;
-}
-
 void test_to_frame() {
     const char *test_name = "mosaic_provider_test.test_to_frame";
     printInfo(test_name);
-    iterate_frame_test_cases(test_name, [](const char *test_name, frame_meta expected, uint8_t *data, string file_name) 
+    iterate_frame_test_cases(test_name, "random", [](const char *test_name, frame_meta expected, uint8_t *data, string file_name) 
     {
         char *payload = convert_blocks_to_data(expected.blocks, expected.codec->bits_per_number());
         mosaic_settings *settings = new mosaic_settings;
@@ -62,7 +47,7 @@ void test_to_frame() {
 void test_to_payload(){
     const char *test_name = "mosaic_provider_test.test_to_payload";
     printInfo(test_name);
-    iterate_frame_test_cases(test_name, [](const char *test_name, frame_meta expected, uint8_t *data, string file_name) 
+    iterate_frame_test_cases(test_name, "random", [](const char *test_name, frame_meta expected, uint8_t *data, string file_name) 
     {
         char *payload_expected = convert_blocks_to_data(expected.blocks, expected.codec->bits_per_number());
         mosaic_settings *settings = new mosaic_settings;

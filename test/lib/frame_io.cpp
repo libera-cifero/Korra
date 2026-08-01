@@ -185,8 +185,8 @@ uint8_t *read_frame_data(const string &path, int &width, int &height)
     return pixels;
 }
 
-void iterate_frame_test_cases(const char *test_name, void (*test)(const char *test_name, frame_meta expected, uint8_t *data, string file_name)){
-    directory_iterator iter(EXPECTED_FRAME_PATH);
+void iterate_frame_test_cases(const char *test_name, string subdirectory, iter_action test){
+    directory_iterator iter(EXPECTED_FRAME_PATH / subdirectory);
     regex pattern("frame_[0-9]+\\.json");
     for(directory_entry entry : iter) {
         smatch match;
@@ -213,4 +213,19 @@ void iterate_frame_test_cases(const char *test_name, void (*test)(const char *te
             delete[] data;
         }
     }
+}
+
+char *convert_blocks_to_data(vector<int> &blocks, int bits_per_block){
+    int byte_length = blocks.size() * bits_per_block / 8;
+    char *bytes = (char*)calloc(byte_length, 1);
+    for(int i = 0; i < blocks.size(); i++) {
+        int block = blocks[i];
+        for(int b = 0; b < bits_per_block; b++) {
+            int bit_global = i * bits_per_block + b;
+            int byte_index = bit_global / 8, bit_index = bit_global % 8;
+            char bit = (char)(((block >> b) & 1) << bit_index);
+            bytes[byte_index] |= bit;
+        }
+    }
+    return bytes;
 }

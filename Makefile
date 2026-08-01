@@ -43,7 +43,8 @@ math_test: math
 	cmake --build build --target math_test && python3 tool/run.py math_test
 clock_gen_test:
 	cmake --build build --target clock_generator_test && python3 tool/run.py clock_generator_test
-
+video_encoder_test:
+	cmake --build build --target video_encoder_test
 test: color_test math_test timer_test mosaic_test
 #======END======
 
@@ -63,7 +64,7 @@ fps_color_tool:
 gen_frame: frame_gen_tool
 	python3 tool/run.py tool/frame_gen_tool $(ARGS)
 
-#ARGS: count, palette_path, width, height, folder. 
+#ARGS: count, palette_path, width, height, block_size, folder. 
 #Width, height and folder aren't required here. If they aren't defined, then they will be generated 
 #If you wanna generate random width and/or height, just set 0
 gen_frames: frame_gen_tool args_frame_gen_tool

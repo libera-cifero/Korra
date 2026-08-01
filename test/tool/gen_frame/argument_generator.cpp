@@ -1,5 +1,5 @@
-//input: count, palette_path, width, height, folder. 
-//Width, height and folder aren't required here. If they aren't defined, then they will be generated 
+//input: count, palette_path, width, height, block_size, folder. 
+//Width, height, block_size and folder aren't required here. If they aren't defined, then they will be generated 
 
 //output: lines of [width height bits_per_block block_size frame_N.json frame_N.bmp]
 #include "io.hpp"
@@ -60,16 +60,18 @@ int get_bits_per_number(string codec_path) {
     return bits_per_number;
 }
 
-frame_gen_args gen_random_args(int expected_index, int data_index, int bits_per_number, string codec_path, int width, int height, char *folder) {
+frame_gen_args gen_random_args(int expected_index, int data_index, int bits_per_number, string codec_path, int width, int height, int block_size, char *folder) {
     if(width <= 0) width = (rand() % 1913) + 8;
     if(height <= 0) height = (rand() % 1073) + 8;
-    int block_size, block_count = 0, min_size = width < height ? width : height;
-    bool bits_per_block_compatible = false;
-    while(block_count == 0 || block_count % 8 != 0 || block_count % bits_per_number != 0) {
-        block_size = (rand() % min_size) + 1;
-        int width_capacity = width / block_size;
-        int height_capacity = height / block_size;
-        block_count = height_capacity * width_capacity;
+    if(block_size <= 0){
+        int block_count = 0, min_size = width < height ? width : height;
+        bool bits_per_block_compatible = false;
+        while(block_count == 0 || block_count % 8 != 0 || block_count % bits_per_number != 0) {
+            block_size = (rand() % min_size) + 1;
+            int width_capacity = width / block_size;
+            int height_capacity = height / block_size;
+            block_count = height_capacity * width_capacity;
+        }
     }
 
     string expected_file = "frame_" + to_string(expected_index) + ".json";
@@ -101,11 +103,12 @@ int main(int argc, char **argv) {
         return -2;
     }
 
-    int width = 0, height = 0;
+    int width = 0, height = 0, block_size = 0;
     char *folder = nullptr;
     if(argc >= 4) width = atoi(argv[3]);
     if(argc >= 5) height = atoi(argv[4]);
-    if(argc >= 6) folder = argv[5];
+    if(argc >= 6) block_size = atoi(argv[5]);
+    if(argc >= 7) folder = argv[6];
 
     string expected_frame_path = EXPECTED_FRAME_PATH, data_frame_path = DATA_FRAME_PATH;
     if(folder != nullptr){
@@ -125,7 +128,7 @@ int main(int argc, char **argv) {
 
     srand(time(NULL));
     for(int i = 0; i < count; i++){
-        frame_gen_args args = gen_random_args(++expected_index, ++data_index, bits_per_number, codec_path, width, height, folder);
+        frame_gen_args args = gen_random_args(++expected_index, ++data_index, bits_per_number, codec_path, width, height, block_size, folder);
         if(i > 0) cout << endl;
         print_args(args);
     }

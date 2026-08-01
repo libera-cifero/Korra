@@ -9,6 +9,10 @@ int payload_storage::payload_size(){
     return _encoder -> payload_size();
 }
 
+int payload_storage::frame_size(){
+    return _encoder -> frame_size();
+}
+
 char *payload_storage::begin_new_payload(){
     int size = payload_size();
     char *payload = new char[size];

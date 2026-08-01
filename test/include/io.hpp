@@ -8,3 +8,5 @@ const path EXPECTED_PATH = CONTEXT_PATH / "expected";
 const path EXPECTED_FRAME_PATH = EXPECTED_PATH / "frame";
 const path DATA_FRAME_PATH = DATA_PATH / "frame";
 const path DATA_COLOR_CODEC_PATH = DATA_PATH / "color_codec";
+
+const path DATA_OUT_PATH = DATA_PATH / "out";
