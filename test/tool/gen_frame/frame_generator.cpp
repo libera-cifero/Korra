@@ -22,6 +22,7 @@
 #include <stdexcept>
 #include <stdint.h>
 #include <vector>
+#include <random>
 
 using namespace std;
 using namespace filesystem;
@@ -114,6 +115,17 @@ frame_gen_args parse_argv(int argc, char **argv) {
     return res;
 }
 
+uint32_t rand_int(){
+    std::random_device dev;
+    std::seed_seq seq{
+        dev(),   
+        static_cast<uint32_t>(std::time(nullptr)),
+        dev()
+    };
+    std::mt19937 random(seq);
+    return random();
+}
+
 output generate(frame_gen_args in){
     srand(time(NULL));
     vector<int> blocks(block_count);
@@ -121,7 +133,7 @@ output generate(frame_gen_args in){
     uint8_t *data = alloc_by_config(in);
     int count = codec->color_count();
     for(int i = 0; i < block_count; i++) {
-        int block_data = rand() % count;
+        int block_data = rand_int() % count;
         blocks[i] = block_data;
         int color = codec->number_to_color(block_data);
         uint8_t r = get_r(color), g = get_g(color), b = get_b(color);

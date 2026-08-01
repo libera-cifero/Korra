@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #include <algorithm>
 #include <cmath>
-#include "color.hpp"
-#include "status_error.hpp"
+#include "lib/color.hpp"
+#include "lib/status_error.hpp"
 
 using namespace std;
 

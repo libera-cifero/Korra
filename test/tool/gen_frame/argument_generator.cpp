@@ -1,4 +1,6 @@
-//input: count, palette_path
+//input: count, palette_path, width, height, folder. 
+//Width, height and folder aren't required here. If they aren't defined, then they will be generated 
+
 //output: lines of [width height bits_per_block block_size frame_N.json frame_N.bmp]
 #include "io.hpp"
 #include "frame_meta.hpp"
@@ -58,27 +60,30 @@ int get_bits_per_number(string codec_path) {
     return bits_per_number;
 }
 
-frame_gen_args gen_random_args(int expected_index, int data_index, int bits_per_number, string codec_path) {
-    int frame_width = (rand() % 1913) + 8;
-    int frame_height = (rand() % 1073) + 8;
-    int block_size, block_count = 0, min_size = frame_width < frame_height ? frame_width : frame_height;
+frame_gen_args gen_random_args(int expected_index, int data_index, int bits_per_number, string codec_path, int width, int height, char *folder) {
+    if(width <= 0) width = (rand() % 1913) + 8;
+    if(height <= 0) height = (rand() % 1073) + 8;
+    int block_size, block_count = 0, min_size = width < height ? width : height;
     bool bits_per_block_compatible = false;
     while(block_count == 0 || block_count % 8 != 0 || block_count % bits_per_number != 0) {
         block_size = (rand() % min_size) + 1;
-        int width_capacity = frame_width / block_size;
-        int height_capacity = frame_height / block_size;
+        int width_capacity = width / block_size;
+        int height_capacity = height / block_size;
         block_count = height_capacity * width_capacity;
     }
 
     string expected_file = "frame_" + to_string(expected_index) + ".json";
     string data_file = "frame_" + to_string(data_index) + ".bmp";
-
+    if(folder != nullptr){
+        expected_file = path(folder) / expected_file;
+        data_file = path(folder) / data_file;
+    }
     frame_gen_args args;
     args.frame_name = data_file;
     args.expected_name = expected_file;
     args.block_size = block_size;
-    args.frame_width = frame_width;
-    args.frame_height = frame_height;
+    args.frame_width = width;
+    args.frame_height = height;
     args.color_codec_path = codec_path;
 
     return args;
@@ -96,15 +101,31 @@ int main(int argc, char **argv) {
         return -2;
     }
 
-    int expected_index = get_max_file_index(EXPECTED_FRAME_PATH, regex("frame_([0-9]+)\\.json"));
-    int data_index = get_max_file_index(DATA_FRAME_PATH, regex("frame_([0-9]+)\\.bmp"));
+    int width = 0, height = 0;
+    char *folder = nullptr;
+    if(argc >= 4) width = atoi(argv[3]);
+    if(argc >= 5) height = atoi(argv[4]);
+    if(argc >= 6) folder = argv[5];
+
+    string expected_frame_path = EXPECTED_FRAME_PATH, data_frame_path = DATA_FRAME_PATH;
+    if(folder != nullptr){
+        expected_frame_path = EXPECTED_FRAME_PATH / path(folder);
+        data_frame_path = DATA_FRAME_PATH / path(folder);
+        if(!filesystem::is_directory(expected_frame_path))
+            filesystem::create_directory(expected_frame_path);
+        if(!filesystem::is_directory(data_frame_path))
+            filesystem::create_directory(data_frame_path);
+    }
+
+    int expected_index = get_max_file_index(expected_frame_path, regex("frame_([0-9]+)\\.json"));
+    int data_index = get_max_file_index(data_frame_path, regex("frame_([0-9]+)\\.bmp"));
 
     string codec_path = argv[2];
     int bits_per_number = get_bits_per_number(codec_path);
 
     srand(time(NULL));
     for(int i = 0; i < count; i++){
-        frame_gen_args args = gen_random_args(++expected_index, ++data_index, bits_per_number, codec_path);
+        frame_gen_args args = gen_random_args(++expected_index, ++data_index, bits_per_number, codec_path, width, height, folder);
         if(i > 0) cout << endl;
         print_args(args);
     }

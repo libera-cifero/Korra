@@ -3,7 +3,7 @@ project(korra.src)
 
 set(mosaic_DIR "video_encoder/frame_encoder/provider/mosaic")
 
-file(GLOB color_src "color.cpp")
+file(GLOB color_src "lib/color.cpp")
 
 file(GLOB mosaic_config_src "${mosaic_DIR}/mosaic_settings.cpp")
 file(GLOB color_codec_src "${mosaic_DIR}/color_codec/color_codec.cpp")
