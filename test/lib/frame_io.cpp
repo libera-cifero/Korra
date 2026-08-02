@@ -4,6 +4,7 @@
 #include "io.hpp"
 #include "test.hpp"
 #include <algorithm>
+#include <cstring>
 #include <fstream>
 #include <ios>
 #include <regex>
@@ -236,7 +237,8 @@ void iterate_frame_test_cases(const char *test_name, string subdirectory, iter_a
 
 char *convert_blocks_to_data(vector<int> &blocks, int bits_per_block){
     int byte_length = blocks.size() * bits_per_block / 8;
-    char *bytes = (char*)calloc(byte_length, 1);
+    char *bytes = new char[byte_length];
+    memset(bytes, 1, byte_length);
     for(int i = 0; i < blocks.size(); i++) {
         int block = blocks[i];
         for(int b = 0; b < bits_per_block; b++) {

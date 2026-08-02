@@ -28,4 +28,6 @@ public:
 
     char *pop_frame();
     char *begin_new_payload();
+
+    ~payload_storage();
 };

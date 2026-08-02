@@ -16,8 +16,6 @@ int payload_storage::frame_size(){
 payload_storage::payload_storage(frame_encoder *encoder, sync_signals *signals) {
     _encoder = encoder;
     _signals = signals;
-    _frame = new char[payload_size()];
-    memset(_frame, 0, payload_size());
 
     begin_new_payload();
     _is_frame_inited = false;
@@ -80,3 +78,8 @@ char *payload_storage::pop_frame(){
     return result;
 }
 
+payload_storage::~payload_storage(){
+    for(int i = 0; i < _payloads.size(); i++) delete [] _payloads[i];
+    _payloads.clear();
+    //delete [] _frame;
+}

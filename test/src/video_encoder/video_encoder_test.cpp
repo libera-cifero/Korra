@@ -53,7 +53,8 @@ void test_encode(){
         if(!inited){
             t = new thread([&](frame_meta meta){
                 mosaic_settings *settings = new mosaic_settings;
-                memcpy(settings, (mosaic_settings*)&meta, sizeof(mosaic_settings));
+                *settings = meta;
+                
                 provider *p = new mosaic_provider(settings);
                 cipher *c = new none_cipher(p->payload_size());
                 frame_encoder *encoder = new frame_encoder(p, c);
@@ -82,7 +83,7 @@ void test_encode(){
         memcpy(buffer, payload, storage->payload_size());
         storage->begin_new_payload();
         delete [] payload;
-        counter++;
+        if(counter++ > 0) delete meta.codec;
     });
 
     payloads_token.release();
@@ -99,6 +100,7 @@ void test_encode(){
 
     for(int i = 0; i < frames.size(); i++){
         uint8_t *frame = reinterpret_cast<uint8_t*>(frames[i]);
+        printInfo("index: %d", i);
         write_frame_data(frame, 1280, 720, p / format("frame_{}.bmp", i));
         delete [] frame;
     }
@@ -127,7 +129,7 @@ void test_pop_frame(){
         char *payload = convert_blocks_to_data(meta.blocks, meta.codec->bits_per_number());
         char *buffer = storage->current_payload();
         memcpy(buffer, payload, storage->payload_size());
-
+        delete [] payload;
         binary_semaphore sync(0);
         thread t([&]() 
         {
@@ -145,6 +147,7 @@ void test_pop_frame(){
             sync.release();
             char *frame = storage->pop_frame();
             write_frame_data(reinterpret_cast<uint8_t*>(frame), meta.frame_width, meta.frame_height, p);
+            delete[] frame;
             sync.release();
         });
 

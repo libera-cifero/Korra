@@ -64,4 +64,5 @@ clock_generator::~clock_generator(){
     _breaker->acquire();
     delete _signals;
     delete _breaker;
+    delete _clock_thread;
 }
