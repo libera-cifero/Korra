@@ -13,25 +13,29 @@ int payload_storage::frame_size(){
     return _encoder -> frame_size();
 }
 
+payload_storage::payload_storage(frame_encoder *encoder, sync_signals *signals) {
+    _encoder = encoder;
+    _signals = signals;
+    _frame = new char[payload_size()];
+    memset(_frame, 0, payload_size());
+
+    begin_new_payload();
+    _is_frame_inited = false;
+}
+
+char *payload_storage::current_payload(){ 
+    lock_guard<mutex> payloads_lock(_payloads_access);
+    return _payloads.back(); 
+}
+
 char *payload_storage::begin_new_payload(){
+
     int size = payload_size();
     char *payload = new char[size];
     memset(payload, 0, size);
     _payloads.push_back(payload);
     payload_index = 2;//first 2 bytes of buffer are used for data_count encounting
     return payload;
-}
-
-payload_storage::payload_storage(frame_encoder *encoder, sync_signals *signals) {
-    _encoder = encoder;
-    _signals = signals;
-
-    begin_new_payload();
-}
-
-char *payload_storage::current_payload(){ 
-    lock_guard<mutex> payloads_lock(_payloads_access);
-    return _payloads.back(); 
 }
 
 char *payload_storage::_pop_payload(){
@@ -42,12 +46,25 @@ char *payload_storage::_pop_payload(){
     return first;
 }
 
+void payload_storage::_update_frame(){
+    char *payload = _pop_payload();
+    try{
+        lock_guard<mutex> frame_lock(_frame_access);
+        _frame = _encoder -> encode(payload);
+    }
+    catch(...) { 
+        delete [] payload;
+        throw;
+    }
+
+    delete [] payload;
+}
+
 char *payload_storage::pop_frame(){
     _signals->ready_request()->acquire();
-    if(_payloads.size() == 1) {
-        char *data = _pop_payload();
-        lock_guard<mutex> frame_lock(_frame_access);
-        _frame = _encoder -> encode(data);
+    if(!_is_frame_inited){
+        _update_frame();
+        _is_frame_inited = true;
     }
     _signals->ready_response()->release();
     _signals->frame_request()->acquire();
@@ -56,23 +73,10 @@ char *payload_storage::pop_frame(){
     char *result = _frame;
     _frame_access.unlock();
 
-    if(_payloads.size() > 1) begin_frame_updating();
+    if(_payloads.size() > 1 || payload_index == payload_size() - 1){
+        thread t([&](){ _update_frame(); });
+        t.detach();
+    }
     return result;
 }
 
-void payload_storage::begin_frame_updating(){
-    std::thread thread([&]() {
-        char *payload = payload = _pop_payload();
-        try{
-            lock_guard<mutex> frame_lock(_frame_access);
-            _frame = _encoder -> encode(payload);
-        }
-        catch(...) { 
-            delete [] payload;
-            throw;
-        }
-
-        delete [] payload;
-    });
-    thread.detach();
-}

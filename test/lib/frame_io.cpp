@@ -7,7 +7,7 @@
 #include <ios>
 #include <regex>
 #include <filesystem>
-
+#include <set>
 using json = nlohmann::json;
 using namespace std;
 using namespace filesystem;
@@ -187,31 +187,37 @@ uint8_t *read_frame_data(const string &path, int &width, int &height)
 
 void iterate_frame_test_cases(const char *test_name, string subdirectory, iter_action test){
     directory_iterator iter(EXPECTED_FRAME_PATH / subdirectory);
+    //--- filenames are unique so we can use a set
+    set<path> sorted_by_name;
     regex pattern("frame_[0-9]+\\.json");
-    for(directory_entry entry : iter) {
+    for (auto &entry : iter){
         smatch match;
         path file_path = entry.path();
         string file_name = file_path.filename();
-        if(entry.is_regular_file() && regex_match(file_name, match, pattern)){
-            frame_meta expected = read_frame_expected(file_path);
-            int width, height;
-            string frame_data_path = DATA_FRAME_PATH / expected.frame_path;
-            uint8_t *data = read_frame_data(frame_data_path, width, height);
-            if(expected.frame_width != width){
-                delete[] data;
-                printInfo(file_name.c_str());
-                fail(test_name, "Width is expected %d but got %d!", 1, expected.frame_width, width);
-            }
-            if(expected.frame_height != height){
-                delete[] data;
-                printInfo(file_name.c_str());
-                fail(test_name, "Height is expected %d but got %d!", 2, expected.frame_height, height);
-            }
-
-            test(test_name, expected, data, file_name);
-
+        if(entry.is_regular_file() && regex_match(file_name, match, pattern))
+            sorted_by_name.insert(file_path);
+    }
+    
+    for(auto file_path : sorted_by_name) {
+        string file_name = file_path.filename();
+        frame_meta expected = read_frame_expected(file_path);
+        int width, height;
+        string frame_data_path = DATA_FRAME_PATH / expected.frame_path;
+        uint8_t *data = read_frame_data(frame_data_path, width, height);
+        if(expected.frame_width != width){
             delete[] data;
+            printInfo(file_name.c_str());
+            fail(test_name, "Width is expected %d but got %d!", 1, expected.frame_width, width);
         }
+        if(expected.frame_height != height){
+            delete[] data;
+            printInfo(file_name.c_str());
+            fail(test_name, "Height is expected %d but got %d!", 2, expected.frame_height, height);
+        }
+
+        test(test_name, expected, data, file_name);
+
+        delete[] data;
     }
 }
 

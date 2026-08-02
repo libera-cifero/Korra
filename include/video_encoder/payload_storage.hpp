@@ -3,7 +3,6 @@
 #include "sync_signals.hpp"
 #include <mutex>
 #include <deque>
-#include <semaphore>
 
 using namespace std;
 class payload_storage {
@@ -14,9 +13,10 @@ private:
     mutex _payloads_access, _frame_access;
     deque<char*> _payloads;
     char *_frame;
+    bool _is_frame_inited;
 
     char *_pop_payload();
-
+    void _update_frame();
 public:
     int payload_index;
 
@@ -24,10 +24,8 @@ public:
 
     int payload_size();
     int frame_size();
-
-    char *pop_frame();
     char *current_payload();
 
+    char *pop_frame();
     char *begin_new_payload();
-    void begin_frame_updating();
 };

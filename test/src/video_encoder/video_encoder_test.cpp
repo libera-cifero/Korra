@@ -14,69 +14,95 @@
 #include <cstdio>
 #include <cstring>
 #include <filesystem>
+#include <format>
 #include <regex>
 #include <semaphore>
 #include <string>
 #include <thread>
 #include <unistd.h>
+#include <vector>
 using namespace std;
 using namespace filesystem;
 const string base_name = "video_encoder_test";
 
+FILE *begin_video_making(int width, int height, int fps, string output){
+    std::string cmd =
+        "ffmpeg -y -f rawvideo -pix_fmt bgr24 "
+        "-s " + std::to_string(width) + "x" + std::to_string(height) +
+        " -r " + std::to_string(fps) +
+        " -i - "
+        "-c:v libx264 -pix_fmt yuv420p -preset veryfast "
+        "\"" + output + "\"";
+    return popen(cmd.c_str(), "w");
+}
+
 void test_encode(){
-    const string test_name = base_name + ".test_pop_frame";
+    const string test_name = base_name + ".test_encode";
     printInfo(test_name.c_str());   
 
-    bool encode = true, inited = false;
-    binary_semaphore init(0), begin_encoding(0);
-    payload_storage *storage = nullptr;
-    thread t;
+    bool inited = false;
+    thread *t;
+    payload_storage *storage;
+    binary_semaphore sync(0), payloads_token(0);
     int counter = 0;
+
+    vector<char*> frames;
+    FILE *video_maker = begin_video_making(1280, 720, 30, DATA_OUT_PATH / "output.mp4");
     iterate_frame_test_cases(test_name.c_str(), "1280x720", [&](ITER_ACTION_ARGS) {
         if(!inited){
-            t = thread([&](mosaic_settings settings){
-                char command[256];
-                sprintf(command, "ffmpeg -f rawvideo -pix_fmt bgr24 -s %dx%d -framerate %d -i - -c:v libx264 -pix_fmt yuv420p test/context/data/output.mp4", 
-                    meta.frame_width, meta.frame_height, meta.fps);
-                FILE* pipe = popen(command, "w");
-
-                provider *p = new mosaic_provider(&settings);
+            t = new thread([&](frame_meta meta){
+                mosaic_settings *settings = new mosaic_settings;
+                memcpy(settings, (mosaic_settings*)&meta, sizeof(mosaic_settings));
+                provider *p = new mosaic_provider(settings);
                 cipher *c = new none_cipher(p->payload_size());
-                frame_encoder *f = new frame_encoder(p, c);
-                video_encoder *encoder = new video_encoder(f, meta.fps, 15);
-                storage = encoder->storage();
-                inited = true;
-                init.release();
-                begin_encoding.acquire();
-                encoder->launch();
-                int wrote = 0;
-                while(counter-- > 0) {
+                frame_encoder *encoder = new frame_encoder(p, c);
+                video_encoder *video = new video_encoder(encoder, 30, 14);
+                storage = video->storage();
+                sync.release();
+                payloads_token.acquire();//waiting while payload will be full
+                video->launch();
+                do{
                     char *frame = storage->pop_frame();
-                    fwrite(frame, storage->frame_size(), 1, pipe);
-                    delete [] frame;
-                    wrote++;
-                    printInfo("Wrote frame %d!", wrote);
+                    frames.push_back(frame);
+                    fwrite(frame, 1, storage->frame_size(), video_maker);
                 }
-                pclose(pipe);
-                delete encoder;
-                init.release();
+                while(--counter > 0);
+
+                delete video;
+                sync.release();
             }, meta);
-            t.detach();
-            init.acquire();
+            t->detach();
+            sync.acquire();
+            inited = true;
         }
-        
+
+        char *buffer = storage->current_payload();
         char *payload = convert_blocks_to_data(meta.blocks, meta.codec->bits_per_number());
-        storage->payload_index = 0;
-        char *storage_payload = storage->current_payload();
-        memcpy(storage_payload, payload, storage->payload_size());
+        memcpy(buffer, payload, storage->payload_size());
         storage->begin_new_payload();
-        storage->begin_frame_updating();
-        delete payload;
+        delete [] payload;
         counter++;
     });
 
-    begin_encoding.release();
-    init.acquire();
+    payloads_token.release();
+    sync.acquire();//waiting until frames were be encoded
+    delete t;
+
+    pclose(video_maker);
+    path p = DATA_OUT_PATH;
+    if(!is_directory(p)) create_directory(p);
+    p /= "frame";
+    if(!is_directory(p)) create_directory(p);
+    p /= "test_encode";
+    if(!is_directory(p)) create_directory(p);
+
+    for(int i = 0; i < frames.size(); i++){
+        uint8_t *frame = reinterpret_cast<uint8_t*>(frames[i]);
+        write_frame_data(frame, 1280, 720, p / format("frame_{}.bmp", i));
+        delete [] frame;
+    }
+    frames.clear();
+
     printPass(test_name.c_str());
 }
 
@@ -107,6 +133,8 @@ void test_pop_frame(){
             if(!is_directory(p)) create_directory(p);
             p /= "frame";
             if(!is_directory(p)) create_directory(p);
+            p /= "test_pop_frame";
+            if(!is_directory(p)) create_directory(p);
             p /= (m.str()+".bmp");
             sync.release();
             char *frame = storage->pop_frame();
@@ -128,6 +156,7 @@ void test_pop_frame(){
 }
 
 int main(){
+    test_encode();
     test_pop_frame();
     return 0;
 }
