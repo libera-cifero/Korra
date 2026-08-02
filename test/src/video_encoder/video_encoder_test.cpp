@@ -12,6 +12,7 @@
 #include "video_encoder/frame_encoder/provider/provider.hpp"
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <filesystem>
 #include <format>
@@ -27,11 +28,11 @@ const string base_name = "video_encoder_test";
 
 FILE *begin_video_making(int width, int height, int fps, string output){
     std::string cmd =
-        "ffmpeg -y -f rawvideo -pix_fmt rgb24 "
+        "ffmpeg -y -f rawvideo -pix_fmt bgr24 "
         "-s " + std::to_string(width) + "x" + std::to_string(height) +
         " -r " + std::to_string(fps) +
         " -i - "
-        "-c:v libx264 -pix_fmt yuv420p -preset veryfast "
+        "-vf vflip -c:v libx264 -g 1 -sc_threshold 0 -pix_fmt yuv420p -preset veryfast "
         "\"" + output + "\"";
     return popen(cmd.c_str(), "w");
 }
@@ -103,6 +104,11 @@ void test_encode(){
     }
     frames.clear();
 
+    char command[1024];
+    p = DATA_OUT_PATH / "frames_outputmp4" / "frame_%04d.bmp";
+    path p_in = DATA_OUT_PATH / "output.mp4";
+    sprintf(command, "ffmpeg -i %s -vsync 0 %s", p_in.c_str(), p.c_str());
+    system(command);;
     printPass(test_name.c_str());
 }
 
