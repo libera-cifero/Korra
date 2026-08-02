@@ -3,6 +3,7 @@
 #include "lib/json.hpp"
 #include "io.hpp"
 #include "test.hpp"
+#include <algorithm>
 #include <fstream>
 #include <ios>
 #include <regex>
@@ -188,16 +189,28 @@ uint8_t *read_frame_data(const string &path, int &width, int &height)
 void iterate_frame_test_cases(const char *test_name, string subdirectory, iter_action test){
     directory_iterator iter(EXPECTED_FRAME_PATH / subdirectory);
     //--- filenames are unique so we can use a set
-    set<path> sorted_by_name;
-    regex pattern("frame_[0-9]+\\.json");
+    vector<path> sorted_by_name;
+    regex pattern("frame_([0-9]+)\\.json");
     for (auto &entry : iter){
         smatch match;
         path file_path = entry.path();
         string file_name = file_path.filename();
         if(entry.is_regular_file() && regex_match(file_name, match, pattern))
-            sorted_by_name.insert(file_path);
+            sorted_by_name.push_back(file_path);
     }
     
+    
+    sort(sorted_by_name.begin(), sorted_by_name.end(), [&](path a, path b){
+        smatch match_a, match_b;
+        string file_a = a.filename(), file_b = b.filename();
+        regex_match(file_a, match_a, pattern);
+        regex_match(file_b, match_b, pattern);
+
+        int index_a = atoi(match_a[1].str().c_str());
+        int index_b = atoi(match_b[1].str().c_str());
+        return index_a < index_b;
+    });
+
     for(auto file_path : sorted_by_name) {
         string file_name = file_path.filename();
         frame_meta expected = read_frame_expected(file_path);

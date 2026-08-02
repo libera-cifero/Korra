@@ -27,7 +27,7 @@ const string base_name = "video_encoder_test";
 
 FILE *begin_video_making(int width, int height, int fps, string output){
     std::string cmd =
-        "ffmpeg -y -f rawvideo -pix_fmt bgr24 "
+        "ffmpeg -y -f rawvideo -pix_fmt rgb24 "
         "-s " + std::to_string(width) + "x" + std::to_string(height) +
         " -r " + std::to_string(fps) +
         " -i - "
