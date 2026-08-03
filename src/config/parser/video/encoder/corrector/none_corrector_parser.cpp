@@ -1,7 +1,7 @@
-#include "config/parser/video_encoder/corrector/none_corrector_parser.hpp"
+#include "config/parser/video_codec/corrector/none_corrector_parser.hpp"
 #include "config/parser/parser.hpp"
-#include "video_encoder/corrector/corrector.hpp"
-#include "video_encoder/corrector/none_corrector.hpp"
+#include "video_codec/corrector/corrector.hpp"
+#include "video_codec/corrector/none_corrector.hpp"
 
 string none_corrector_parser::type(){ return "none"; }
 

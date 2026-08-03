@@ -3,7 +3,7 @@
 #include "data_boxer/data/piecable_data.hpp"
 #include "data_boxer/data/begin_label_data.hpp"
 #include "data_boxer/data/pieced_data.hpp"
-#include "video_encoder/payload_storage.hpp"
+#include "video_codec/payload_storage.hpp"
 #include <cstdio>
 #include <cstring>
 #include <stdexcept>

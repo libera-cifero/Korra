@@ -43,8 +43,8 @@ math_test: math
 	cmake --build build --target math_test && python3 tool/run.py math_test
 clock_gen_test:
 	cmake --build build --target clock_generator_test && python3 tool/run.py clock_generator_test
-video_encoder_test:
-	cmake --build build --target video_encoder_test
+video_codec_test:
+	cmake --build build --target video_codec_test
 test: color_test math_test timer_test mosaic_test
 #======END======
 

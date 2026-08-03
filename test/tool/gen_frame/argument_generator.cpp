@@ -4,7 +4,7 @@
 //output: lines of [width height bits_per_block block_size frame_N.json frame_N.bmp]
 #include "io.hpp"
 #include "frame_meta.hpp"
-#include "video_encoder/frame_encoder/provider/mosaic/color_codec/codec_json.hpp"
+#include "video_codec/frame_codec/provider/mosaic/color_codec/codec_json.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <fstream>

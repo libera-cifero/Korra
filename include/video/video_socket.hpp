@@ -1,5 +1,5 @@
 #pragma once
-#include "video_encoder/video_encoder.hpp"
+#include "video_codec/video_codec.hpp"
 #include "pipe/video_pipe_in.hpp"
 #include "pipe/video_pipe_out.hpp"
 #include <cstddef>
@@ -19,7 +19,7 @@ struct ip_endpoint {
 };
 
 struct video_socket_config {
-    video_encoder *encoder;
+    video_codec *encoder;
     video_pipe_in *pipe_in;
     video_pipe_out *pipe_out;
     ip_endpoint socket;

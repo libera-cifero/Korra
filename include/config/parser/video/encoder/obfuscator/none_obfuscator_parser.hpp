@@ -1,5 +1,5 @@
 #include "config/parser/parser.hpp"
-#include "video_encoder/cipher/cipher.hpp"
+#include "video_codec/cipher/cipher.hpp"
 class none_cipher_parser : public specific_parser<cipher*> {
 public:
     string type() override;

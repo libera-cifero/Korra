@@ -1,7 +1,7 @@
 #pragma once
-#include "video_encoder/frame_encoder/provider/provider.hpp"
-#include "video_encoder/corrector/corrector.hpp"
-#include "video_encoder/cipher/cipher.hpp"
+#include "video_codec/frame_codec/provider/provider.hpp"
+#include "video_codec/corrector/corrector.hpp"
+#include "video_codec/cipher/cipher.hpp"
 
 struct encoder_config {
     cipher *cipher;

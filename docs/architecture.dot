@@ -115,16 +115,16 @@ digraph {
                 none_corrector->corrector [color=blue];
             }
 
-            video_encoder [color=blue;fontcolor=blue;];
+            video_codec [color=blue;fontcolor=blue;];
             color;
             status_error[color=blue; fontcolor=blue;];
             math;
             
             
-            provider->video_encoder; 
-            compressor->video_encoder;
-            cipher->video_encoder;
-            corrector->video_encoder;
+            provider->video_codec; 
+            compressor->video_codec;
+            cipher->video_codec;
+            corrector->video_codec;
 
             color->rgb_palette_codec;
             color->hsv_codec;
@@ -154,7 +154,7 @@ digraph {
 
         video_socket [color=blue; fontcolor=blue;];
         
-        video_encoder->video_socket [weight=2;];
+        video_codec->video_socket [weight=2;];
         video_pipe_in->video_socket;
         video_pipe_out->video_socket;
     }

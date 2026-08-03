@@ -1,7 +1,7 @@
-#include "config/parser/video_encoder/cipher/none_cipher_parser.hpp"
+#include "config/parser/video_codec/cipher/none_cipher_parser.hpp"
 #include "config/parser/parser.hpp"
-#include "video_encoder/cipher/cipher.hpp"
-#include "video_encoder/cipher/none_cipher.hpp"
+#include "video_codec/cipher/cipher.hpp"
+#include "video_codec/cipher/none_cipher.hpp"
 
 string none_cipher_parser::type(){ return "none"; }
 

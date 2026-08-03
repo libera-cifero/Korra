@@ -1,5 +1,5 @@
 #pragma once
-#include "config/parser/video_encoder/encoder_parser.hpp"
+#include "config/parser/video_codec/encoder_parser.hpp"
 #include "config/parser/video/pipes/pipes_parser.hpp"
 #include "config/parser/video/video_parser.hpp"
 #include "video/video_socket.hpp"

@@ -45,15 +45,15 @@
 <ellipse fill="none" stroke="red" cx="1163.04" cy="-559" rx="40.09" ry="18"/>
 <text text-anchor="middle" x="1163.04" y="-555.3" font-family="Times,serif" font-size="14.00" fill="red">provider</text>
 </g>
-<!-- video_encoder -->
+<!-- video_codec -->
 <g id="node18" class="node">
-<title>video_encoder</title>
+<title>video_codec</title>
 <ellipse fill="none" stroke="blue" cx="731.04" cy="-631" rx="62.29" ry="18"/>
-<text text-anchor="middle" x="731.04" y="-627.3" font-family="Times,serif" font-size="14.00" fill="blue">video_encoder</text>
+<text text-anchor="middle" x="731.04" y="-627.3" font-family="Times,serif" font-size="14.00" fill="blue">video_codec</text>
 </g>
-<!-- provider&#45;&gt;video_encoder -->
+<!-- provider&#45;&gt;video_codec -->
 <g id="edge14" class="edge">
-<title>provider&#45;&gt;video_encoder</title>
+<title>provider&#45;&gt;video_codec</title>
 <path fill="none" stroke="black" d="M1128.01,-567.98C1104.37,-573.21 1072.42,-579.98 1044.04,-585 959.29,-599.98 860.96,-613.49 797.46,-621.71"/>
 <polygon fill="black" stroke="black" points="796.66,-618.28 787.19,-623.03 797.56,-625.23 796.66,-618.28"/>
 </g>
@@ -201,9 +201,9 @@
 <ellipse fill="none" stroke="red" cx="653.04" cy="-559" rx="51.99" ry="18"/>
 <text text-anchor="middle" x="653.04" y="-555.3" font-family="Times,serif" font-size="14.00" fill="red">compressor</text>
 </g>
-<!-- compressor&#45;&gt;video_encoder -->
+<!-- compressor&#45;&gt;video_codec -->
 <g id="edge15" class="edge">
-<title>compressor&#45;&gt;video_encoder</title>
+<title>compressor&#45;&gt;video_codec</title>
 <path fill="none" stroke="black" d="M671.13,-576.24C681.2,-585.27 693.91,-596.67 705.02,-606.65"/>
 <polygon fill="black" stroke="black" points="703,-609.54 712.78,-613.61 707.67,-604.33 703,-609.54"/>
 </g>
@@ -225,9 +225,9 @@
 <ellipse fill="none" stroke="red" cx="799.04" cy="-559" rx="48.19" ry="18"/>
 <text text-anchor="middle" x="799.04" y="-555.3" font-family="Times,serif" font-size="14.00" fill="red">cipher</text>
 </g>
-<!-- cipher&#45;&gt;video_encoder -->
+<!-- cipher&#45;&gt;video_codec -->
 <g id="edge16" class="edge">
-<title>cipher&#45;&gt;video_encoder</title>
+<title>cipher&#45;&gt;video_codec</title>
 <path fill="none" stroke="black" d="M783.27,-576.24C774.64,-585.12 763.79,-596.29 754.21,-606.15"/>
 <polygon fill="black" stroke="black" points="751.66,-603.76 747.2,-613.37 756.68,-608.63 751.66,-603.76"/>
 </g>
@@ -249,9 +249,9 @@
 <ellipse fill="none" stroke="red" cx="957.04" cy="-559" rx="42.49" ry="18"/>
 <text text-anchor="middle" x="957.04" y="-555.3" font-family="Times,serif" font-size="14.00" fill="red">corrector</text>
 </g>
-<!-- corrector&#45;&gt;video_encoder -->
+<!-- corrector&#45;&gt;video_codec -->
 <g id="edge17" class="edge">
-<title>corrector&#45;&gt;video_encoder</title>
+<title>corrector&#45;&gt;video_codec</title>
 <path fill="none" stroke="black" d="M927.49,-572.05C916.45,-576.37 903.75,-581.12 892.04,-585 857.24,-596.53 817.58,-607.64 786.33,-615.93"/>
 <polygon fill="black" stroke="black" points="785.27,-612.59 776.5,-618.52 787.06,-619.36 785.27,-612.59"/>
 </g>
@@ -273,9 +273,9 @@
 <ellipse fill="none" stroke="blue" cx="658.04" cy="-703" rx="57.39" ry="18"/>
 <text text-anchor="middle" x="658.04" y="-699.3" font-family="Times,serif" font-size="14.00" fill="blue">video_socket</text>
 </g>
-<!-- video_encoder&#45;&gt;video_socket -->
+<!-- video_codec&#45;&gt;video_socket -->
 <g id="edge27" class="edge">
-<title>video_encoder&#45;&gt;video_socket</title>
+<title>video_codec&#45;&gt;video_socket</title>
 <path fill="none" stroke="black" d="M713.74,-648.59C704.4,-657.55 692.72,-668.75 682.46,-678.58"/>
 <polygon fill="black" stroke="black" points="679.76,-676.32 674.97,-685.77 684.61,-681.38 679.76,-676.32"/>
 </g>
