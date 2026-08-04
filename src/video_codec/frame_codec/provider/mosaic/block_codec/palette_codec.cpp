@@ -4,8 +4,7 @@
 template<typename T>
 palette_codec<T>::palette_codec(palette_codec_config<T> &config) : block_codec(config) {
     int count = color_count();
-    $palette = new T[count];
-    memcpy($palette, config.palette, count * sizeof(T));
+    $palette = config.palette;
 }
 
 template<typename T>

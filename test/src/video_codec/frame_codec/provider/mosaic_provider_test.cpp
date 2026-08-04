@@ -72,11 +72,10 @@ char *generate_random_payload(int count) {
 }
 
 void test_settings_list(const char *test_name, vector<mosaic_settings*>* settings_list){
-    bool is_cheating = false;
-
+    bool is_cheating = false, is_break = false;
     int invalid_byte_index = -1;
 
-    for(int i = 0; i < settings_list->size(); i++){
+    for(int i = 0; i < settings_list->size() && !is_break; i++){
         mosaic_settings *settings = (*settings_list)[i];
         mosaic_provider p(settings);
         char *payload0 = generate_random_payload(p.payload_size());
@@ -98,23 +97,22 @@ void test_settings_list(const char *test_name, vector<mosaic_settings*>* setting
         path data_path = DATA_OUT_PATH / "frame" / "test_to_frame_to_payload" / "rgb_palette_codec" / std::format("frame_{}.bmp", i);
         write_frame_data(reinterpret_cast<uint8_t*>(frame), settings->frame_width, settings->frame_height, data_path);
 
+
         if(payload0 == payload1){
-            delete settings;
-            delete payload0;
-            delete frame;
+            
             is_cheating = true;
-            break;
+            is_break = true;
         }
 
         for(int b = 0; b < p.payload_size(); b++){
             if(payload0[b] != payload1[b]){
-                delete settings;
-                delete payload0;
-                delete frame;
+                is_break = true;
                 invalid_byte_index = i;
-                break;
             }
         }
+        delete [] frame;
+        delete [] payload0;
+        delete [] payload1;
     }
 
     delete settings_list;
