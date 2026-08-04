@@ -2,7 +2,6 @@
 #include "provider.hpp"
 #include "mosaic/mosaic_settings.hpp"
 #include "mosaic/bit_area.hpp"
-#include "mosaic/point.hpp"
 #include <cstddef>
 #include <cstdint>
 
@@ -14,10 +13,6 @@ private:
     uint32_t _bits_per_block;
     uint32_t _block_count;
 
-
-    void _block_index_to_area(int block_index, point &begins, point &end);
-
-    void _draw_block(int block_index, int block_data, char *frame);
     int _get_block(char *data, int block_index);
 
     int _read_block_from_frame(char *frame, int block_index);

@@ -1,5 +1,5 @@
 #include "frame_io.hpp"
-#include "video_codec/frame_codec/provider/mosaic/color_codec/codec_json.hpp"
+#include "block_codec_json.hpp"
 #include "lib/json.hpp"
 #include "io.hpp"
 #include "test.hpp"
@@ -16,7 +16,7 @@ using namespace filesystem;
 
 void write_frame_expected(frame_meta config, const string &path){
     json j;
-    j["colorCodec"] = serialize_color_codec(config.codec);
+    j["colorCodec"] = serialize_block_codec(config.codec);
     j["block_size"] = config.block_size;
     j["frame_width"] = config.frame_width;
     j["frame_height"] = config.frame_height;
@@ -42,7 +42,7 @@ frame_meta read_frame_expected(const string &path){
     
     meta.block_size = j["block_size"];
     meta.blocks = j["blocks"].get<vector<int>>();
-    meta.codec = parse_color_codec(j["colorCodec"]);
+    meta.codec = parse_block_codec(j["colorCodec"]);
     return meta;
 }
 

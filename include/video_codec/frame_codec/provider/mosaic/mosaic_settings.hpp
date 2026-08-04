@@ -1,10 +1,8 @@
 #pragma once
-#include "color_codec/color_codec.hpp"
-#include "config/data/video_config.hpp"
+#include "block_codec/block_codec.hpp"
+#include "config/data/mosaic_config.hpp"
 #include <stdint.h>
 
-//basic block container config
-struct mosaic_settings : public video_config {
-    uint32_t block_size;
-    color_codec *codec;
+struct mosaic_settings : public mosaic_config {
+    block_codec *codec;
 };

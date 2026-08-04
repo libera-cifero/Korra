@@ -1,16 +1,19 @@
 import os
 import subprocess
+import lib
+import sys
 
-bin_dir = os.path.abspath(os.path.join('.','bin'))
-print(bin_dir)
-files=[]
-for f in os.listdir(bin_dir):
-    file_path = os.path.join(bin_dir, f)
-    if os.path.isfile(file_path) and (file_path.endswith("_test") or file_path.endswith("_test.exe")):
-        files.append(file_path)
+if len(sys.argv) < 2:
+    bin_dir = os.path.abspath(os.path.join('.','bin'))
+    print(bin_dir)
+    files=[]
+    for f in os.listdir(bin_dir):
+        file_path = os.path.join(bin_dir, f)
+        if os.path.isfile(file_path) and (file_path.endswith("_test") or file_path.endswith("_test.exe")):
+            files.append(file_path)
 
-for file in files:
-    result = subprocess.run([file], capture_output=True, text=True)
-    print(result.stdout)
-    if result.stderr != "" and result.stderr != None:
-        print(result.stderr)
+    for file in files: lib.run_test(file)
+else:
+    tests = sys.argv[1::]
+    for test in tests:
+        lib.run_test(test)

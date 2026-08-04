@@ -1,7 +1,5 @@
-#include "video_codec/frame_codec/provider/mosaic/color_codec/codec_json.hpp"
-#include "video_codec/frame_codec/provider/mosaic/color_codec/hsv_codec.hpp"
-#include "video_codec/frame_codec/provider/mosaic/color_codec/rgb_palette_codec.hpp"
-#include "video_codec/frame_codec/provider/mosaic/color_codec/ycbcr_palette_codec.hpp"
+#include "block_codec_json.hpp"
+#include "video_codec/frame_codec/provider/mosaic/block_codec/rgb_palette_codec.hpp"
 #include "lib/color.hpp"
 #include <regex>
 #include <stdexcept>
@@ -64,68 +62,53 @@ static int parse_color(string color){
     }
 }
 
-static vector<int> parse_palette(json &settingsObject) {
+static int *parse_rgb_palette(json &settingsObject) {
     vector<string> palette_str = settingsObject["palette"].get<vector<string>>();
-    vector<int> palette;
-    for(string color_str : palette_str){
-        int color = parse_color(color_str);
-        palette.push_back(color);
+    int *palette = new int[palette_str.size()];
+    for(int i = 0; i < palette_str.size(); i++){
+        string color_str = palette_str[i];
+        palette[i] = parse_color(color_str);
     }
 
     return palette;
 }
 
-color_codec *parse_color_codec(json &root){
+block_codec *parse_block_codec(json &root){
     string codec_type = root["type"].get<string>();
     json settingsObject = root[codec_type + "Settings"];
     int bits_per_number = settingsObject["bitsPerNumber"].get<int>();
-    if(codec_type == "hsv"){
-        return new hsv_codec(bits_per_number);
-    }
-    else if(codec_type == "rgbPalette"){
-        vector<int> palette = parse_palette(settingsObject);
-        return new rgb_palette_codec(palette.begin().base(), bits_per_number);
-    }
-    else if(codec_type == "ycbcrPalette"){
-        vector<int> palette = parse_palette(settingsObject);
-        return new ycbcr_palette_codec(palette.begin().base(), bits_per_number);
+
+    if(codec_type == "rgbPalette"){
+        palette_codec_config<int> config;
+        config.frame_width = settingsObject["frameWidth"].get<int>();
+        config.frame_height = settingsObject["frameHeight"].get<int>();
+        config.palette = parse_rgb_palette(settingsObject);
+        return new rgb_palette_codec(config);
     }
 
     throw runtime_error("Invalid colorCodec \"" + codec_type + "\"!");
 }
 
-json serialize_color_codec(color_codec *codec) {
+json serialize_block_codec(block_codec *codec) {
     json root = json::object(), settings = json::object();
     settings["bitsPerNumber"] = codec->bits_per_number();
-    string color_codec;
-
-    if(dynamic_cast<hsv_codec*>(codec)) {
-        color_codec = "hsv";
-    }
-    else if(auto *rgb_codec = dynamic_cast<palette_codec*>(codec)) {
+    string codec_type;
+    
+    if(auto *rgb_codec = dynamic_cast<rgb_palette_codec*>(codec)) {
         int *palette = rgb_codec->palette();
         int count = rgb_codec->color_count();
         vector<string> palette_list(count);
-        for(int i = 0; i < count; i++){
-            palette_list[i] = rgb_to_hex(palette[i]);
-        }
+        for(int i = 0; i < count; i++) palette_list[i] = rgb_to_hex(palette[i]);
+        
         settings["palette"] = palette_list;
         delete [] palette;
-        if(dynamic_cast<rgb_palette_codec*>(codec)) {
-            color_codec = "rgbPalette";
-        }
-        else if(dynamic_cast<ycbcr_palette_codec*>(codec)) {
-            color_codec = "ycbcrPalette";
-        }
-        else {
-            throw runtime_error("Unknown codec!");
-        }
+        codec_type = "rgbPaletteCodec";
     }
     else{
         throw runtime_error("Unknown codec!");
     }
-    root["type"] = color_codec;
-    root[color_codec + "Settings"] = settings;
+    root["type"] = codec_type;
+    root[codec_type + "Settings"] = settings;
 
     return root;
 }

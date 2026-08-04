@@ -1,10 +1,8 @@
-//input: frame_width, frame_height, color_codec_path, block_size, name of expected data file, name of frame file
+//input: frame_width, frame_height, block_codec_path, block_size, name of expected data file, name of frame file
 //output: array of random expected blocks, path to frame in binary format
 #include "lib/color.hpp"
-#include "video_codec/frame_codec/provider/mosaic/color_codec/color_codec.hpp"
-#include "video_codec/frame_codec/provider/mosaic/color_codec/codec_json.hpp"
-#include "video_codec/frame_codec/provider/mosaic/color_codec/palette_codec.hpp"
-#include "video_codec/frame_codec/provider/mosaic/point.hpp"
+#include "video_codec/frame_codec/provider/mosaic/block_codec/block_codec.hpp"
+#include "block_codec_json.hpp"
 #include "video_codec/frame_codec/provider/mosaic/mosaic_settings.hpp"
 #include "frame_io.hpp"
 #include "io.hpp"
@@ -63,7 +61,7 @@ void get_index_by_point(int frame_width, point p, rgb_index &index){
 }
 
 
-static color_codec *read_color_codec(string path) {
+static block_codec *read_block_codec(string path) {
     string text;
     fstream codec_file(path, ios_base::in);
     ostringstream reader;
@@ -87,7 +85,7 @@ frame_gen_args parse_argv(int argc, char **argv) {
         throw runtime_error("Invalid frame_height (second argument)!");
     }
     string codec_path = DATA_COLOR_CODEC_PATH / argv[3];
-    color_codec *codec = read_color_codec(codec_path);
+    block_codec *codec = read_block_codec(codec_path);
     int bits_per_block = codec->bits_per_number();
     int block_size = atoi(argv[4]);
     if(block_size <= 0){
@@ -109,7 +107,7 @@ frame_gen_args parse_argv(int argc, char **argv) {
     res.frame_width = frame_width;
     res.frame_height = frame_height;
     res.block_size = block_size;
-    res.codec = (palette_codec*)codec;
+    res.codec = codec;
     res.expected_name = argv[5];
     res.frame_name = argv[6];
     return res;
@@ -129,7 +127,7 @@ uint32_t rand_int(){
 output generate(frame_gen_args in){
     srand(time(NULL));
     vector<int> blocks(block_count);
-    color_codec *codec = in.codec;
+    block_codec *codec = in.codec;
     uint8_t *data = alloc_by_config(in);
     int count = codec->color_count();
     for(int i = 0; i < block_count; i++) {

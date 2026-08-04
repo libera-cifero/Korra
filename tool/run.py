@@ -1,16 +1,10 @@
 import sys
 import os
 import subprocess
+import lib
 
 if len(sys.argv) < 2:
     print("Invalid argument count!")
     exit(-1)
-
-exe_name = sys.argv[1]
-if sys.platform == "win32":
-    exe_name+=".exe"
-exe_path = os.path.join("bin", *exe_name.split('/'))
-result = subprocess.run([exe_path, *sys.argv[2:]], capture_output=True, text=True)
-print(result.stdout)
-if result.stderr != "" and result.stderr != None:
-    print(result.stderr)
+args = sys.argv[2:]
+lib.run_binary(sys.argv[1], args)

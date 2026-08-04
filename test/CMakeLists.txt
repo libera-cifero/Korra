@@ -5,6 +5,8 @@ set(INCLUDE_DIR ${INCLUDE_DIR} "include")
 
 file(GLOB test_lib_src "lib/test.cpp")
 file(GLOB frame_io_src "lib/frame_io.cpp")
+file(GLOB block_codec_json_src "lib/block_codec_json.cpp")
+file(GLOB time_src "lib/time.cpp")
 
 file(GLOB color_test_src "src/color_test.cpp")
 file(GLOB mosaic_test_src "src/video_codec/frame_codec/provider/mosaic_provider_test.cpp")
@@ -35,9 +37,9 @@ target_setup(color_test)
 target_link_libraries(color_test PUBLIC base_utils)
 
 #mosaic_test
-add_executable(mosaic_test ${mosaic_test_src} ${frame_io_src} ${test_lib_src})
+add_executable(mosaic_test ${mosaic_test_src} ${time_src} ${frame_io_src} ${test_lib_src} ${block_codec_json_src})
 target_setup(mosaic_test)
-target_link_libraries(mosaic_test PUBLIC mosaic color_codec)
+target_link_libraries(mosaic_test PUBLIC block_codec base_utils mosaic)
 #target_link_libraries(mosaic PUBLIC base_utils color_codec)
 
 #clock_generator_test

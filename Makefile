@@ -21,8 +21,8 @@ include_arch:
 #=====BEGIN=====
 base_utils:
 	cmake --build build --target base_utils
-color_codec:
-	cmake --build build --target color_codec
+block_codec:
+	cmake --build build --target block_codec
 mosaic:
 	cmake --build build --target mosaic
 len_reader: mosaic
@@ -38,7 +38,7 @@ build_src: base_utils color_codec len_reader timer
 color_test: color
 	cmake --build build --target color_test && python3 tool/run.py color_test
 mosaic_test: mosaic
-	cmake --build build --target mosaic_test && python3 tool/run.py mosaic_test
+	cmake --build build --target mosaic_test && python3 tool/test.py mosaic_test
 math_test: math
 	cmake --build build --target math_test && python3 tool/run.py math_test
 clock_gen_test:
