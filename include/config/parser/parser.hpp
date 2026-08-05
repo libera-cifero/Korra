@@ -25,3 +25,9 @@ public:
 //it sets up in parser_provider
     vector<specific_parser<T>*> specific_parsers;
 };
+
+template<typename T>
+class contexted {
+public:
+    T context;
+};

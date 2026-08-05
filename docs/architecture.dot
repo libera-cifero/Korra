@@ -2,154 +2,156 @@ digraph {
     rankdir=BT;
 
     subgraph src{
-        subgraph encoder{
-            subgraph cluster_providers {
-                label="providers";
-                style=rounded;
-                color=black;
 
-                provider[
-                    color=red;
-                    fontcolor=red;
-                ];
-                mosaic_provider[
-                    color=blue;
-                    fontcolor=blue;
-                ];
+        subgraph cluster_config{
+            subgraph cluster_data {
+                video_config [color=green; fontcolor=green;];
+                mosaic_config [color=green; fontcolor=green;];
+                block_codec_config [color=green; fontcolor=green;];
+                palette_codec_config [color=green; fontcolor=green;];
 
-                subgraph mosaic {
-                    bit_area [fontcolor=green; color = green;];
-                    point [fontcolor=green; color = green;];
-                    mosaic_math;
-                    mosaic_settings [fontcolor=green; color = green;];
-                    
-                    mosaic_settings->mosaic_provider;
-                    
-                    point->mosaic_provider;
+                mosaic_config->video_config [color=green;];
+                block_codec_config->mosaic_config [color=green;];
+                palette_codec_config->block_codec_config [color=green;];
+            }
+            subgraph cluster_parser{
 
-                    bit_area->mosaic_provider;
+            }
+        }
 
-                    mosaic_math->mosaic_provider;
-                    
+        subgraph cluster_data_boxers {
+            subgraph data {
+                identifiable [color=blue; fontcolor=blue;]
 
-                    
-                    subgraph cluster_color_codecs{
-                        label="color_codecs";
-                        color_codec [
-                            color=purple;
-                            fontcolor=purple;
-                        ];
-                        hsv_codec [
-                            color=blue;
-                            fontcolor=blue;
-                        ];
-                        palette_codec[
-                            color=purple;
-                            fontcolor=purple;
-                        ];
-                        rgb_palette_codec[
-                            color=blue;
-                            fontcolor=blue;
-                        ];
-                        ycbcr_palette_codec[
-                            color=blue;
-                            fontcolor=blue;
-                        ];
-                        hsv_codec->color_codec [color=blue; ];
-                        palette_codec->color_codec[color=purple;];   
-                        rgb_palette_codec->palette_codec [color=blue;];
-                        ycbcr_palette_codec->palette_codec [color=blue];
+                korra_data [color=purple; fontcolor=purple;];
+                begin_label_data [color=blue; fontcolor=blue;]
+                piecable_data[color=purple; fontcolor=purple;];
+                ip_data [color = blue; fontcolor=blue; ];
+                pieced_data [color=blue; fontcolor=blue;]
+
+                begin_label_data->korra_data [color=blue;];
+                pieced_data->korra_data [color = blue;];
+                pieced_data->identifiable [color=blue;];
+                piecable_data->korra_data [color=purple;];
+                ip_data->piecable_data [color=blue;];
+            }
+            subgraph data_boxer{
+                data_boxer [color=blue; fontcolor=blue;];
+                korra_data->data_boxer;
+                
+            }
+            subgraph data_unboxer{
+
+            }
+        }
+        subgraph cluster_video_codec {
+
+            subgraph frame_codec{
+                subgraph cluster_providers {
+                    label="providers";
+                    style=rounded;
+                    color=black;
+
+                    provider[
+                        color=red;
+                        fontcolor=red;
+                    ];
+                    mosaic_provider[
+                        color=blue;
+                        fontcolor=blue;
+                    ];
+
+                    subgraph mosaic {
+                        bit_area [fontcolor=green; color = green;];
+                        point [fontcolor=green; color = green;];
+                        mosaic_math;
+                        mosaic_settings [fontcolor=green; color = green;];
+                        
+                        mosaic_settings->mosaic_config [color=green;];
+                        mosaic_settings->mosaic_provider;
+                        
+                        point->mosaic_provider;
+
+                        bit_area->mosaic_provider;
+
+                        mosaic_math->mosaic_provider;
+                        
+                        subgraph cluster_block_codecs{
+                            label="block_codecs";
+                            block_codec [
+                                color=purple;
+                                fontcolor=purple;
+                            ];
+                            palette_codec[
+                                color=purple;
+                                fontcolor=purple;
+                            ];
+                            rgb_palette_codec[
+                                color=blue;
+                                fontcolor=blue;
+                            ];
+                            palette_codec->block_codec[color=purple;];   
+                            rgb_palette_codec->palette_codec [color=blue;];
+                            block_codec_config->block_codec;
+                            palette_codec_config->palette_codec;
+                        }
+                        block_codec->mosaic_provider [minlen=2;];
                     }
-                    color_codec->mosaic_provider [minlen=2;];
+
+                    mosaic_provider->provider[color = blue;];
                 }
 
-                mosaic_provider->provider[color = blue;];
+                subgraph cluster_ciphers 
+                {
+                    label="ciphers";
+                    style=rounded;
+                    color=black;
+
+                    cipher[
+                        color = red;
+                        fontcolor=red;
+                    ];
+                    none_cipher [
+                        color=blue;
+                        fontcolor=blue;
+                    ];
+
+                    none_cipher->cipher [color=blue];
+                }
+                frame_codec [color=blue;fontcolor=blue;];
+                provider->frame_codec;
+                cipher->frame_codec;
             }
-            subgraph cluster_compressors {
-                label="compressors";
-                style=rounded;
-                color=black;
-                compressor [
-                    color=red;
-                    fontcolor=red;
-                ];
-                none_compressor [
-                    color=blue;
-                    fontcolor=blue;
-                ];
-                none_compressor->compressor [color=blue];
-            }
-
-            subgraph cluster_ciphers 
-            {
-                label="ciphers";
-                style=rounded;
-                color=black;
-
-                cipher[
-                    color = red;
-                    fontcolor=red;
-                ];
-                none_cipher [
-                    color=blue;
-                    fontcolor=blue;
-                ];
-
-                none_cipher->cipher [color=blue];
-            }
-
-            subgraph cluster_correctors{
-                label="correctors";
-                style=rounded;
-                color=black;
-
-                corrector[
-                    color = red;
-                    fontcolor=red;
-                ];
-                none_corrector [
-                    color=blue;
-                    fontcolor=blue;
-                ];
-
-                none_corrector->corrector [color=blue];
-            }
-
             video_codec [color=blue;fontcolor=blue;];
-            color;
-            status_error[color=blue; fontcolor=blue;];
-            math;
-            
-            
-            provider->video_codec; 
-            compressor->video_codec;
-            cipher->video_codec;
-            corrector->video_codec;
+            clock_generator[color=blue; fontcolor=blue;];
+            sync_signals [color=blue; fontcolor=blue;];
+            payload_storage [color=blue; fontcolor=blue;];
+            clock_generator->video_codec;
+            sync_signals->clock_generator;
+            sync_signals->payload_storage;
+            payload_storage->video_codec;
+            frame_codec->payload_storage;
+            frame_codec->video_codec;
 
-            color->rgb_palette_codec;
-            color->hsv_codec;
-            
-            status_error->color;
-            status_error->color_codec;
 
         }
-        subgraph video_pipes {
+
+        subgraph cluster_video_pipes {
             label="video_pipes";
             video_pipe_in [color=red; fontcolor=red;];
             video_pipe_out [color = red; fontcolor=red;];
             ffmpeg_rtmp_pipe_in [color=blue;fontcolor=blue;];
             ffmpeg_rtmp_pipe_out [color=blue;fontcolor=blue;];
 
-            video_pipe_config [color=green; fontcolor=green;];
-            ffmpeg_rtmp_config [color=green;fontcolor=green;];
-
-            ffmpeg_rtmp_config->video_pipe_config [color=green;];
+            ffmpeg_rtmp_settings [color=green;fontcolor=green;];
 
             ffmpeg_rtmp_pipe_in->video_pipe_in [color=blue;];
             ffmpeg_rtmp_pipe_out->video_pipe_out [color=blue;];
             
-            ffmpeg_rtmp_config->ffmpeg_rtmp_pipe_in;
-            ffmpeg_rtmp_config->ffmpeg_rtmp_pipe_out;
+            ffmpeg_rtmp_settings->ffmpeg_rtmp_pipe_in;
+            ffmpeg_rtmp_settings->ffmpeg_rtmp_pipe_out;
+
+            ffmpeg_rtmp_settings->video_config [color=green;];
         }
 
         video_socket [color=blue; fontcolor=blue;];
@@ -157,6 +159,10 @@ digraph {
         video_codec->video_socket [weight=2;];
         video_pipe_in->video_socket;
         video_pipe_out->video_socket;
+
+        payload_storage->data_boxer;
+        data_boxer->video_socket;
+        color->rgb_palette_codec;
     }
 
     subgraph cluster_test{
@@ -164,25 +170,33 @@ digraph {
         label="TESTS";
         subgraph lib{
             test;
+            time;
         }
 
         color_test;
         mosaic_provider_test;
-        math_test;
+        clock_generator_test;
+        video_codec_test;
         
         test->color_test;
         test->mosaic_provider_test;
-        test->math_test;
+        test->clock_generator_test;
+        test->video_codec_test;
 
         frame_io->mosaic_provider_test;
+        frame_io->video_codec_test;
+
+        time->clock_generator_test;
+        time->mosaic_provider_test;
     }
 
+    color;
     color->mosaic_provider_test;
     mosaic_settings->mosaic_provider_test;
     mosaic_provider->mosaic_provider_test [color=orange; minlen=10;];
+    clock_generator->clock_generator_test [color = orange; minlen=10;];
+    video_codec->video_codec_test [color = orange; minlen=10;];
 
     color->color_test [color=orange;];
-
-    math->math_test [color=orange;];
 
 }

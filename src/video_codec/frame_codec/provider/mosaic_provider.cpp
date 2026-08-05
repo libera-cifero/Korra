@@ -1,6 +1,5 @@
 #include "video_codec/frame_codec/provider/mosaic_provider.hpp"
 #include "video_codec/frame_codec/provider/mosaic/mosaic_math.hpp"
-#include "lib/color.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>

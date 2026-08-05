@@ -2,10 +2,7 @@
 #include <cstdio>
 #include <stdint.h>
 #include <stdbool.h>
-#include <algorithm>
-#include <cmath>
 #include "lib/color.hpp"
-#include "lib/status_error.hpp"
 
 using namespace std;
 
