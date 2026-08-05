@@ -42,6 +42,7 @@ digraph {
 
         subgraph cluster_data_boxers {
             label="data_boxers";
+            style=rounded;
             subgraph data {
                 identifiable [color=blue; fontcolor=blue;]
 
