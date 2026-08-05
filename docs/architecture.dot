@@ -119,6 +119,7 @@ digraph {
                             rgb_palette_codec->palette_codec [color=blue;];
                             block_codec_config->block_codec;
                             palette_codec_config->palette_codec;
+                            palette_codec_config->rgb_palette_codec;
                         }
                         block_codec->mosaic_provider [minlen=2;];
                     }
