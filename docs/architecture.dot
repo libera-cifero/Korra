@@ -52,6 +52,7 @@ digraph {
                 pieced_data [color=blue; fontcolor=blue;]
 
                 begin_label_data->korra_data [color=blue;];
+                begin_label_data->identifiable [color = blue;];
                 pieced_data->korra_data [color = blue;];
                 pieced_data->identifiable [color=blue;];
                 piecable_data->korra_data [color=purple;];
