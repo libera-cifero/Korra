@@ -9,7 +9,6 @@ file(GLOB color_src lib/color.cpp)
 
 #video_codec/frame_codec/provider/mosaic/block_codec/*
 file(GLOB block_codec_src ${MOSAIC_DIR}/block_codec/block_codec.cpp)
-file(GLOB palette_codec_src "${MOSAIC_DIR}/block_codec/palette_codec.cpp")
 file(GLOB rgb_palette_codec_src ${MOSAIC_DIR}/block_codec/rgb_palette_codec.cpp)
 
 #video_codec/frame_codec/provider/mosaic/*
@@ -36,13 +35,17 @@ add_library(base_utils OBJECT ${color_src})
 target_include_directories(base_utils PUBLIC ${INCLUDE_DIR})
 
 #block_codec
-add_library(block_codec STATIC ${rgb_palette_codec_src} ${block_codec_src} ${palette_codec_src} )
+add_library(block_codec STATIC ${rgb_palette_codec_src} ${block_codec_src})
 target_include_directories(block_codec PUBLIC ${INCLUDE_DIR})
 
 #mosaic
 add_library(mosaic STATIC ${mosaic_provider_src} ${mosaic_math_src})
 target_include_directories(mosaic PUBLIC ${INCLUDE_DIR})
 target_link_libraries(mosaic PUBLIC block_codec)
+
+#clock_generator
+add_library(clock_generator OBJECT ${clock_src} ${sync_signals_src})
+target_include_directories(clock_generator PUBLIC ${INCLUDE_DIR})
 
 #video_codec
 add_library(video_codec STATIC ${sync_signals_src} ${clock_src} ${payload_storage_src} ${frame_codec_src} ${video_codec_src} ${cipher_src} ${none_cipher_src})

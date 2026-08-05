@@ -13,6 +13,7 @@ protected:
 public:
     block_codec(block_codec_config &config);
     int bits_per_number();
+    int numbers_count();
     int block_size();
     block_codec_config config();
     virtual void encode(char *frame, int number, int block_index) = 0;

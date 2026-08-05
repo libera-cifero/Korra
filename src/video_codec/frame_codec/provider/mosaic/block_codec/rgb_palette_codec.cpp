@@ -25,7 +25,7 @@ void rgb_palette_codec::encode(char *frame, int number, int block_index) {
 }
 
 int rgb_palette_codec::_find_nearest(char r, char g, char b) {
-    int count = color_count();
+    int count = numbers_count();
     int min = 0;
     uint32_t min_delta = 0xffffffff;
     for(int i = 0; i < count; i++){

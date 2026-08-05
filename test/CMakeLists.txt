@@ -45,10 +45,10 @@ target_link_libraries(mosaic_test PUBLIC block_codec base_utils mosaic)
 #clock_generator_test
 add_executable(clock_generator_test ${clock_gen_test_src})
 target_setup(clock_generator_test)
-target_link_libraries(clock_generator_test PUBLIC oscillator)
+target_link_libraries(clock_generator_test PUBLIC clock_generator)
 
 #video_codec_test
-add_executable(video_codec_test ${video_codec_test_src} ${test_lib_src} ${frame_io_src})
+add_executable(video_codec_test ${video_codec_test_src} ${test_lib_src} ${block_codec_json_src} ${frame_io_src})
 target_setup(video_codec_test)
 target_link_libraries(video_codec_test PUBLIC video_codec)
 #======END======
@@ -56,14 +56,14 @@ target_link_libraries(video_codec_test PUBLIC video_codec)
 #TEST TOOLS
 #=====BEGIN=====
 #frame_gen_tool
-add_executable(frame_gen_tool ${test_lib_src} ${frame_gen_tool_src} ${frame_io_src})
+add_executable(frame_gen_tool ${test_lib_src} ${frame_gen_tool_src} ${frame_io_src} ${block_codec_json_src})
 target_setup_tool(frame_gen_tool)
-target_link_libraries(frame_gen_tool PRIVATE mosaic color_codec)
+target_link_libraries(frame_gen_tool PRIVATE mosaic block_codec base_utils)
 
 #args_frame_gen_tool
 add_executable(args_frame_gen_tool ${args_frame_gen_tool_src})
 target_setup_tool(args_frame_gen_tool)
-target_link_libraries(args_frame_gen_tool PRIVATE color_codec)
+target_link_libraries(args_frame_gen_tool PRIVATE block_codec)
 
 #fps_color_tool
 add_executable(fps_color_tool ${fps_color_tool_src})

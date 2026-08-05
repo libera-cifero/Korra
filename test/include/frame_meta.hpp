@@ -1,4 +1,5 @@
 #pragma once
+#include "video_codec/frame_codec/frame_codec.hpp"
 #include "video_codec/frame_codec/provider/mosaic/mosaic_settings.hpp"
 #include <vector>
 #include <string>
@@ -14,4 +15,5 @@ struct frame_gen_args : mosaic_settings {
     string expected_name;
     string frame_name;
     string color_codec_path;
+    frame_codec *frame_codec;
 };

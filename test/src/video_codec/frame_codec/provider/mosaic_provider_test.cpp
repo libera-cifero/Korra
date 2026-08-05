@@ -8,19 +8,10 @@
 #include "test.hpp"
 #include "time.hpp"
 #include <cstdint>
-#include <cstdlib>
 #include <cstring>
 #include <ctime>
 #include <vector>
 #include <random>
-
-/*int payload_size = provider.payload_size(), frame_size = provider.frame_size(), block_count = expected.blocks.size(), block_size = expected.block_size;
-double speed = provider.payload_size() / delta_ms;
-printInfo("%s\t%.3lfms\t%.3lfKB/s\t%d\t%d\t%d\t%d", file_name.c_str(), delta_ms, speed, payload_size, frame_size, block_count, block_size);*/
-
-/*int payload_size = provider.payload_size(), frame_size = provider.frame_size(), block_count = expected.blocks.size(), block_size = expected.block_size;
-double speed = provider.payload_size() / delta_ms;
-printInfo("%s\t%.3lfms\t%.3lfKB/s\t%d\t%d\t%d\t%d", file_name.c_str(), delta_ms, speed, payload_size, frame_size, block_count, block_size);*/
 
 using namespace filesystem;
 

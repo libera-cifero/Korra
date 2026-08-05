@@ -5,10 +5,10 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/mosaic_test",
+            "target": "./bin/tool/frame_gen_tool",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
-            "arguments": ""
+            "arguments": "1280 720 rgb_palette1.json 16 1280x720/frame_15.json 1280x720/frame_15.bmp"
         },
         {
             "name": "Python Debugger: Python File",

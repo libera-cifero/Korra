@@ -1,3 +1,4 @@
+#pragma once
 #include "palette_codec.hpp"
 
 class rgb_palette_codec : public palette_codec<int> {

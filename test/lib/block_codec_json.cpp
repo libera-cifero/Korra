@@ -73,15 +73,16 @@ static int *parse_rgb_palette(json &settingsObject) {
     return palette;
 }
 
-block_codec *parse_block_codec(json &root){
+block_codec *parse_block_codec(json &root, int frame_width, int frame_height, int block_size){
     string codec_type = root["type"].get<string>();
     json settingsObject = root[codec_type + "Settings"];
-    int bits_per_number = settingsObject["bitsPerNumber"].get<int>();
 
     if(codec_type == "rgbPalette"){
         palette_codec_config<int> config;
-        config.frame_width = settingsObject["frameWidth"].get<int>();
-        config.frame_height = settingsObject["frameHeight"].get<int>();
+        config.bits_per_number = settingsObject["bitsPerNumber"].get<int>();
+        config.frame_width = frame_width;
+        config.frame_height = frame_height;
+        config.block_size = block_size;
         config.palette = parse_rgb_palette(settingsObject);
         return new rgb_palette_codec(config);
     }
@@ -96,7 +97,7 @@ json serialize_block_codec(block_codec *codec) {
     
     if(auto *rgb_codec = dynamic_cast<rgb_palette_codec*>(codec)) {
         int *palette = rgb_codec->palette();
-        int count = rgb_codec->color_count();
+        int count = rgb_codec->numbers_count();
         vector<string> palette_list(count);
         for(int i = 0; i < count; i++) palette_list[i] = rgb_to_hex(palette[i]);
         

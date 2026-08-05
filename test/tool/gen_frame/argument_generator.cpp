@@ -47,14 +47,14 @@ int get_max_file_index(path dir_path, regex pattern) {
     return *max_element(file_indices.begin(), file_indices.end());
 }
 
-int get_bits_per_number(string codec_path) {
+int get_bits_per_number(string codec_path, int frame_width, int frame_height, int block_size) {
     fstream file(DATA_COLOR_CODEC_PATH / codec_path);
     ostringstream buf;
     buf << file.rdbuf();
     string data = buf.str();
     file.close();
     json j = json::parse(data);
-    auto codec = parse_color_codec(j);
+    auto codec = parse_block_codec(j, frame_width, frame_height, block_size);
     int bits_per_number = codec->bits_per_number();
     delete codec;
     return bits_per_number;
@@ -124,7 +124,7 @@ int main(int argc, char **argv) {
     int data_index = get_max_file_index(data_frame_path, regex("frame_([0-9]+)\\.bmp"));
 
     string codec_path = argv[2];
-    int bits_per_number = get_bits_per_number(codec_path);
+    int bits_per_number = get_bits_per_number(codec_path, width, height, block_size);
 
     srand(time(NULL));
     for(int i = 0; i < count; i++){

@@ -9,6 +9,10 @@ int block_codec::bits_per_number(){
     return $config.bits_per_number;
 }
 
+int block_codec::numbers_count(){
+    return 1 << $config.bits_per_number;
+}
+
 int block_codec::block_size(){
     return $config.block_size;
 }

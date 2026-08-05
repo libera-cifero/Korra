@@ -25,10 +25,10 @@ block_codec:
 	cmake --build build --target block_codec
 mosaic:
 	cmake --build build --target mosaic
-len_reader: mosaic
-	cmake --build build --target len_reader
-timer: 
-	cmake --build build --target timer
+clock_generator: 
+	cmake --build build --target clock_generator
+video_codec:
+	cmake --build build --target video_codec
 
 build_src: base_utils color_codec len_reader timer
 #======END======
@@ -36,15 +36,13 @@ build_src: base_utils color_codec len_reader timer
 #TESTS
 #=====BEGIN=====
 color_test: color
-	cmake --build build --target color_test && python3 tool/run.py color_test
+	cmake --build build --target color_test && python3 tool/test.py color_test
 mosaic_test: mosaic
 	cmake --build build --target mosaic_test && python3 tool/test.py mosaic_test
-math_test: math
-	cmake --build build --target math_test && python3 tool/run.py math_test
-clock_gen_test:
-	cmake --build build --target clock_generator_test && python3 tool/run.py clock_generator_test
-video_codec_test:
-	cmake --build build --target video_codec_test
+clock_gen_test: clock_generator
+	cmake --build build --target clock_generator_test && python3 tool/test.py clock_generator_test
+video_codec_test: video_codec
+	cmake --build build --target video_codec_test && python3 tool/test.py video_codec_test
 test: color_test math_test timer_test mosaic_test
 #======END======
 
