@@ -11,6 +11,7 @@ digraph {
     include->"test/include";
     include->"test/src";
     include->"test/tool";
+    include->"test/lib";
     "test/include"->"test/src";
     "test/include"->"test/tool";
     "test/include"->"test/lib";
