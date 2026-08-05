@@ -1,5 +1,6 @@
 #include "video_codec/frame_codec/provider/mosaic_provider.hpp"
 #include "video_codec/frame_codec/provider/mosaic/mosaic_math.hpp"
+#include "video_codec/frame_codec/provider/mosaic/mosaic_settings.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
@@ -11,6 +12,10 @@ mosaic_provider::mosaic_provider(mosaic_settings *settings){
     _payload_size = get_mosaic_frame_payload_size(settings->codec->bits_per_number(), _block_count);
     _frame_size = settings->frame_width * settings->frame_height * 3;
     _bits_per_block = _settings->codec->bits_per_number();
+}
+
+mosaic_settings *mosaic_provider::settings(){
+    return _settings;
 }
 
 size_t mosaic_provider::frame_size() { return _frame_size; }

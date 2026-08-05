@@ -20,6 +20,9 @@ private:
 
 public:
     mosaic_provider(mosaic_settings *settings);
+
+    mosaic_settings *settings();
+
     size_t frame_size() override;
     size_t payload_size() override;
 

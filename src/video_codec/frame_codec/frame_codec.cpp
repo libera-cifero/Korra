@@ -1,10 +1,19 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "video_codec/frame_codec/frame_codec.hpp"
+#include "video_codec/frame_codec/provider/provider.hpp"
 
 frame_codec::frame_codec(provider *provider, cipher *cipher){
     _provider = provider;
     _cipher = cipher;
+}
+
+provider *frame_codec::get_provider(){
+    return _provider;
+}
+
+cipher *frame_codec::get_cipher(){
+    return _cipher;
 }
 
 int frame_codec::payload_size(){

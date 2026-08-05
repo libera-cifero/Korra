@@ -9,6 +9,9 @@ private:
 public:
     frame_codec(provider *provider, cipher *cipher);
 
+    provider *get_provider();
+    cipher *get_cipher();
+
     int payload_size();
     int frame_size();
 

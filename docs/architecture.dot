@@ -158,8 +158,6 @@ digraph {
             payload_storage->video_codec;
             frame_codec->payload_storage;
             frame_codec->video_codec;
-
-
         }
 
         subgraph cluster_video_pipes {
