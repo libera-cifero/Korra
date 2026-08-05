@@ -4,7 +4,12 @@ digraph {
     subgraph src{
 
         subgraph cluster_config{
+            label="config";
+            style=rounded;
             subgraph cluster_data {
+                label="data";
+                style=rounded;
+
                 video_config [color=green; fontcolor=green;];
                 mosaic_config [color=green; fontcolor=green;];
                 block_codec_config [color=green; fontcolor=green;];
@@ -15,11 +20,28 @@ digraph {
                 palette_codec_config->block_codec_config [color=green;];
             }
             subgraph cluster_parser{
+                label="parsers";
+                style=rounded;
 
+                json_parser [color=red;fontcolor=red;];
+                specific_parser[color=red; fontcolor=red;];
+                abstract_parser [color = purple; fontcolor=purple;];
+                cipher_parser [color = blue; fontcolor=blue; ];
+                provider_parser [color = blue; fontcolor=blue; ];
+
+                contexted[color=blue; fontcolor=blue;];
+
+                specific_parser->json_parser [color=red;];
+                abstract_parser->specific_parser [color=purple; ];
+                cipher_parser->abstract_parser [color=blue;];
+                cipher_parser->contexted [color=blue;];
+                provider_parser->abstract_parser [color=blue;];
+                provider_parser->contexted [color=blue;];
             }
         }
 
         subgraph cluster_data_boxers {
+            label="data_boxers";
             subgraph data {
                 identifiable [color=blue; fontcolor=blue;]
 
@@ -45,7 +67,8 @@ digraph {
             }
         }
         subgraph cluster_video_codec {
-
+            label="video_codec";
+            style=rounded;
             subgraph frame_codec{
                 subgraph cluster_providers {
                     label="providers";
@@ -138,6 +161,8 @@ digraph {
 
         subgraph cluster_video_pipes {
             label="video_pipes";
+            style=rounded;
+
             video_pipe_in [color=red; fontcolor=red;];
             video_pipe_out [color = red; fontcolor=red;];
             ffmpeg_rtmp_pipe_in [color=blue;fontcolor=blue;];
