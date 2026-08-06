@@ -35,7 +35,7 @@ digraph {
                     contexted_out [color=blue; fontcolor=blue;];
 
                     specific_parser->json_parser [color=red; ];
-                    abstract_parser->specific_parser [color=purple;]; 
+                    abstract_parser->json_parser [color=purple;]; 
                 }
 
                 subgraph cluster_children {
@@ -55,11 +55,13 @@ digraph {
                         #            label="block_codec"
                                     block_codec_parser [color=blue; fontcolor=blue;];
                                     rgb_palette_codec_parser [color=blue; fontcolor=blue;];
-                                    #block_codec_parser->rgb_palette_codec_parser;
-                                    rgb_palette_codec_parser->block_codec_parser;
+                                    block_codec_parser->abstract_parser;
+                                    
                                     rgb_palette_codec_parser->specific_parser [color=blue; ];
+                                    rgb_palette_codec_parser->block_codec_parser[color=none;];
                                 }
                                 block_codec_parser->mosaic_provider_parser;
+                                specific_parser -> block_codec_parser;
                             }
                         }
                         subgraph cluster_cipher{
@@ -79,14 +81,16 @@ digraph {
 
                 none_cipher_parser->specific_parser [color=blue; minlen=2;];
                 none_cipher_parser->contexted_in [color=blue;minlen=2;];
-                none_cipher_parser->cipher_parser;
+                specific_parser->cipher_parser;
+                none_cipher_parser->cipher_parser [color=none;];
                 
                 provider_parser->abstract_parser [color=blue;minlen=2;];
                 provider_parser->contexted_in [color=blue;minlen=2;];
                 provider_parser->frame_codec_parser;
                 
                 mosaic_provider_parser->specific_parser [color=blue;minlen=2;];
-                mosaic_provider_parser->provider_parser;
+                specific_parser->provider_parser;
+                mosaic_provider_parser->provider_parser [color=none;];
                 mosaic_provider_parser->contexted_in [color=blue; minlen=2;];
                 mosaic_provider_parser->contexted_out [color=blue;minlen=2;];
                 mosaic_config->mosaic_provider_parser [minlen=2;];
@@ -249,7 +253,7 @@ digraph {
 
         provider->mosaic_provider_parser [minlen = 15;];
         mosaic_provider->mosaic_provider_parser [minlen = 15;];
-        ffmpeg_rtmp_settings->video_config [color=green; weight=0;];
+        ffmpeg_rtmp_settings->video_config [color=green; weight=0; ];
 
         video_socket [color=blue; fontcolor=blue;];
         
