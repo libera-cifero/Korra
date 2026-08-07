@@ -10,7 +10,7 @@ class json_parser {
 public:
     virtual T parse(json) = 0;
     virtual json serialize(T) = 0;
-    virtual ~json_parser<T>() {}
+    virtual ~json_parser() {}
 };
 
 template<typename T>

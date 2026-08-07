@@ -36,6 +36,7 @@ digraph {
 
                     specific_parser->json_parser [color=red; ];
                     abstract_parser->json_parser [color=purple;]; 
+                    specific_parser->abstract_parser;
                 }
 
                 subgraph cluster_children {

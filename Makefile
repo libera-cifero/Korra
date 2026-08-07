@@ -1,4 +1,4 @@
-ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))ы
 
 #COMMON
 #=====BEGIN=====
@@ -35,14 +35,8 @@ build_src: base_utils color_codec len_reader timer
 
 #TESTS
 #=====BEGIN=====
-color_test: color
-	cmake --build build --target color_test && python3 tool/test.py color_test
-mosaic_test: mosaic
-	cmake --build build --target mosaic_test && python3 tool/test.py mosaic_test
-clock_gen_test: clock_generator
-	cmake --build build --target clock_generator_test && python3 tool/test.py clock_generator_test
-video_codec_test: video_codec
-	cmake --build build --target video_codec_test && python3 tool/test.py video_codec_test
+%_test:
+	cmake --build build --target $*_test && python3 tool/test.py $*_test
 test: color_test math_test timer_test mosaic_test
 #======END======
 

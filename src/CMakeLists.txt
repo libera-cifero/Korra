@@ -4,8 +4,10 @@ project(korra.src)
 set(PROVIDER_DIR video_codec/frame_codec/provider)
 set(CIPHER_DIR video_codec/frame_codec/cipher)
 set(MOSAIC_DIR ${PROVIDER_DIR}/mosaic)
+
 #lib/*
 file(GLOB color_src lib/color.cpp)
+file(GLOB parsing_src lib/parsing.cpp)
 
 #video_codec/frame_codec/provider/mosaic/block_codec/*
 file(GLOB block_codec_src ${MOSAIC_DIR}/block_codec/block_codec.cpp)
@@ -30,6 +32,9 @@ file(GLOB clock_src video_codec/clock_generator.cpp)
 file(GLOB payload_storage_src video_codec/payload_storage.cpp)
 file(GLOB video_codec_src video_codec/video_codec.cpp)
 
+#config/*
+file(GLOB_RECURSE parser_src config/parser/*.cpp)
+
 #base_utils
 add_library(base_utils OBJECT ${color_src})
 target_include_directories(base_utils PUBLIC ${INCLUDE_DIR})
@@ -51,3 +56,7 @@ target_include_directories(clock_generator PUBLIC ${INCLUDE_DIR})
 add_library(video_codec STATIC ${sync_signals_src} ${clock_src} ${payload_storage_src} ${frame_codec_src} ${video_codec_src} ${cipher_src} ${none_cipher_src})
 target_include_directories(video_codec PUBLIC ${INCLUDE_DIR})
 target_link_libraries(video_codec PUBLIC block_codec base_utils mosaic)
+
+#config
+add_library(config STATIC ${parser_src} ${mosaic_provider_src} ${parsing_src})
+target_include_directories(config PUBLIC ${INCLUDE_DIR})

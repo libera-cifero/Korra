@@ -10,3 +10,5 @@ const path DATA_FRAME_PATH = DATA_PATH / "frame";
 const path DATA_COLOR_CODEC_PATH = DATA_PATH / "color_codec";
 
 const path DATA_OUT_PATH = DATA_PATH / "out";
+
+const path DATA_PARSER_PATH = DATA_PATH / "config" / "parser";
