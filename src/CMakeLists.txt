@@ -6,8 +6,7 @@ set(CIPHER_DIR video_codec/frame_codec/cipher)
 set(MOSAIC_DIR ${PROVIDER_DIR}/mosaic)
 
 #lib/*
-file(GLOB color_src lib/color.cpp)
-file(GLOB parsing_src lib/parsing.cpp)
+file(GLOB_RECURSE lib_src lib/*.cpp)
 
 #video_codec/frame_codec/provider/mosaic/block_codec/*
 file(GLOB block_codec_src ${MOSAIC_DIR}/block_codec/block_codec.cpp)
@@ -32,31 +31,26 @@ file(GLOB clock_src video_codec/clock_generator.cpp)
 file(GLOB payload_storage_src video_codec/payload_storage.cpp)
 file(GLOB video_codec_src video_codec/video_codec.cpp)
 
+#video_codec/*
+file(GLOB_RECURSE video_codec_src video_codec/*.cpp)
+
 #config/*
-file(GLOB_RECURSE parser_src config/parser/*.cpp)
+file(GLOB_RECURSE config_src config/*.cpp)
 
-#base_utils
-add_library(base_utils OBJECT ${color_src})
-target_include_directories(base_utils PUBLIC ${INCLUDE_DIR})
+message(STATUS "CONFIG SOURCES: ${config_src}")
+message(STATUS "LIB SOURCES: ${lib_src}")
+message(STATUS "VIDEO CODEC SOURCES: ${video_codec_src}")
 
-#block_codec
-add_library(block_codec STATIC ${rgb_palette_codec_src} ${block_codec_src})
-target_include_directories(block_codec PUBLIC ${INCLUDE_DIR})
-
-#mosaic
-add_library(mosaic STATIC ${mosaic_provider_src} ${mosaic_math_src})
-target_include_directories(mosaic PUBLIC ${INCLUDE_DIR})
-target_link_libraries(mosaic PUBLIC block_codec)
-
-#clock_generator
-add_library(clock_generator OBJECT ${clock_src} ${sync_signals_src})
-target_include_directories(clock_generator PUBLIC ${INCLUDE_DIR})
+#lib
+add_library(lib STATIC ${lib_src})
+target_include_directories(lib PUBLIC ${INCLUDE_DIR})
 
 #video_codec
-add_library(video_codec STATIC ${sync_signals_src} ${clock_src} ${payload_storage_src} ${frame_codec_src} ${video_codec_src} ${cipher_src} ${none_cipher_src})
+add_library(video_codec STATIC ${video_codec_src})
 target_include_directories(video_codec PUBLIC ${INCLUDE_DIR})
-target_link_libraries(video_codec PUBLIC block_codec base_utils mosaic)
+target_link_libraries(video_codec PUBLIC lib)
 
 #config
-add_library(config STATIC ${parser_src} ${mosaic_provider_src} ${parsing_src})
+add_library(config STATIC ${config_src})
 target_include_directories(config PUBLIC ${INCLUDE_DIR})
+target_link_libraries(config PUBLIC lib video_codec)

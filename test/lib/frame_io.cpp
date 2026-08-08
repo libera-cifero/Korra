@@ -1,52 +1,42 @@
 #include "frame_io.hpp"
-#include "block_codec_json.hpp"
-#include "lib/json.hpp"
+#include "config/parser/frame_codec/frame_codec_parser.hpp"
+#include "frame_meta.hpp"
 #include "io.hpp"
 #include "test.hpp"
+#include "frame_expected_out_parser.hpp"
+
 #include <algorithm>
 #include <cstring>
 #include <fstream>
 #include <ios>
 #include <regex>
 #include <filesystem>
-#include <set>
-using json = nlohmann::json;
+
 using namespace std;
 using namespace filesystem;
 
-void write_frame_expected(frame_meta config, const string &path){
-    json j;
-    j["colorCodec"] = serialize_block_codec(config.codec);
-    j["block_size"] = config.block_size;
-    j["frame_width"] = config.frame_width;
-    j["frame_height"] = config.frame_height;
-    j["frame_path"] = config.frame_path;
-    for(int block : config.blocks){
-        j["blocks"].push_back(block);
-    }
+frame_io::frame_io(){
+    auto codec_parser = frame_codec_parser_static_factory().build();
+    _parser = new frame_expected_out_parser((frame_codec_parser*)codec_parser);
+}
+
+void frame_io::write_frame_expected(frame_expected_out config, const string &path){
+    json j = _parser->serialize(config);
     fstream blocks_file(path, ios_base::out);
-    blocks_file<<j.dump(2);
+    blocks_file<<j.dump(4);
     blocks_file.close();
 }
 
-frame_meta read_frame_expected(const string &path){
+frame_expected_out frame_io::read_frame_expected(const string &path){
     fstream file(path, ios_base::in);
     stringstream buffer;
     buffer << file.rdbuf();
     string data = buffer.str();
     json j = json::parse(data);
-    frame_meta meta;
-    meta.frame_path = j["frame_path"].get<string>();
-    meta.frame_height = j["frame_height"].get<int>();
-    meta.frame_width = j["frame_width"].get<int>();
-    
-    meta.block_size = j["block_size"];
-    meta.blocks = j["blocks"].get<vector<int>>();
-    meta.codec = parse_block_codec(j["colorCodec"], meta.frame_width, meta.frame_height, meta.block_size);
-    return meta;
+    return _parser->parse(j);
 }
 
-void write_frame_data(uint8_t *data, int frame_width, int frame_height, const string &path){
+void frame_io::write_frame_data(uint8_t *data, int frame_width, int frame_height, const string &path){
     uint8_t bmp_file_header[14]{0x42, 0x4D};
     int file_size = frame_width * frame_height * 3;
     memcpy(bmp_file_header + 2, &file_size, 4);
@@ -96,7 +86,7 @@ void write_frame_data(uint8_t *data, int frame_width, int frame_height, const st
 
 }
 
-uint8_t *read_frame_data(const string &path, int &width, int &height)
+uint8_t *frame_io::read_frame_data(const string &path, int &width, int &height)
 {
     width = 0;
     height = 0;
@@ -187,7 +177,7 @@ uint8_t *read_frame_data(const string &path, int &width, int &height)
     return pixels;
 }
 
-void iterate_frame_test_cases(const char *test_name, string subdirectory, iter_action test){
+void frame_io::iterate_frame_test_cases(const char *test_name, string subdirectory, iter_action test){
     directory_iterator iter(EXPECTED_FRAME_PATH / subdirectory);
     //--- filenames are unique so we can use a set
     vector<path> sorted_by_name;
@@ -214,9 +204,9 @@ void iterate_frame_test_cases(const char *test_name, string subdirectory, iter_a
 
     for(auto file_path : sorted_by_name) {
         string file_name = file_path.filename();
-        frame_meta expected = read_frame_expected(file_path);
+        auto expected = read_frame_expected(file_path);
         int width, height;
-        string frame_data_path = DATA_FRAME_PATH / expected.frame_path;
+        string frame_data_path = DATA_FRAME_PATH / expected.data.path;
         uint8_t *data = read_frame_data(frame_data_path, width, height);
         if(expected.frame_width != width){
             delete[] data;
@@ -235,7 +225,7 @@ void iterate_frame_test_cases(const char *test_name, string subdirectory, iter_a
     }
 }
 
-char *convert_blocks_to_data(vector<int> &blocks, int bits_per_block){
+char *frame_io::convert_blocks_to_data(vector<int> &blocks, int bits_per_block){
     int byte_length = blocks.size() * bits_per_block / 8;
     char *bytes = new char[byte_length];
     memset(bytes, 1, byte_length);
@@ -249,4 +239,8 @@ char *convert_blocks_to_data(vector<int> &blocks, int bits_per_block){
         }
     }
     return bytes;
+}
+
+frame_io::~frame_io(){
+    delete _parser;
 }

@@ -1,7 +1,7 @@
 #include "../parser/parser.hpp"
-#include "video/video_socket.hpp"
 
+template<typename T>
 class parser_factory {
 public:
-    virtual json_parser<video_listener*>* build() = 0;
+    virtual json_parser<T>* build() = 0;
 };

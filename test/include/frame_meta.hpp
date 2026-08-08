@@ -1,19 +1,23 @@
 #pragma once
+#include "config/data/video_config.hpp"
 #include "video_codec/frame_codec/frame_codec.hpp"
-#include "video_codec/frame_codec/provider/mosaic/mosaic_settings.hpp"
 #include <vector>
 #include <string>
 
 using namespace std;
 
-struct frame_meta : mosaic_settings {
-    string frame_path;
-    vector<int> blocks;
+struct frame_data {
+    string path;
+    vector<char> payload;
 };
 
-struct frame_gen_args : mosaic_settings { 
-    string expected_name;
-    string frame_name;
-    string color_codec_path;
-    frame_codec *frame_codec;
+struct frame_expected_out : video_config {
+    frame_codec *codec;
+    frame_data data;
+};
+
+struct frame_expected_in : video_config {
+    string codec_path;
+    string data_path;
+    string expected_path;
 };

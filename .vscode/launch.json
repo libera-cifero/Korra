@@ -5,10 +5,10 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/frame_codec_parser_test",
+            "target": "./bin/tool/frame_gen_tool",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
-            "arguments": "1280 720 rgb_palette1.json 16 1280x720/frame_15.json 1280x720/frame_15.bmp"
+            "arguments": "-W 1280 -H 720 -c frame_codec_template.json -e 1280x720/frame_temp.json -d 1280x720/frame_temp.bmp"
         },
         {
             "name": "Python Debugger: Python File",
