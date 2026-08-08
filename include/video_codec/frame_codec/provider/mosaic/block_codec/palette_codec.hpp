@@ -1,7 +1,6 @@
 #pragma once
 #include "block_codec.hpp"
 #include "config/data/palette_codec_config.hpp"
-#include <cstring>
 /* It class is contained inside .hpp completly because it is templated class */
 template<typename T>
 class palette_codec : public block_codec

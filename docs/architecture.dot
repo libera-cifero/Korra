@@ -42,6 +42,8 @@ digraph {
                 subgraph cluster_children {
                     color=none;
                     label="";
+                    video_config_parser [color = blue; fontcolor=blue;];
+                    video_config_parser->json_parser [color=blue;];
                     subgraph cluster_frame_codec{
                     #    color=black;
                         #label="frame_codec"
@@ -73,42 +75,41 @@ digraph {
                     }
                 }
                 
-                frame_codec_parser->json_parser [color=blue; minlen=2;];
-                frame_codec_parser->contexted_in [color = blue; minlen=2;];
+                frame_codec_parser->json_parser [color=blue; minlen=6;];
+                frame_codec_parser->contexted_in [color = blue; minlen=6;];
 
-                cipher_parser->abstract_parser [color=blue;minlen=2;];
-                cipher_parser->contexted_in [color=blue;minlen=2;];
+                cipher_parser->abstract_parser [color=blue;minlen=6;];
+                cipher_parser->contexted_in [color=blue;minlen=6;];
                 cipher_parser->frame_codec_parser;
 
-                none_cipher_parser->specific_parser [color=blue; minlen=2;];
-                none_cipher_parser->contexted_in [color=blue;minlen=2;];
+                none_cipher_parser->specific_parser [color=blue; minlen=6;];
+                none_cipher_parser->contexted_in [color=blue;minlen=6;];
                 specific_parser->cipher_parser;
                 none_cipher_parser->cipher_parser [color=none;];
                 
-                provider_parser->abstract_parser [color=blue;minlen=2;];
-                provider_parser->contexted_in [color=blue;minlen=2;];
+                provider_parser->abstract_parser [color=blue;minlen=6;];
+                provider_parser->contexted_in [color=blue;minlen=6;];
                 provider_parser->frame_codec_parser;
                 
-                mosaic_provider_parser->specific_parser [color=blue;minlen=2;];
+                mosaic_provider_parser->specific_parser [color=blue;minlen=6;];
                 specific_parser->provider_parser;
                 mosaic_provider_parser->provider_parser [color=none;];
-                mosaic_provider_parser->contexted_in [color=blue; minlen=2;];
-                mosaic_provider_parser->contexted_out [color=blue;minlen=2;];
-                mosaic_config->mosaic_provider_parser [minlen=2;];
-                video_config->mosaic_provider_parser [minlen=2;];
+                mosaic_provider_parser->contexted_in [color=blue; minlen=6;];
+                mosaic_provider_parser->contexted_out [color=blue;minlen=6;];
                 
-                block_codec_parser->abstract_parser [color=blue;minlen=2;];
-                block_codec_parser->contexted_in [color=blue;minlen=2;];
-                block_codec_parser->contexted_out [color=blue;minlen=2;];
-                block_codec_config->block_codec_parser [minlen=2;];
-                mosaic_config->block_codec_parser [minlen=2;];
-                video_config->block_codec_parser [minlen=2;];
-
-               
+                block_codec_parser->abstract_parser [color=blue;minlen=6;];
+                block_codec_parser->contexted_in [color=blue;minlen=6;];
+                block_codec_parser->contexted_out [color=blue;minlen=6;];
                 
-                cipher_config->cipher_parser [minlen=2;];
-                cipher_config->none_cipher_parser [minlen=2;];
-                video_config->provider_parser [minlen=2;];
+                video_config->block_codec_parser [minlen=4;];
+                video_config->video_config_parser [minlen=4];
+                video_config->provider_parser [minlen=4;];
+                video_config->mosaic_provider_parser [minlen=4;];
+                cipher_config->cipher_parser [minlen=4;];
+                cipher_config->none_cipher_parser [minlen=4;];
+                mosaic_config->mosaic_provider_parser [minlen=4;];
+                mosaic_config->block_codec_parser [minlen=4;];
+                block_codec_config->block_codec_parser [minlen=4;];
             }
 
         }
@@ -265,6 +266,8 @@ digraph {
         payload_storage->data_boxer;
         data_boxer->video_socket;
         color->rgb_palette_codec;
+
+        frame_codec->frame_codec_parser_test;
     }
 
     subgraph cluster_test{
@@ -279,11 +282,15 @@ digraph {
         mosaic_provider_test;
         clock_generator_test;
         video_codec_test;
+        video_config_parser_test;
+        frame_codec_parser_test;
         
         test->color_test;
         test->mosaic_provider_test;
         test->clock_generator_test;
         test->video_codec_test;
+        test->video_config_parser_test;
+        test->frame_codec_parser_test;
 
         frame_io->mosaic_provider_test;
         frame_io->video_codec_test;
@@ -293,12 +300,17 @@ digraph {
     }
 
     color;
+    parsing;
     color->mosaic_provider_test;
+    color->color_test [color=orange;];
+    parsing->video_config_parser;
+    parsing->mosaic_provider_parser;
+    parsing->block_codec_parser;
+
     mosaic_settings->mosaic_provider_test;
     mosaic_provider->mosaic_provider_test [color=orange; minlen=10;];
     clock_generator->clock_generator_test [color = orange; minlen=10;];
     video_codec->video_codec_test [color = orange; minlen=10;];
-
-    color->color_test [color=orange;];
-
+    video_config_parser -> video_config_parser_test [color=orange; minlen=10;];
+    frame_codec_parser -> frame_codec_parser_test [color = orange; minlen=10;];
 }
