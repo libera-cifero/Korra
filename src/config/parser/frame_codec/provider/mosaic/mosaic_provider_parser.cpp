@@ -5,6 +5,7 @@
 #include "video_codec/frame_codec/provider/mosaic/mosaic_settings.hpp"
 #include "video_codec/frame_codec/provider/mosaic_provider.hpp"
 #include "video_codec/frame_codec/provider/provider.hpp"
+#include "lib/parsing.hpp"
 #include <cstring>
 
 using mpp = mosaic_provider_parser;
@@ -27,7 +28,8 @@ void mpp::_update_context_out(int block_size){
 }
 
 provider *mpp::parse(json j){
-    _update_context_out(j["blockSize"]);
+    int block_size = parse_int(j["blockSize"]);
+    _update_context_out(block_size);
     _block_codec_parser -> context_in = context_out;
     mosaic_settings *settings = new mosaic_settings;
     memcpy((mosaic_config*)settings, &context_out, sizeof(mosaic_config));

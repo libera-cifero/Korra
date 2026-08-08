@@ -4,6 +4,7 @@
 #include "config/data/video_config.hpp"
 #include "config/parser/parser.hpp"
 #include "video_codec/frame_codec/provider/mosaic/block_codec/block_codec.hpp"
+#include "lib/parsing.hpp"
 #include <cstring>
 #include <format>
 #include <stdexcept>
@@ -21,7 +22,8 @@ void block_codec_parser::_update_parser_context_in(specific_parser<block_codec*>
 
 block_codec *block_codec_parser::parse(json j){
     string t = j["type"];
-    _update_context_out(j["bitsPerNumber"]);
+    int bits_per_number = parse_int(j["bitsPerNumber"]);
+    _update_context_out(bits_per_number);
     for(auto p : specific_parsers){
         string type = p->type();
         if(type == t){

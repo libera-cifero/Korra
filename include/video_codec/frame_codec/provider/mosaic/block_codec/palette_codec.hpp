@@ -13,10 +13,7 @@ public:
         $palette = config.palette;
     }
     T* palette(){
-        int count = numbers_count();
-        T *palette = new T[count];
-        memcpy(palette, $palette, count * sizeof(T));
-        return palette;
+        return $palette;
     }
     virtual ~palette_codec(){
         delete[] $palette;

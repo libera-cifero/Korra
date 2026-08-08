@@ -8,6 +8,7 @@
 #include "config/parser/frame_codec/provider/mosaic/block_codec/rgb_palette_codec_parser.hpp"
 #include "config/parser/frame_codec/provider/mosaic/mosaic_provider_parser.hpp"
 #include "config/parser/frame_codec/provider/provider_parser.hpp"
+#include "config/parser/parser.hpp"
 #include "config/parser/video_config_parser.hpp"
 #include "io.hpp"
 #include "test.hpp"
@@ -99,14 +100,13 @@ void test_parse(){
     printInfo(test_name);
 
     const path root = DATA_PARSER_PATH / "frame_codec_parser";
-    vector<filesystem::path> files = { root / "config0.json" };
-    for(path p : files){
-        fstream file(p, ios_base::in);
-        stringstream buffer;
-        buffer << file.rdbuf();
-        string data = buffer.str();
-        json object = json::parse(data);
-        
+    filesystem::path test_path = root / "test_cases.json";
+    fstream file(test_path, ios_base::in);
+    stringstream buffer;
+    buffer << file.rdbuf();
+    string data = buffer.str();
+    json array = json::parse(data);
+    for(json object : array){
         fcp->context_in = vcp -> parse(object);
         frame_codec* codec = fcp -> parse(object["frameCodec"]);
         delete codec;
@@ -126,8 +126,12 @@ void test_serialize(){
     frame_codec_parser *fcp = set_up();
 
     json object = fcp->serialize(codec);
+    delete fcp;
     string object_str = object.dump(2);
 
+    for(auto kvp : cases){
+        delete kvp.second;
+    }
     printInfo("%s", object_str.c_str());
     printPass(test_name);
 }
