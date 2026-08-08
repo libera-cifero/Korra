@@ -48,7 +48,7 @@ def run_test(exe_name : str):
         print("\x1b[1;95mMEMORY TEST\x1b[0m")
         process = subprocess.run(["valgrind", "--tool=memcheck", "--leak-check=full", "--quiet", f"--log-file={log_path}", launch_cmd])
     else:
-        print("\x1b[1;91mFATAL\x1b[0m")
+        print("\x1b[1;91mTEST FAILED\x1b[0m")
         
 def run_binary(exe_name : str, args : list[str]):
     file = get_binary_path(exe_name)

@@ -2,7 +2,7 @@
 #include "lib/json.hpp"
 #include <string>
 #include <vector>
-using json = nlohmann::json;
+using json = nlohmann::ordered_json;
 using namespace std;
 
 template<typename T>

@@ -11,7 +11,7 @@
 
 void test_parse(){
     //DEBUG IT WHEN YOU TEST!!!
-    const char *test_name = "video_codec_parser_test.test_parse";
+    const char *test_name = "video_config_parser_test.test_parse";
     printInfo(test_name);
 
     const path root = DATA_PARSER_PATH / "video_config_parser";
@@ -33,7 +33,7 @@ void test_parse(){
 
 void test_serialize(){
     //DEBUG IT WHEN YOU TEST!!!
-    const char *test_name = "video_codec_parser_test.test_serialize";
+    const char *test_name = "video_config_parser_test.test_serialize";
     printInfo(test_name);
 
     vector<video_config> configs = {

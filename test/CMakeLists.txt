@@ -13,6 +13,7 @@ file(GLOB mosaic_test_src "src/video_codec/frame_codec/provider/mosaic_provider_
 file(GLOB clock_gen_test_src "src/video_codec/clock_generator_test.cpp")
 file(GLOB video_codec_test_src "src/video_codec/video_codec_test.cpp")
 file(GLOB video_config_parser_test_src "src/parser/video_config_parser_test.cpp")
+file(GLOB frame_codec_parser_test_src "src/parser/frame_codec_parser_test.cpp")
 
 file(GLOB frame_gen_tool_src "tool/gen_frame/frame_generator.cpp")
 file(GLOB args_frame_gen_tool_src "tool/gen_frame/argument_generator.cpp")
@@ -57,6 +58,11 @@ target_link_libraries(video_codec_test PUBLIC video_codec)
 add_executable(video_config_parser_test ${test_lib_src} ${video_config_parser_test_src})
 target_setup(video_config_parser_test)
 target_link_libraries(video_config_parser_test PUBLIC config)
+
+#frame_codec_parser_test
+add_executable(frame_codec_parser_test ${test_lib_src} ${frame_codec_parser_test_src})
+target_setup(frame_codec_parser_test)
+target_link_libraries(frame_codec_parser_test PUBLIC config video_codec)
 #======END======
 
 #TEST TOOLS

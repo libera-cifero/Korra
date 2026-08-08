@@ -23,9 +23,10 @@ block_codec *block_codec_parser::parse(json j){
     string t = j["type"];
     _update_context_out(j["bitsPerNumber"]);
     for(auto p : specific_parsers){
-        if(p -> type() == t){
+        string type = p->type();
+        if(type == t){
             _update_parser_context_in(p);
-            return p -> parse(j);
+            return p -> parse(j[type + "Settings"]);
         }
     }
 
