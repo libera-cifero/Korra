@@ -1,2 +1,3 @@
 #launch it in project's root
 valgrind --tool=memcheck --leak-check=full --log-file=test/context/log/test_name --quiet ./bin/test_name
+valgrind --tool=memcheck --leak-check=full --log-file=test/context/log/args_frame_gen_tool_test --quiet ./bin/tool/args_frame_gen_tool -C 3 -W 0 -H 0 -c frame_codec_template.json -e random -d random

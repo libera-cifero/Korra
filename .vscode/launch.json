@@ -8,7 +8,7 @@
             "target": "./bin/tool/args_frame_gen_tool",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
-            "arguments": "-C 3 -W 1280 -H 720 -c frame_codec_template.json -e 1280x720 -d 1280x720"
+            "arguments": "-C 3 -c frame_codec_template.json -e 1280x720 -d 1280x720"
         },
         {
             "name": "Python Debugger: Python File",

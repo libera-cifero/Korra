@@ -29,6 +29,7 @@ void print_args(frame_expected_in args){
         "--width %d --height %d --fps %d --frame_codec_path \"%s\" --expected_path \"%s\" --data_path \"%s\"\n", 
         args.frame_width, args.frame_height, args.fps, args.codec_path.c_str(), args.expected_path.c_str(), args.data_path.c_str()
     );
+    fflush(stdout);
 }
 
 int get_max_file_index(path dir_path, regex pattern) {
@@ -116,8 +117,8 @@ int main(int argc, char **argv){
     in.fps = 0;
     in.expected_path = in.data_path = "";
     app.add_option("-C,--count", arg_count)->required();
-    app.add_option("-W,--width", in.frame_width)->required();
-    app.add_option("-H,--height", in.frame_height)->required();
+    app.add_option("-W,--width", in.frame_width);
+    app.add_option("-H,--height", in.frame_height);
     app.add_option("-f,--fps", in.fps);
     app.add_option("-c,--frame_codec_path", in.codec_path)->required();
     app.add_option("-e,--expected_path", in.expected_path, "path to directory stores expected files");
@@ -137,5 +138,11 @@ int main(int argc, char **argv){
         prev_data_index = set_data_file_path(args, prev_data_index);
         print_args(args);
     }
+
+    for(int i = 0; i < generators.size(); i++){
+        delete generators[i];
+    }
+    
+    delete codec;
     return 0;
 }

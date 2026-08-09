@@ -33,9 +33,6 @@ area_size mosaic_generator::random_size(provider *frame_provider, area_size size
 
     if(width_init <= 0) size_init.width = w_blocks * block_size;
     if(height_init <= 0) size_init.height = h_blocks * block_size;
-    
-    size_init.width = 0;
-    size_init.height = 0;
 
     return size_init;
 }
