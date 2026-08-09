@@ -16,10 +16,6 @@
                 +--------------+
 */
 class ip_data : public piecable_data {
-private:
-    char *_ip_package;
-    uint16_t _package_size;
-    char *_current_piece;
 public:
     ip_data();
     ip_data(uint16_t package_size);

@@ -1,3 +1,4 @@
+#pragma once
 #include "korra_data.hpp"
 #include "base/identifiable.hpp"
 #include <cstdint>
