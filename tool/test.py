@@ -10,7 +10,7 @@ if len(sys.argv) < 2:
     for f in os.listdir(bin_dir):
         file_path = os.path.join(bin_dir, f)
         if os.path.isfile(file_path) and (file_path.endswith("_test") or file_path.endswith("_test.exe")):
-            files.append(file_path)
+            files.append(f)
 
     for file in files: lib.run_test(file)
 else:

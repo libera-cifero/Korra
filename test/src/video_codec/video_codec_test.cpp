@@ -142,6 +142,7 @@ void test_pop_frame(){
         sync.acquire();
         delete storage;
         delete signals;
+        delete meta.codec;
     });
     printPass(test_name.c_str());
 }

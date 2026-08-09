@@ -14,15 +14,8 @@
             "name": "Python Debugger: Python File",
             "type": "debugpy",
             "request": "launch",
-            "program": "test/tool/gen_frames.py",
-            "args": [
-                "-C", "1", 
-                "-W", "1280", 
-                "-H", "720",
-                "-f", "0",
-                "-c", "rgb_palette0.json",
-                "-e", "1280x720",
-                "-d", "1280x720"]
+            "program": "tool/test.py",
+            "args": []
         }
     ]
 }
