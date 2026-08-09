@@ -42,6 +42,7 @@ json block_codec_parser::serialize(block_codec *codec) {
         if(parser -> can_serialize(codec)){
             _update_parser_context_in(parser);
             json j = json::object({{"bitsPerNumber", bits_per_number}});
+            j["type"] = parser->type();
             j[parser->type() + "Settings"] = parser->serialize(codec);
             return j;
         }

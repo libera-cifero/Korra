@@ -3,14 +3,9 @@
 #include "test.hpp"
 #include "frame_io.hpp"
 #include "io.hpp"
-#include "video_codec/frame_codec/cipher/none_cipher.hpp"
-#include "video_codec/frame_codec/frame_codec.hpp"
-#include "video_codec/frame_codec/provider/mosaic/mosaic_settings.hpp"
 #include "video_codec/payload_storage.hpp"
 #include "video_codec/sync_signals.hpp"
 #include "video_codec/video_codec.hpp"
-#include "video_codec/frame_codec/provider/mosaic_provider.hpp"
-#include "video_codec/frame_codec/provider/provider.hpp"
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -50,16 +45,11 @@ void test_encode(){
 
     vector<char*> frames;
     FILE *video_maker = begin_video_making(1280, 720, 30, DATA_OUT_PATH / "output.mp4");
-    iterate_frame_test_cases(test_name.c_str(), "1280x720", [&](ITER_ACTION_ARGS) {
+    frame_io io_context;
+    io_context.iterate_frame_test_cases(test_name.c_str(), "1280x720", [&](ITER_ACTION_ARGS) {
         if(!inited){
-            t = new thread([&](frame_meta meta){
-                mosaic_settings *settings = new mosaic_settings;
-                *settings = meta;
-                
-                provider *p = new mosaic_provider(settings);
-                cipher *c = new none_cipher(p->payload_size());
-                frame_codec *encoder = new frame_codec(p, c);
-                video_codec *video = new video_codec(encoder, 30, 14);
+            t = new thread([&](frame_expected_out meta){
+                video_codec *video = new video_codec(meta.codec, 30, 14);
                 storage = video->storage();
                 sync.release();
                 payloads_token.acquire();//waiting while payload will be full
@@ -80,13 +70,10 @@ void test_encode(){
         }
 
         char *buffer = storage->current_payload();
-        char *payload = convert_blocks_to_data(meta.blocks, meta.codec->bits_per_number());
-        memcpy(buffer, payload, storage->payload_size());
+        memcpy(buffer, meta.data.payload.data(), storage->payload_size());
         storage->begin_new_payload();
-        delete [] payload;
         if(counter++ > 0) delete meta.codec;
     });
-
     payloads_token.release();
     sync.acquire();//waiting until frames were be encoded
     delete t;
@@ -102,7 +89,7 @@ void test_encode(){
     for(int i = 0; i < frames.size(); i++){
         uint8_t *frame = reinterpret_cast<uint8_t*>(frames[i]);
         printInfo("index: %d", i);
-        write_frame_data(frame, 1280, 720, p / format("frame_{}.bmp", i));
+        io_context.write_frame_data(frame, 1280, 720, p / format("frame_{}.bmp", i));
         delete [] frame;
     }
     frames.clear();
@@ -118,26 +105,21 @@ void test_encode(){
 void test_pop_frame(){
     const string test_name = base_name + ".test_pop_frame";
     printInfo(test_name.c_str());
-    iterate_frame_test_cases(test_name.c_str(), "1280x720", [](ITER_ACTION_ARGS) {
-        mosaic_settings *settings = new mosaic_settings;
-        memcpy(settings, (mosaic_settings*)&meta, sizeof(mosaic_settings));
-        provider *p = new mosaic_provider(settings);
-        cipher *c = new none_cipher(p->payload_size());
-        frame_codec *encoder = new frame_codec(p, c);
+    frame_io io_context;
+    
+    io_context.iterate_frame_test_cases(test_name.c_str(), "1280x720", [&](ITER_ACTION_ARGS) {
         sync_signals *signals = new sync_signals;
-        payload_storage *storage = new payload_storage(encoder, signals);
+        payload_storage *storage = new payload_storage(meta.codec, signals);
 
-        char *payload = convert_blocks_to_data(meta.blocks, meta.codec->bits_per_number());
         char *buffer = storage->current_payload();
-        memcpy(buffer, payload, storage->payload_size());
-        delete [] payload;
+        memcpy(buffer, meta.data.payload.data(), storage->payload_size());
         binary_semaphore sync(0);
         thread t([&]() 
         {
             regex r("frame_\\d+");
             smatch m;
-            regex_match(meta.frame_path, m, r);
-            regex_search(meta.frame_path, m, r);
+            regex_match(meta.data.path, m, r);
+            regex_search(meta.data.path, m, r);
             path p = DATA_OUT_PATH;
             if(!is_directory(p)) create_directory(p);
             p /= "frame";
@@ -147,7 +129,7 @@ void test_pop_frame(){
             p /= (m.str()+".bmp");
             sync.release();
             char *frame = storage->pop_frame();
-            write_frame_data(reinterpret_cast<uint8_t*>(frame), meta.frame_width, meta.frame_height, p);
+            io_context.write_frame_data(reinterpret_cast<uint8_t*>(frame), meta.frame_width, meta.frame_height, p);
             delete[] frame;
             sync.release();
         });
@@ -159,14 +141,13 @@ void test_pop_frame(){
         signals->frame_request()->release();
         sync.acquire();
         delete storage;
-        delete encoder;
         delete signals;
     });
     printPass(test_name.c_str());
 }
 
 int main(){
-    test_encode();
     test_pop_frame();
+    test_encode();
     return 0;
 }

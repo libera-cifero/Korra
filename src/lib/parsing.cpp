@@ -12,7 +12,7 @@ int parse_int(nlohmann::basic_json<> token) {
 
 uint32_t parse_uint32_t(nlohmann::basic_json<> token) {
     if(token.is_string()) return (uint32_t)atol(token.get<string>().c_str());
-    else if(token.is_number_unsigned()) return token.get<uint32_t>();
+    else if(token.is_number_unsigned()) return token.get<int>();
     else throw runtime_error("Can't parse uint32_t!");
 }
 

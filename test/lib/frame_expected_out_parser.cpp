@@ -5,6 +5,7 @@
 #include "config/parser/video_config_parser.hpp"
 #include "frame_meta.hpp"
 #include "video_codec/frame_codec/frame_codec.hpp"
+#include <cstring>
 
 frame_expected_out_parser::frame_expected_out_parser(json_parser<frame_codec*> *parser){
     _codec_parser = (frame_codec_parser*)parser;
@@ -13,12 +14,14 @@ frame_expected_out_parser::frame_expected_out_parser(json_parser<frame_codec*> *
 
 frame_expected_out frame_expected_out_parser::parse(json object){
     frame_expected_out result;
-    _codec_parser->context_in = _config_parser->parse(object);
+    video_config config = _config_parser->parse(object);
+    _codec_parser->context_in = config;
     result.codec = _codec_parser->parse(object["frameCodec"]);
 
     result.data.path = object["data"]["path"];
     result.data.payload = object["data"]["payload"].get<vector<char>>();
 
+    memcpy((video_config*)&result, &config, sizeof(video_config));
     return result;
 }
 

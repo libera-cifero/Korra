@@ -5,10 +5,10 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/tool/frame_gen_tool",
+            "target": "./bin/video_codec_test",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
-            "arguments": "--width 1280 --height 720 --fps 0 --frame_codec_path \"rgb_palette0.json\" --expected_path \"1280x720/frame_9.json\" --data_path \"1280x720/frame_9.bmp\""
+            "arguments": ""
         },
         {
             "name": "Python Debugger: Python File",
