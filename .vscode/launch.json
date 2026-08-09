@@ -5,17 +5,24 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/tool/args_frame_gen_tool",
+            "target": "./bin/tool/frame_gen_tool",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
-            "arguments": "-C 3 -c frame_codec_template.json -e 1280x720 -d 1280x720"
+            "arguments": "--width 1280 --height 720 --fps 0 --frame_codec_path \"rgb_palette0.json\" --expected_path \"1280x720/frame_9.json\" --data_path \"1280x720/frame_9.bmp\""
         },
         {
             "name": "Python Debugger: Python File",
             "type": "debugpy",
             "request": "launch",
-            "program": "tool/test.py",
-            "args": ["mosaic_test"]
+            "program": "test/tool/gen_frames.py",
+            "args": [
+                "-C", "1", 
+                "-W", "1280", 
+                "-H", "720",
+                "-f", "0",
+                "-c", "rgb_palette0.json",
+                "-e", "1280x720",
+                "-d", "1280x720"]
         }
     ]
 }

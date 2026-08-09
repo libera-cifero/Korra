@@ -142,7 +142,7 @@ int main(int argc, char **argv){
     for(int i = 0; i < generators.size(); i++){
         delete generators[i];
     }
-    
+
     delete codec;
     return 0;
 }

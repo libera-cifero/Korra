@@ -1,6 +1,7 @@
 import subprocess
 import sys
 import os
+import shlex
 
 root = os.path.abspath('.')
 count = sys.argv[1]
@@ -10,6 +11,6 @@ result = subprocess.run(["python3", runner, "tool/args_frame_gen_tool", *sys.arg
 lines = result.stdout.split('\n')
 for line in lines:
     if line=='': break
-    args = line.split(' ')
+    args = shlex.split(line)
     print(line)
     result = subprocess.run(["python3", runner, "tool/frame_gen_tool", *args], cwd = root)
