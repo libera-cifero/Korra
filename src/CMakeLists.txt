@@ -8,29 +8,6 @@ set(MOSAIC_DIR ${PROVIDER_DIR}/mosaic)
 #lib/*
 file(GLOB_RECURSE lib_src lib/*.cpp)
 
-#video_codec/frame_codec/provider/mosaic/block_codec/*
-file(GLOB block_codec_src ${MOSAIC_DIR}/block_codec/block_codec.cpp)
-file(GLOB rgb_palette_codec_src ${MOSAIC_DIR}/block_codec/rgb_palette_codec.cpp)
-
-#video_codec/frame_codec/provider/mosaic/*
-file(GLOB mosaic_math_src ${MOSAIC_DIR}/mosaic_math.cpp)
-
-#video_codec/frame_codec/provider/*
-file(GLOB mosaic_provider_src ${PROVIDER_DIR}/mosaic_provider.cpp)
-
-#video_codec/frame_codec/cipher/*
-file(GLOB cipher_src ${CIPHER_DIR}/cipher.cpp)
-file(GLOB none_cipher_src ${CIPHER_DIR}/none_cipher.cpp)
-
-#video_codec/frame_codec/*
-file(GLOB frame_codec_src video_codec/frame_codec/frame_codec.cpp)
-
-#video_codec/*
-file(GLOB sync_signals_src video_codec/sync_signals.cpp)
-file(GLOB clock_src video_codec/clock_generator.cpp)
-file(GLOB payload_storage_src video_codec/payload_storage.cpp)
-file(GLOB video_codec_src video_codec/video_codec.cpp)
-
 #video_codec/*
 file(GLOB_RECURSE video_codec_src video_codec/*.cpp)
 

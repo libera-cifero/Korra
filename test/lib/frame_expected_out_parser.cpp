@@ -2,6 +2,7 @@
 #include "config/data/video_config.hpp"
 #include "config/parser/frame_codec/frame_codec_parser.hpp"
 #include "config/parser/parser.hpp"
+#include "config/parser/video_config_parser.hpp"
 #include "frame_meta.hpp"
 #include "video_codec/frame_codec/frame_codec.hpp"
 
@@ -30,6 +31,14 @@ json frame_expected_out_parser::serialize(frame_expected_out value){
     object["data"]["payload"] = value.data.payload;
 
     return object;
+}
+
+frame_codec_parser *frame_expected_out_parser::codec_parser(){
+    return _codec_parser;
+}
+
+video_config_parser *frame_expected_out_parser::config_parser(){
+    return _config_parser;
 }
 
 frame_expected_out_parser::~frame_expected_out_parser(){

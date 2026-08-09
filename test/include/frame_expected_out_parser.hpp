@@ -10,6 +10,8 @@ private:
     video_config_parser *_config_parser;
 public:
     frame_expected_out_parser(json_parser<frame_codec*> *);
+    frame_codec_parser *codec_parser();
+    video_config_parser *config_parser();
     frame_expected_out parse(json) override;
     json serialize(frame_expected_out) override;
     ~frame_expected_out_parser() override;

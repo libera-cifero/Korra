@@ -66,6 +66,7 @@ void test_settings_list(const char *test_name, vector<mosaic_settings*>* setting
     bool is_cheating = false, is_break = false;
     int invalid_byte_index = -1;
 
+    frame_io io;
     for(int i = 0; i < settings_list->size() && !is_break; i++){
         mosaic_settings *settings = (*settings_list)[i];
         mosaic_provider p(settings);
@@ -86,7 +87,7 @@ void test_settings_list(const char *test_name, vector<mosaic_settings*>* setting
         speed = payload_size / delta_ms;
         printInfo("%-10d\t%-10s\t%-10.3lf\t%-10.3lf\t%-10d\t%-10d\t%-10d\t%dx%d", i, "decode", delta_ms, speed, payload_size, frame_size, block_size, settings->frame_width, settings->frame_height);
         path data_path = DATA_OUT_PATH / "frame" / "test_to_frame_to_payload" / "rgb_palette_codec" / std::format("frame_{}.bmp", i);
-        write_frame_data(reinterpret_cast<uint8_t*>(frame), settings->frame_width, settings->frame_height, data_path);
+        io.write_frame_data(reinterpret_cast<uint8_t*>(frame), settings->frame_width, settings->frame_height, data_path);
 
 
         if(payload0 == payload1){

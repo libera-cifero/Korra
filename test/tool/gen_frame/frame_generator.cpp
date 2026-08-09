@@ -1,9 +1,8 @@
-//input: --width|-w VALUE, --height|-h VALUE, --frame_codec_path|-c VALUE, 
+//input: --width|-W VALUE, --height|-H VALUE, --frame_codec_path|-c VALUE, 
 //--expected_path|-e, --data_path|-d VALUE
 //output: array of random expected blocks, path to frame in binary format
 #include "config/data/video_config.hpp"
 #include "config/parser/frame_codec/frame_codec_parser.hpp"
-#include "config/parser/parser.hpp"
 #include "frame_io.hpp"
 #include "lib/CLI11.hpp"
 #include "frame_meta.hpp"
@@ -11,39 +10,18 @@
 #include "video_codec/frame_codec/frame_codec.hpp"
 #include "io.hpp"
 #include <cstring>
-#include <fstream>
-#include <iostream>
 #include <random>
-#include <ios>
-
-frame_codec *read_codec_from_file(string &path, frame_codec_parser *codec_parser, video_config context){
-    fstream file(path, ios_base::in);
-    stringstream stream;
-    stream << file.rdbuf();
-    string data = stream.str();
-    file.close();
-
-    json j = json::parse(data);
-    codec_parser->context_in = context;
-    return codec_parser->parse(j);
-}
-
-path to_native_path(string file_name){
-    auto strs = CLI::detail::split(file_name, '/');
-    path p;
-    for(string str : strs) p /= str;
-    return p;
-}
 
 int main(int argc, char **argv) {
     CLI::App app{"frame_gen_tool"};
     argv = app.ensure_utf8(argv);
     frame_expected_in in;
+    in.fps = 30;
     app.add_option("-W,--width", in.frame_width)->required();
     app.add_option("-H,--height", in.frame_height)->required();
     app.add_option("-f,--fps", in.fps);
     app.add_option("-c,--frame_codec_path", in.codec_path)->required();
-    app.add_option("-e,--expected_file_path", in.expected_path)->required();
+    app.add_option("-e,--expected_path", in.expected_path)->required();
     app.add_option("-d,--data_path", in.data_path)->required();
     CLI11_PARSE(app, argc, argv);
 
@@ -51,9 +29,9 @@ int main(int argc, char **argv) {
     memcpy((video_config*)&out, (video_config*)&in, sizeof(video_config));
     auto codec_parser = (frame_codec_parser*)frame_codec_parser_static_factory().build();
     auto out_parser  = new frame_expected_out_parser(codec_parser);
-
-    string codec_path = DATA_COLOR_CODEC_PATH / in.codec_path;
-    out.codec = read_codec_from_file(codec_path, codec_parser, in);
+    frame_io io;
+    string codec_path = DATA_FRAME_CODEC_PATH / to_native_path(in.codec_path);
+    out.codec = io.read_codec_from_file(codec_path, in);
 
     std::random_device seed; 
     std::mt19937_64 gen(seed());
@@ -64,7 +42,6 @@ int main(int argc, char **argv) {
     out.data.path = in.data_path;
     delete out_parser;
 
-    frame_io io;
     string expected_path = EXPECTED_FRAME_PATH / to_native_path(in.expected_path);
     string data_path = DATA_FRAME_PATH / to_native_path(in.data_path);
     io.write_frame_expected(out, expected_path);

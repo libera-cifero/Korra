@@ -25,6 +25,7 @@ public:
 
     char *convert_blocks_to_data(vector<int> &blocks, int bits_per_block);
     
+    frame_codec *read_codec_from_file(string &path, video_config context);
     ~frame_io();
 };
 

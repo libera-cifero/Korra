@@ -20,6 +20,19 @@ frame_io::frame_io(){
     _parser = new frame_expected_out_parser((frame_codec_parser*)codec_parser);
 }
 
+frame_codec *frame_io::read_codec_from_file(string &path, video_config context){
+    fstream file(path, ios_base::in);
+    stringstream stream;
+    stream << file.rdbuf();
+    string data = stream.str();
+    file.close();
+
+    json j = json::parse(data);
+    frame_codec_parser *codec_parser = _parser->codec_parser();
+    codec_parser->context_in = context;
+    return codec_parser->parse(j);
+}
+
 void frame_io::write_frame_expected(frame_expected_out config, const string &path){
     json j = _parser->serialize(config);
     fstream blocks_file(path, ios_base::out);

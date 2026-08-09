@@ -2,28 +2,33 @@
 //Width, height, block_size and folder aren't required here. If they aren't defined, then they will be generated 
 
 //output: lines of [width height bits_per_block block_size frame_N.json frame_N.bmp]
+#include "frame_io.hpp"
 #include "io.hpp"
 #include "frame_meta.hpp"
-#include "block_codec_json.hpp"
+#include "lib/CLI11.hpp"
+#include "size_generator/size_generator.hpp"
+#include "size_generator/mosaic_generator.hpp"
+#include "video_codec/frame_codec/frame_codec.hpp"
+#include "video_codec/frame_codec/provider/provider.hpp"
 #include <algorithm>
+#include <cstdio>
 #include <cstdlib>
-#include <fstream>
-#include <iostream>
 #include <filesystem>
+#include <format>
 #include <regex>
-#include <sstream>
+#include <stdexcept>
 #include <string>
+#include <regex>
+#include <vector>
+
 using namespace std;
 using namespace filesystem;
 
-void print_args(frame_gen_args args){
-    cout 
-        << args.frame_width << " " 
-        << args.frame_height << " " 
-        << args.color_codec_path << " "
-        << args.block_size << " "
-        << args.expected_name << " "
-        << args.frame_name;
+void print_args(frame_expected_in args){
+    printf(
+        "--width %d --height %d --fps %d --frame_codec_path \"%s\" --expected_path \"%s\" --data_path \"%s\"\n", 
+        args.frame_width, args.frame_height, args.fps, args.codec_path.c_str(), args.expected_path.c_str(), args.data_path.c_str()
+    );
 }
 
 int get_max_file_index(path dir_path, regex pattern) {
@@ -47,91 +52,90 @@ int get_max_file_index(path dir_path, regex pattern) {
     return *max_element(file_indices.begin(), file_indices.end());
 }
 
-int get_bits_per_number(string codec_path, int frame_width, int frame_height, int block_size) {
-    fstream file(DATA_COLOR_CODEC_PATH / codec_path);
-    ostringstream buf;
-    buf << file.rdbuf();
-    string data = buf.str();
-    file.close();
-    json j = json::parse(data);
-    auto codec = parse_block_codec(j, frame_width, frame_height, block_size);
-    int bits_per_number = codec->bits_per_number();
-    delete codec;
-    return bits_per_number;
+int set_expected_file_path(frame_expected_in &in, int prev_index){
+    int index;
+    path root = EXPECTED_FRAME_PATH / to_native_path(in.expected_path);
+    if(prev_index < 0){
+        regex pattern("frame_(\\d+)\\.json");
+        index = get_max_file_index(root, pattern) + 1;
+    }
+    else index = prev_index + 1;
+    
+    in.expected_path = path(in.expected_path) / std::format("frame_{}.json", index);
+    return index;
 }
 
-frame_gen_args gen_random_args(int expected_index, int data_index, int bits_per_number, string codec_path, int width, int height, int block_size, char *folder) {
-    if(width <= 0) width = (rand() % 1913) + 8;
-    if(height <= 0) height = (rand() % 1073) + 8;
-    if(block_size <= 0){
-        int block_count = 0, min_size = width < height ? width : height;
-        bool bits_per_block_compatible = false;
-        while(block_count == 0 || block_count % 8 != 0 || block_count % bits_per_number != 0) {
-            block_size = (rand() % min_size) + 1;
-            int width_capacity = width / block_size;
-            int height_capacity = height / block_size;
-            block_count = height_capacity * width_capacity;
+int set_data_file_path(frame_expected_in &in, int prev_index)
+{
+    int index;
+    path root = DATA_FRAME_PATH / to_native_path(in.data_path);
+    if(prev_index < 0){
+        regex pattern("frame_(\\d+)\\.bmp");
+        index = get_max_file_index(root, pattern) + 1;
+    }
+    else index = prev_index + 1;
+    in.data_path = path(in.data_path) / std::format("frame_{}.bmp", index);
+    return index;
+}
+
+size_generator *select_generator(frame_codec *codec, vector<size_generator*> &generators){
+    provider *p = codec->get_provider();
+    size_generator *generator = nullptr;
+    for(auto gen : generators){
+        if(gen->can_generate(p)){
+            generator = gen;
+            break;
         }
     }
 
-    string expected_file = "frame_" + to_string(expected_index) + ".json";
-    string data_file = "frame_" + to_string(data_index) + ".bmp";
-    if(folder != nullptr){
-        expected_file = path(folder) / expected_file;
-        data_file = path(folder) / data_file;
-    }
-    frame_gen_args args;
-    args.frame_name = data_file;
-    args.expected_name = expected_file;
-    args.block_size = block_size;
-    args.frame_width = width;
-    args.frame_height = height;
-    args.color_codec_path = codec_path;
-
-    return args;
+    if(generator == nullptr) throw runtime_error("size generator is undefined!");
+    return generator;
 }
 
-int main(int argc, char **argv) {
-    if(argc < 3) {
-        cerr << "Invalid arguments count!" << endl;
-        return -1;
+void set_size(size_generator *generator, frame_codec *codec, frame_expected_in &in){
+    bool is_width_random = in.frame_width <= 0, is_height_random = in.frame_height <= 0;
+    if(is_width_random || is_height_random){
+        area_size size = {(int)in.frame_width, (int)in.frame_height};
+        size = generator->random_size(codec->get_provider(), size);
+        if(is_width_random) in.frame_width = size.width;
+        if(is_height_random) in.frame_height = size.height;
     }
+}
 
-    int count = atoi(argv[1]);
-    if(count <= 0){
-        cerr << "Invalid count " << count << "!" << endl;
-        return -2;
-    }
+int main(int argc, char **argv){
+    vector<size_generator*> generators = {
+        new mosaic_generator
+    };
 
-    int width = 0, height = 0, block_size = 0;
-    char *folder = nullptr;
-    if(argc >= 4) width = atoi(argv[3]);
-    if(argc >= 5) height = atoi(argv[4]);
-    if(argc >= 6) block_size = atoi(argv[5]);
-    if(argc >= 7) folder = argv[6];
+    CLI::App app{"args_gen_tool"};
+    argv = app.ensure_utf8(argv);
+    frame_expected_in in;
+    int arg_count;
+    in.frame_width = 0;
+    in.frame_height = 0;
+    in.fps = 0;
+    in.expected_path = in.data_path = "";
+    app.add_option("-C,--count", arg_count)->required();
+    app.add_option("-W,--width", in.frame_width)->required();
+    app.add_option("-H,--height", in.frame_height)->required();
+    app.add_option("-f,--fps", in.fps);
+    app.add_option("-c,--frame_codec_path", in.codec_path)->required();
+    app.add_option("-e,--expected_path", in.expected_path, "path to directory stores expected files");
+    app.add_option("-d,--data_path", in.data_path, "path to directory stores data files");
+    CLI11_PARSE(app, argc, argv);
 
-    string expected_frame_path = EXPECTED_FRAME_PATH, data_frame_path = DATA_FRAME_PATH;
-    if(folder != nullptr){
-        expected_frame_path = EXPECTED_FRAME_PATH / path(folder);
-        data_frame_path = DATA_FRAME_PATH / path(folder);
-        if(!filesystem::is_directory(expected_frame_path))
-            filesystem::create_directory(expected_frame_path);
-        if(!filesystem::is_directory(data_frame_path))
-            filesystem::create_directory(data_frame_path);
-    }
-
-    int expected_index = get_max_file_index(expected_frame_path, regex("frame_([0-9]+)\\.json"));
-    int data_index = get_max_file_index(data_frame_path, regex("frame_([0-9]+)\\.bmp"));
-
-    string codec_path = argv[2];
-    int bits_per_number = get_bits_per_number(codec_path, width, height, block_size);
-
-    srand(time(NULL));
-    for(int i = 0; i < count; i++){
-        frame_gen_args args = gen_random_args(++expected_index, ++data_index, bits_per_number, codec_path, width, height, block_size, folder);
-        if(i > 0) cout << endl;
+    frame_io io_context;
+    string codec_path = DATA_FRAME_CODEC_PATH / to_native_path(in.codec_path);
+    frame_codec *codec = io_context.read_codec_from_file(codec_path, in);
+    size_generator *generator = select_generator(codec, generators);
+    int prev_expected_index = -1,  prev_data_index = -1;
+    for(int i = 0; i < arg_count; i++)
+    {
+        frame_expected_in args = in;
+        set_size(generator, codec, args);
+        prev_expected_index = set_expected_file_path(args, prev_expected_index);
+        prev_data_index = set_data_file_path(args, prev_data_index);
         print_args(args);
     }
-
     return 0;
 }
