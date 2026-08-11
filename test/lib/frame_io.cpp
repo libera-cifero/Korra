@@ -235,6 +235,7 @@ void frame_io::iterate_frame_test_cases(const char *test_name, string subdirecto
         test(test_name, expected, data, file_name);
 
         delete [] data;
+        //delete expected.codec;
     }
 }
 

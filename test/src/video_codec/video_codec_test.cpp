@@ -49,7 +49,7 @@ void test_encode(){
     io_context.iterate_frame_test_cases(test_name.c_str(), "rgb_palette0/1280x720", [&](ITER_ACTION_ARGS) {
         if(!inited){
             t = new thread([&](frame_expected_out meta){
-                video_codec *video = new video_codec(meta.codec, 30, 14);
+                video_codec *video = new video_codec(meta.codec, 30);
                 storage = video->storage();
                 sync.release();
                 payloads_token.acquire();//waiting while payload will be full
@@ -113,33 +113,20 @@ void test_pop_frame(){
 
         char *buffer = storage->current_payload();
         memcpy(buffer, meta.data.payload.data(), storage->payload_size());
-        binary_semaphore sync(0);
-        thread t([&]() 
-        {
-            regex r("frame_\\d+");
-            smatch m;
-            regex_match(meta.data.path, m, r);
-            regex_search(meta.data.path, m, r);
-            path p = DATA_OUT_PATH;
-            if(!is_directory(p)) create_directory(p);
-            p /= "frame";
-            if(!is_directory(p)) create_directory(p);
-            p /= "test_pop_frame";
-            if(!is_directory(p)) create_directory(p);
-            p /= (m.str()+".bmp");
-            sync.release();
-            char *frame = storage->pop_frame();
-            io_context.write_frame_data(reinterpret_cast<uint8_t*>(frame), meta.frame_width, meta.frame_height, p);
-            delete[] frame;
-            sync.release();
-        });
-
-        t.detach();
-        sync.acquire();
+        regex r("frame_\\d+");
+        smatch m;
+        regex_search(meta.data.path, m, r);
+        path p = DATA_OUT_PATH;
+        if(!is_directory(p)) create_directory(p);
+        p /= "frame";
+        if(!is_directory(p)) create_directory(p);
+        p /= "test_pop_frame";
+        if(!is_directory(p)) create_directory(p);
+        p /= (m.str()+".bmp");
         signals->ready_request()->release();
-        signals->ready_response()->acquire();
-        signals->frame_request()->release();
-        sync.acquire();
+        char *frame = storage->pop_frame();
+        io_context.write_frame_data(reinterpret_cast<uint8_t*>(frame), meta.frame_width, meta.frame_height, p);
+        delete[] frame;
         delete storage;
         delete signals;
         delete meta.codec;

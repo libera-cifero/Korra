@@ -83,7 +83,7 @@ void test_box_unbox(){
         frame_io io_context;
 
         auto codec = io_context.read_codec_from_file(codec_path, get<1>(test_case));
-        video_codec *vc = new video_codec(codec, 30, 15);
+        video_codec *vc = new video_codec(codec, 30);
         data_boxer boxer(vc->storage());
         vector<korra_data*> datas = get<2>(test_case);
 

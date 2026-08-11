@@ -9,7 +9,7 @@ private:
     frame_codec *_frame_codec;
     payload_storage *_payload_storage;
 public:
-    video_codec(frame_codec *encoder, int fps, int gap_timeout);
+    video_codec(frame_codec *encoder, int fps);
     void launch();
     payload_storage *storage();
     ~video_codec();

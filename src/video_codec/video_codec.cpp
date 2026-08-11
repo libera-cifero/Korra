@@ -2,7 +2,7 @@
 #include "video_codec/payload_storage.hpp"
 #include <cmath>
 
-video_codec::video_codec(frame_codec *encoder, int fps, int gap_timeout){
+video_codec::video_codec(frame_codec *encoder, int fps){
     _frame_codec = encoder;
     _clock_generator = new clock_generator((int)round(1000.0f / fps));
     _payload_storage = new payload_storage(encoder, _clock_generator->signals());

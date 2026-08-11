@@ -18,8 +18,6 @@ payload_storage::payload_storage(frame_codec *encoder, sync_signals *signals) {
     _signals = signals;
 
     begin_new_payload();
-    _frame = new char[frame_size()];
-    _is_frame_inited = false;
 }
 
 char *payload_storage::current_payload(){ 
@@ -62,17 +60,9 @@ void payload_storage::_update_frame(){
 char *payload_storage::pop_frame(){
     _signals->ready_request()->acquire();
 
-    _frame_access.lock();
-    char *result = _frame;
-    _frame_access.unlock();
-
-    /*if(_payloads.size() > 1 || payload_index == payload_size() - 1){
-        thread t([&](){ _update_frame(); });
-        t.detach();
-    }*/
-    thread t([&](){ _update_frame(); });
-    t.detach();
-    return result;
+    _update_frame();
+    
+    return _frame;
 }
 
 payload_storage::~payload_storage(){

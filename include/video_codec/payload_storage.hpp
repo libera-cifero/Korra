@@ -13,7 +13,6 @@ private:
     mutex _payloads_access, _frame_access;
     deque<char*> _payloads;
     char *_frame;
-    bool _is_frame_inited;
 
     char *_pop_payload();
     void _update_frame();

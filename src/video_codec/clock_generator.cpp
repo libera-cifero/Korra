@@ -3,7 +3,6 @@
 #include <chrono>
 #include <ctime>
 #include <semaphore>
-#include <stdexcept>
 #include <thread>
 #include <boost/asio.hpp>
 #include <boost/asio/co_spawn.hpp>
@@ -30,7 +29,6 @@ static double get_delta_millis(timespec t0, timespec t1){
 
 void clock_generator::launch(){
     _clock_thread = new thread([&](){
-        
         _is_running = true;
         timespec t0, t1;
         auto ready_request = _signals -> ready_request();
