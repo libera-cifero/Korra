@@ -29,6 +29,6 @@ void piecable_data::put_piece(char *piece, int piece_size){
     int delta = $buffer_size - _writen;
     int write_count = piece_size < delta ? piece_size : delta;
     memcpy($buffer + _writen, piece, write_count);
-    _writen += delta;
+    _writen += write_count;
     _is_built = delta <= piece_size;
 }

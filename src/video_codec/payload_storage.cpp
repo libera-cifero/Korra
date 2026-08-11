@@ -60,9 +60,11 @@ void payload_storage::_update_frame(){
 
 char *payload_storage::pop_frame(){
     _signals->ready_request()->acquire();
+    bool is_first_pop = false;
     if(!_is_frame_inited){
         _update_frame();
         _is_frame_inited = true;
+        is_first_pop = true;
     }
     _signals->ready_response()->release();
     _signals->frame_request()->acquire();
@@ -71,10 +73,8 @@ char *payload_storage::pop_frame(){
     char *result = _frame;
     _frame_access.unlock();
 
-    if(_payloads.size() > 1 || payload_index == payload_size() - 1){
-        thread t([&](){ _update_frame(); });
-        t.detach();
-    }
+    thread t([&](){ _update_frame(); });
+    t.detach();
     return result;
 }
 

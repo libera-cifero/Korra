@@ -14,9 +14,10 @@ file(GLOB_RECURSE video_codec_src video_codec/*.cpp)
 #config/*
 file(GLOB_RECURSE config_src config/*.cpp)
 
-message(STATUS "CONFIG SOURCES: ${config_src}")
-message(STATUS "LIB SOURCES: ${lib_src}")
-message(STATUS "VIDEO CODEC SOURCES: ${video_codec_src}")
+#data_boxer/*
+file(GLOB_RECURSE data_boxer_src data_boxer/*.cpp)
+
+message(STATUS "DATA_BOXER_SRC: ${data_boxer_src}")
 
 #lib
 add_library(lib STATIC ${lib_src})
@@ -31,3 +32,8 @@ target_link_libraries(video_codec PUBLIC lib)
 add_library(config STATIC ${config_src})
 target_include_directories(config PUBLIC ${INCLUDE_DIR})
 target_link_libraries(config PUBLIC lib video_codec)
+
+#data_boxer
+add_library(data_boxer STATIC ${data_boxer_src})
+target_include_directories(data_boxer PUBLIC ${INCLUDE_DIR})
+target_link_libraries(data_boxer PUBLIC lib video_codec config)

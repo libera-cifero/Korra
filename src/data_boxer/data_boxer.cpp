@@ -10,6 +10,7 @@
 
 data_boxer::data_boxer(payload_storage *storage){
     _storage = storage;
+    _data_frame_counter = 0;
 }
 
 void data_boxer::_increment_data_count(){
@@ -31,7 +32,7 @@ void data_boxer::_begin_new_payload(){
 }
 
 int data_boxer::_get_free_space(){
-    return _storage->payload_size() - _storage->payload_index - 1;
+    return _storage->payload_size() - _storage->payload_index;
 }
 
 bool data_boxer::_is_case_A(korra_data *data){

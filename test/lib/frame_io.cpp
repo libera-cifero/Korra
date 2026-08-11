@@ -191,7 +191,7 @@ uint8_t *frame_io::read_frame_data(const string &path, int &width, int &height)
 }
 
 void frame_io::iterate_frame_test_cases(const char *test_name, string subdirectory, iter_action test){
-    directory_iterator iter(EXPECTED_FRAME_PATH / subdirectory);
+    directory_iterator iter(EXPECTED_FRAME_PATH / to_native_path(subdirectory));
     //--- filenames are unique so we can use a set
     vector<path> sorted_by_name;
     regex pattern("frame_([0-9]+)\\.json");

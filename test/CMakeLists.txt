@@ -11,6 +11,7 @@ file(GLOB clock_gen_test_src "src/video_codec/clock_generator_test.cpp")
 file(GLOB video_codec_test_src "src/video_codec/video_codec_test.cpp")
 file(GLOB video_config_parser_test_src "src/parser/video_config_parser_test.cpp")
 file(GLOB frame_codec_parser_test_src "src/parser/frame_codec_parser_test.cpp")
+file(GLOB data_boxer_test_src "src/data_boxer_test.cpp")
 
 file(GLOB frame_gen_tool_src "tool/gen_frame/frame_generator.cpp")
 file(GLOB mosaic_generator_src "tool/gen_frame/size_generator/mosaic_generator.cpp")
@@ -33,7 +34,7 @@ endmacro()
 #=====BEGIN=====
 add_library(test_lib SHARED ${test_lib_src})
 target_setup(test_lib)
-target_link_libraries(test_lib PUBLIC lib video_codec config)
+target_link_libraries(test_lib PUBLIC lib video_codec config data_boxer)
 #======END======
 
 #TESTS
@@ -68,6 +69,11 @@ target_link_libraries(video_config_parser_test PUBLIC test_lib)
 add_executable(frame_codec_parser_test ${frame_codec_parser_test_src} )
 target_setup(frame_codec_parser_test)
 target_link_libraries(frame_codec_parser_test PUBLIC test_lib)
+
+#data_boxer_test
+add_executable(data_boxer_test ${data_boxer_test_src})
+target_setup(data_boxer_test)
+target_link_libraries(data_boxer_test PUBLIC data_boxer test_lib)
 #======END======
 
 #TEST TOOLS

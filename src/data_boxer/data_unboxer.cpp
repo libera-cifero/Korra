@@ -34,7 +34,7 @@ int data_unboxer::_select_by_id(int id) {
 void data_unboxer::_put_begin_label(begin_label_data *label){
     auto new_data = (piecable_data*)_data_builders[label->payload_type()]();
     new_data->set_id(label->id());
-    new_data->init_buffer(new_data -> size());
+    new_data->init_buffer(label -> data_size());
     _builiding_data.push_back(new_data);
 }
 
