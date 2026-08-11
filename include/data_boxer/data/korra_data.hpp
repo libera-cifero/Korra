@@ -25,7 +25,8 @@ public:
     //Return size of payload data of raw_bytes
     virtual int size(char *raw_bytes) = 0;
     
-    virtual char *to_bytes(char *buffer);
+    char *to_bytes(char *buffer);
+    virtual char *to_payload_bytes(char *buffer) = 0;
 
     virtual char *from_bytes(char *bytes);
 

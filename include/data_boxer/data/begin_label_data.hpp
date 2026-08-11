@@ -31,6 +31,6 @@ public:
     int size(char *bytes) override;
 
     uint16_t type() override;
-    char *to_bytes(char *buffer) override;
+    char *to_payload_bytes(char *buffer) override;
     char *from_bytes(char *bytes) override;
 };

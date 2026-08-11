@@ -27,9 +27,7 @@ int begin_label_data::size(char *bytes) {
 }
 
 uint16_t begin_label_data::type() { return 1; }
-char *begin_label_data::to_bytes(char *buffer) {
-    buffer = korra_data::to_bytes(buffer);
-
+char *begin_label_data::to_payload_bytes(char *buffer) {
     memcpy(buffer, &_payload_type, 2);
     memcpy(buffer + 2, &__id, 4);
     memcpy(buffer + 6, &__data_size, 2);

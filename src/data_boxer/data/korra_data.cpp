@@ -13,7 +13,7 @@ int korra_data::total_size(){
 char* korra_data::to_bytes(char *buffer){
     uint16_t t = type();
     memcpy(buffer, &t, 2);
-    return buffer + 2;
+    return to_payload_bytes(buffer + 2);
 }
 
 uint16_t korra_data::type(char *bytes){

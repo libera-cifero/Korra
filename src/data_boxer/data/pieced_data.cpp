@@ -21,9 +21,7 @@ int pieced_data::size(char *bytes) {
 
 uint16_t pieced_data::type() { return 2; }
 
-char *pieced_data::to_bytes(char *buffer) {
-    
-    buffer = korra_data::to_bytes(buffer);
+char *pieced_data::to_payload_bytes(char *buffer) {
     memcpy(buffer, &__id, 4);
     memcpy(buffer + 4, &__data_size, 2);
     memcpy(buffer + 6, &_index, 2);

@@ -31,11 +31,10 @@ char *ip_data::ip_package() {
     return __buffer;
 }
 
-char *ip_data::to_bytes(char *buffer) {
+char *ip_data::to_payload_bytes(char *buffer) {
     if(__buffer == nullptr) throw std::runtime_error("IP package is not defined!");
-    char *bytes = korra_data::to_bytes(buffer);
-    memcpy(bytes, __buffer, size());
-    return bytes + size();
+    memcpy(buffer, __buffer, size());
+    return buffer + size();
 }
 
 char *ip_data::from_bytes(char *bytes) {
