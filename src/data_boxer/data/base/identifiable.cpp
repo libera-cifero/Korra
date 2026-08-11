@@ -6,8 +6,8 @@
 identifiable::identifiable() { }
 
 identifiable::identifiable(int id, uint16_t data_size){
-    $id = id;
-    $data_size = data_size;
+    __id = id;
+    __data_size = data_size;
 }
 
 int identifiable::_generate_random_id(){
@@ -22,10 +22,10 @@ int identifiable::_generate_random_id(){
 }
 
 identifiable::identifiable(uint16_t data_size){
-    $id = _generate_random_id();
-    $data_size = data_size;
+    __id = _generate_random_id();
+    __data_size = data_size;
 }
 
-int identifiable::id() { return $id; }
+int identifiable::id() { return __id; }
 
-uint16_t identifiable::data_size() { return $data_size; }
+uint16_t identifiable::data_size() { return __data_size; }

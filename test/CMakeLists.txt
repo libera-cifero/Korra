@@ -30,6 +30,20 @@ macro(target_setup_tool target)
     )
 endmacro()
 
+function(get_all_tests dir)
+    get_property(targets DIRECTORY ${dir} PROPERTY BUILDSYSTEM_TARGETS)
+    foreach(target ${targets})
+        if(target MATCHES ".*_test$")
+            message(STATUS ${target})
+        endif()
+    endforeach()
+    
+    get_property(subdirs DIRECTORY ${dir} PROPERTY SUBDIRECTORIES)
+    foreach(subdir ${subdirs})
+        get_all_tests(${subdir})
+    endforeach()
+endfunction()
+
 #LIB
 #=====BEGIN=====
 add_library(test_lib SHARED ${test_lib_src})

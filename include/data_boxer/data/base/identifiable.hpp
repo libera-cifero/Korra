@@ -4,8 +4,8 @@ class identifiable {
 private:
     int _generate_random_id();
 protected:
-    int $id;
-    uint16_t $data_size;
+    int __id;
+    uint16_t __data_size;
 public:
     identifiable();
     identifiable(int id, uint16_t size);

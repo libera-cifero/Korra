@@ -7,8 +7,8 @@ private:
     int _writen;
     bool _is_built = false, _is_inited = false;
 protected:
-    int $buffer_size;
-    char *$buffer;//$buffer is not deleting, because $buffer is processing by out agent
+    int __buffer_size;
+    char *__buffer;//__buffer is not deleting, because __buffer is processing by out agent
 public:
     void set_id(int id);
     void init_buffer(int buffer_size);

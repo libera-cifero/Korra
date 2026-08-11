@@ -9,7 +9,7 @@ double get_delta_millis(timespec t0, timespec t1){
 }
 
 int main(){
-    clock_generator gen(33, 12);
+    clock_generator gen(33);
 
     gen.launch();
 
@@ -20,15 +20,8 @@ int main(){
         gen.signals()->ready_request()->acquire();
         this_thread::sleep_for(std::chrono::milliseconds(10));
         clock_gettime(CLOCK_MONOTONIC, &t1);
-        double millis0 = get_delta_millis(t0, t1);
-        cout << "TIME: " << millis0 << "ms Preparing..." << endl;
-        gen.signals()->ready_response()->release();
-        clock_gettime(CLOCK_MONOTONIC, &t0);
-        gen.signals()->frame_request()->acquire();
-        clock_gettime(CLOCK_MONOTONIC, &t1);
-        double millis1 = get_delta_millis(t0, t1);
-        cout << "TIME: "<<millis1 <<"ms Done!"<<endl;
-        cout << "TOTAL: "<< millis0 + millis1<<endl;
+        double millis = get_delta_millis(t0, t1);
+        cout << "TIME: "<<millis <<"ms Done!"<<endl;
     }
 
     return 0;

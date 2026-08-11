@@ -9,7 +9,7 @@ struct point {
 class block_codec {
 protected:
     block_codec_config $config;
-    void $block_index_to_area(int block_index, point &begin, point &end);
+    void __block_index_to_area(int block_index, point &begin, point &end);
 public:
     block_codec(block_codec_config &config);
     int bits_per_number();

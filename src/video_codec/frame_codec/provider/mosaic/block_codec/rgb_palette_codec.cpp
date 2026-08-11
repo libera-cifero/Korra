@@ -9,7 +9,7 @@ rgb_palette_codec::rgb_palette_codec(palette_codec_config<int> &config) : palett
 
 void rgb_palette_codec::encode(char *frame, int number, int block_index) {
     point begin, end;
-    $block_index_to_area(block_index, begin, end);
+    __block_index_to_area(block_index, begin, end);
     int color = $palette[number];
     UNBOX_RGB(color, red, green, blue);
     for(int y = begin.y; y < end.y; y++) {
@@ -46,7 +46,7 @@ int rgb_palette_codec::decode(char *frame, int block_index) {
     uint32_t r_sum = 0, g_sum = 0, b_sum = 0;
     uint8_t *uframe = reinterpret_cast<uint8_t*>(frame);
     point begin, end;
-    $block_index_to_area(block_index, begin, end);
+    __block_index_to_area(block_index, begin, end);
     int c = $config.block_size * $config.block_size;
     for(int y = begin.y; y < end.y; y++) {
         for(int x = begin.x; x < end.x; x++) {

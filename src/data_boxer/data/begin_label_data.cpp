@@ -31,8 +31,8 @@ char *begin_label_data::to_bytes(char *buffer) {
     buffer = korra_data::to_bytes(buffer);
 
     memcpy(buffer, &_payload_type, 2);
-    memcpy(buffer + 2, &$id, 4);
-    memcpy(buffer + 6, &$data_size, 2);
+    memcpy(buffer + 2, &__id, 4);
+    memcpy(buffer + 6, &__data_size, 2);
 
     return buffer + size();
 }
@@ -41,8 +41,8 @@ char *begin_label_data::from_bytes(char *bytes) {
     bytes = korra_data::from_bytes(bytes);
 
     memcpy(&_payload_type, bytes, 2);
-    memcpy(&$id, bytes + 2, 4);
-    memcpy(&$data_size, bytes + 6, 2);
+    memcpy(&__id, bytes + 2, 4);
+    memcpy(&__data_size, bytes + 6, 2);
 
     return bytes + size();
 }

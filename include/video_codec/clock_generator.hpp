@@ -9,14 +9,13 @@ class clock_generator {
 private:
     sync_signals *_signals;
     binary_semaphore *_breaker;
-    uint32_t _timeout, _ready_gap_timeout;
+    uint32_t _timeout;
     bool _is_running;
     thread *_clock_thread;
 public:
-    clock_generator(uint32_t timeout, uint32_t ready_gap_timeout);
+    clock_generator(uint32_t timeout);
 
     int timeout();
-    int ready_gap_timeout();
 
     sync_signals *signals();
 

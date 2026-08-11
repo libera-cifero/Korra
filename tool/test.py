@@ -2,18 +2,33 @@ import os
 import subprocess
 import lib
 import sys
+import re
+
+def get_test_targets():
+    result = subprocess.run(
+        ["cmake", "--build", "build", "--target", "help"],
+        capture_output=True, text=True
+    )
+
+    lines = result.stdout.splitlines()
+    tests = []
+    for line in lines:
+        match = re.search("\\w+_test$", line)
+        if match:
+            tests.append(match[0])
+    
+    return tests
+
+def build_tests(targets):
+    subprocess.run([ "cmake", "--build", "build", "--target", *targets ])
+
+def run_tests(tests):
+    for test in tests: 
+        lib.run_test(test)
 
 if len(sys.argv) < 2:
-    bin_dir = os.path.abspath(os.path.join('.','bin'))
-    print(bin_dir)
-    files=[]
-    for f in os.listdir(bin_dir):
-        file_path = os.path.join(bin_dir, f)
-        if os.path.isfile(file_path) and (file_path.endswith("_test") or file_path.endswith("_test.exe")):
-            files.append(f)
-
-    for file in files: lib.run_test(file)
+    tests = get_test_targets()
+    build_tests(tests)
+    run_tests(tests)
 else:
-    tests = sys.argv[1::]
-    for test in tests:
-        lib.run_test(test)
+    run_tests(sys.argv[1::])

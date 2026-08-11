@@ -21,7 +21,7 @@ block_codec_config block_codec::config(){
     return $config;
 }
 
-void block_codec::$block_index_to_area(int block_index, point &begin, point &end) {
+void block_codec::__block_index_to_area(int block_index, point &begin, point &end) {
     int block_size = $config.block_size;
     int width_capacity = $config.frame_width / block_size;
     int index_y = block_index / width_capacity, index_x = block_index % width_capacity;

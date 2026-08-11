@@ -1,5 +1,5 @@
 ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))ы
-
+.PHONY: test
 #COMMON
 #=====BEGIN=====
 init_debug:
@@ -35,9 +35,10 @@ build_src: base_utils color_codec len_reader timer
 
 #TESTS
 #=====BEGIN=====
+test:
+	python3 tool/test.py
 %_test:
 	cmake --build build --target $*_test && python3 tool/test.py $*_test
-test: color_test math_test timer_test mosaic_test
 #======END======
 
 #TEST TOOLS
