@@ -15,6 +15,14 @@ void piecable_data::init_buffer(int buffer_size){
     _is_inited = true;
 }
 
+void piecable_data::init_buffer(char *buffer, int buffer_size){
+    __buffer_size = buffer_size;
+    _writen = 0;
+    _is_built = false;
+    __buffer = buffer;
+    _is_inited = true;
+}
+
 int piecable_data::size(){
     if(!_is_inited) throw std::runtime_error("piecable_data is not inited! Execute init_buffer previously!");
     return __buffer_size;

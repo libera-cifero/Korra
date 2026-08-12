@@ -13,8 +13,7 @@ ip_data::ip_data(uint16_t package_size){
 
 ip_data::ip_data(char *ip_package){
     int buffer_size = size(ip_package);
-    init_buffer(buffer_size);
-    memcpy(__buffer, ip_package, size());
+    init_buffer(ip_package, buffer_size);
 }
 
 uint16_t ip_data::type() { return 0; }
@@ -50,5 +49,5 @@ char *ip_data::from_bytes(char *bytes) {
 }
 
 ip_data::~ip_data() { 
-    //_ip_package is not deleting, because _ip_package is processing by out agent
+    delete [] __buffer;
 }

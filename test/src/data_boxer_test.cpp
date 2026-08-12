@@ -9,6 +9,7 @@
 #include "video_codec/payload_storage.hpp"
 #include "video_codec/video_codec.hpp"
 #include <cstring>
+#include <functional>
 #include <vector>
 #include <random>
 
@@ -43,7 +44,6 @@ bool compare_datas(korra_data *a, korra_data *b){
 
 void test_box_unbox(){
     const char *test_name = "data_boxer_test.test_box_unbox";
-    
     vector<tuple<string, video_config, vector<korra_data*>>> test_cases
     { 
         {
@@ -74,7 +74,9 @@ void test_box_unbox(){
             }
         }
     };
+    
     printInfo(test_name);
+    int t = 0;
     for(auto test_case : test_cases) 
     {
         string codec_name = get<0>(test_case);
@@ -96,7 +98,10 @@ void test_box_unbox(){
             char *frame = vc->storage()->pop_frame();
             char *payload = codec->decode(frame);
             delete [] frame;
-            if(payload[0] == 0 && payload[1] == 0) break;
+            if(payload[0] == 0 && payload[1] == 0){
+                delete [] payload;
+                break;
+            }
             payloads.push_back(payload);
         }
         int payload_size = codec->payload_size();
@@ -114,9 +119,14 @@ void test_box_unbox(){
             while(unboxed != nullptr);
         }
 
-        if(unboxed_payloads.size() != datas.size()){
+        function<void()> clear=[&](){
             for(int i = 0; i < unboxed_payloads.size(); i++) delete unboxed_payloads[i];
             for(int i = 0; i < datas.size(); i++) delete datas[i];
+            for(int i = 0; i < payloads.size(); i++) delete [] payloads[i];
+        };
+
+        if(unboxed_payloads.size() != datas.size()){
+            clear();
             io_context.~frame_io();
             fail(test_name, "count of received and sent aren't equal!", 1);
         }
@@ -124,14 +134,14 @@ void test_box_unbox(){
             korra_data *a = datas[i];
             korra_data *b = unboxed_payloads[i];
             if(!compare_datas(a, b)){
-                for(int j = 0; j < unboxed_payloads.size(); j++) delete unboxed_payloads[j];
-                for(int j = 0; j < datas.size(); j++) delete datas[j];
+                clear();
                 io_context.~frame_io();
                 fail(test_name, "boxed and unboxed aren't same on index %d!", 1, i);
             }
         }
+        clear();
+        t++;
     }
-
     printPass(test_name);
 }
 

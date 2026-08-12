@@ -3,7 +3,6 @@
 #include "video_codec/frame_codec/frame_codec.hpp"
 #include <cstring>
 #include <mutex>
-#include <thread>
 
 int payload_storage::payload_size(){
     return _encoder -> payload_size();

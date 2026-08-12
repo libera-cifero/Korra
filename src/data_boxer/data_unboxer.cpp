@@ -66,6 +66,7 @@ void data_unboxer::put_payload(char *payload, int payload_size){
         }
         else if(auto piece = dynamic_cast<pieced_data*>(data)){
             _put_pieced(piece);
+            delete [] piece->piece();
             delete data;
         }
         else if(dynamic_cast<ip_data*>(data) != nullptr){

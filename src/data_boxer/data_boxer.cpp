@@ -70,18 +70,19 @@ void data_boxer::_box_case_C(korra_data *data) {
     int data_size = data->size();
     char *piece_buffer = new char[data->size()];
     data->to_payload_bytes(piece_buffer);
+    char *piece_buffer_begin = piece_buffer;
     while(data_size > 0){
         int max_size = _get_free_space() - pieced_data::MIN_TOTAL_SIZE;
         int piece_data_size = data_size > max_size ? max_size : data_size;
 
-        pieced_data *piece = new pieced_data(label -> id(), piece_data_size, piece_buffer);
-        _box_case_A(piece);
-        delete piece;
+        pieced_data piece(label -> id(), piece_data_size, piece_buffer);
+        _box_case_A(&piece);
 
         piece_buffer += piece_data_size;
         data_size -= piece_data_size;
     }
 
+    delete [] piece_buffer_begin;
     delete label;
 }
 

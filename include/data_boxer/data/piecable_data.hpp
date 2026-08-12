@@ -12,6 +12,7 @@ protected:
 public:
     void set_id(int id);
     void init_buffer(int buffer_size);
+    void init_buffer(char *buffer, int buffer_size);
     virtual int size() override;
     bool is_built();
     void put_piece(char *piece, int piece_size);

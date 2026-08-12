@@ -6,15 +6,15 @@ template<typename T>
 class palette_codec : public block_codec
 {
 protected:
-    T *$palette;
+    T *__palette;
 public:
     palette_codec(palette_codec_config<T> &config) : block_codec(config) {
-        $palette = config.palette;
+        __palette = config.palette;
     }
     T* palette(){
-        return $palette;
+        return __palette;
     }
     virtual ~palette_codec(){
-        delete[] $palette;
+        delete[] __palette;
     }
 };
