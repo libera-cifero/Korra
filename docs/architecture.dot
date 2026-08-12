@@ -136,10 +136,16 @@ digraph {
             subgraph data_boxer{
                 data_boxer [color=blue; fontcolor=blue;];
                 korra_data->data_boxer;
-                
+                piecable_data->data_boxer;
+                pieced_data->data_boxer;
+                begin_label_data->data_boxer;                
             }
             subgraph data_unboxer{
-
+                data_unboxer [color=blue; fontcolor=blue;];
+                korra_data->data_unboxer;
+                piecable_data->data_unboxer;
+                pieced_data->data_unboxer;
+                begin_label_data->data_unboxer;
             }
         }
         subgraph cluster_video_codec {
@@ -265,6 +271,7 @@ digraph {
 
         payload_storage->data_boxer;
         data_boxer->video_socket;
+        data_unboxer->video_socket;
         color->rgb_palette_codec;
 
         frame_codec->frame_codec_parser_test;
@@ -284,6 +291,7 @@ digraph {
         video_codec_test;
         video_config_parser_test;
         frame_codec_parser_test;
+        data_boxer_test;
         
         test->color_test;
         test->mosaic_provider_test;
@@ -291,9 +299,11 @@ digraph {
         test->video_codec_test;
         test->video_config_parser_test;
         test->frame_codec_parser_test;
+        test->data_boxer_test;
 
         frame_io->mosaic_provider_test;
         frame_io->video_codec_test;
+        frame_io->data_boxer_test;
 
         time->clock_generator_test;
         time->mosaic_provider_test;
@@ -313,4 +323,6 @@ digraph {
     video_codec->video_codec_test [color = orange; minlen=10;];
     video_config_parser -> video_config_parser_test [color=orange; minlen=10;];
     frame_codec_parser -> frame_codec_parser_test [color = orange; minlen=10;];
+    data_boxer -> data_boxer_test [color=orange; minlen=10;];
+    data_unboxer -> data_boxer_test [color=orange; minlen=10;];
 }
