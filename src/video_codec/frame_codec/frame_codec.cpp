@@ -17,7 +17,7 @@ cipher *frame_codec::get_cipher(){
 }
 
 int frame_codec::payload_size(){
-    return _provider->payload_size();
+    return _provider->payload_size() - _cipher->header_size();
 }
 
 int frame_codec::frame_size(){

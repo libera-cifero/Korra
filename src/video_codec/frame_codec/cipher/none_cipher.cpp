@@ -3,11 +3,14 @@
 #include <cstring>
 
 none_cipher::none_cipher(int payload_size) : cipher(payload_size) { }
+
+int none_cipher::header_size() { return 0; }
+
 char *none_cipher::encrypt(char *data) {
     int size = payload_size();
-    char *encryptd = new char[size];
-    memcpy(encryptd, data, size);
-    return encryptd;
+    char *encrypted = new char[size];
+    memcpy(encrypted, data, size);
+    return encrypted;
 }
 
 char *none_cipher::decrypt(char *encrypted){

@@ -1,9 +1,9 @@
-#pragma once
-#include "cipher.hpp"
+#include "video_codec/frame_codec/cipher/cipher.hpp"
+#include "lib/xchacha20.h"
 
-class none_cipher : public cipher {
+class xchacha20_cipher : public cipher {
 public:
-    none_cipher(int payload_size);
+    
     int header_size() override;
     char *encrypt(char *data) override;
     char *decrypt(char *encrypted) override;
