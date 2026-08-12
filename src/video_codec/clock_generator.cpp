@@ -11,9 +11,7 @@
 
 clock_generator::clock_generator(uint32_t timeout){
     _timeout = timeout;
-
     _signals = new sync_signals;
-    _breaker = new binary_semaphore(0);
 }
 
 int clock_generator::timeout() {
@@ -28,7 +26,8 @@ static double get_delta_millis(timespec t0, timespec t1){
 }
 
 void clock_generator::launch(){
-    _clock_thread = new thread([&](){
+    if(_is_running) return;
+    _loop_thread = thread([&](){
         _is_running = true;
         timespec t0, t1;
         auto ready_request = _signals -> ready_request();
@@ -36,15 +35,11 @@ void clock_generator::launch(){
             this_thread::sleep_for(chrono::milliseconds(_timeout));
             ready_request -> release();
         }
-        _breaker->release();
     });
-    _clock_thread -> detach();
 }
 
 clock_generator::~clock_generator(){
     _is_running = false;
-    _breaker->acquire();
+    _loop_thread.join();
     delete _signals;
-    delete _breaker;
-    delete _clock_thread;
 }

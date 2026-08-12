@@ -49,6 +49,7 @@ static int parse_color(string color){
 static int *parse_rgb_palette(json &settingsObject) {
     vector<string> palette_str = settingsObject["palette"].get<vector<string>>();
     int *palette = new int[palette_str.size()];
+    memset(palette, 0, palette_str.size()*4);
     for(int i = 0; i < palette_str.size(); i++) 
         palette[i] = parse_color(palette_str[i]);
     
