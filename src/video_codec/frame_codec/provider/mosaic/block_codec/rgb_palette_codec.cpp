@@ -10,6 +10,7 @@ rgb_palette_codec::rgb_palette_codec(palette_codec_config<int> &config) : palett
 void rgb_palette_codec::encode(char *frame, int number, int block_index) {
     point begin, end;
     __block_index_to_area(block_index, begin, end);
+    int color1 = __palette[0];
     int color = __palette[number];
     UNBOX_RGB(color, red, green, blue);
     for(int y = begin.y; y < end.y; y++) {

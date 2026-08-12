@@ -12,6 +12,7 @@
 clock_generator::clock_generator(uint32_t timeout){
     _timeout = timeout;
     _signals = new sync_signals;
+    _is_running = false;
 }
 
 int clock_generator::timeout() {
