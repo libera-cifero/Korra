@@ -2,5 +2,5 @@
 #include "video_config.hpp"
 
 struct cipher_config : public video_config {
-    int payload_size;
+    int encrypted_size;
 };

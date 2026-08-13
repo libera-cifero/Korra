@@ -1,8 +1,9 @@
 #include "video_codec/frame_codec/cipher/none_cipher.hpp"
+#include "config/data/cipher_config.hpp"
 #include "video_codec/frame_codec/cipher/cipher.hpp"
 #include <cstring>
 
-none_cipher::none_cipher(int payload_size) : cipher(payload_size) { }
+none_cipher::none_cipher(cipher_config *config) : cipher(config) { }
 
 int none_cipher::header_size() { return 0; }
 
