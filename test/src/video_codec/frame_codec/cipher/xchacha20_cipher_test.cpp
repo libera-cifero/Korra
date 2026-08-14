@@ -1,7 +1,6 @@
 #include "video_codec/frame_codec/cipher/xchacha20_cipher.hpp"
 #include "test.hpp"
 #include <algorithm>
-#include <cstring>
 #include <random>
 #include <string>
 #include <vector>
@@ -24,6 +23,14 @@ byte *get_random_iv(){
     std::generate_n(iv, size, std::ref(engine));
 
     return iv;
+}
+
+bool strings_are_equaled(char *str_a, char *str_b, int length){
+    for(int i = 0; i < length; i++){
+        if(str_a[i] != str_b[i]) return false;
+    }
+
+    return true;
 }
 
 void test_encode_decode() {
@@ -50,7 +57,7 @@ void test_encode_decode() {
             encrypted = cipher->encrypt(payload);
             decrypted = cipher->decrypt(encrypted);
 
-            if(strcmp(payload, decrypted) != 0){
+            if(!strings_are_equaled(payload, decrypted, cipher->payload_size())){
                 delete cipher;
                 delete encrypted;
                 delete decrypted;
@@ -64,8 +71,8 @@ void test_encode_decode() {
             fail(test_name, "something went wrong with test_cases[%d]!", 1, i);
         }
 
-        delete encrypted;
-        delete decrypted;
+        delete [] encrypted;
+        delete [] decrypted;
     }
     
     delete cipher;

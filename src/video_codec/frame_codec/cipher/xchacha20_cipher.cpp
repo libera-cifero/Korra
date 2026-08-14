@@ -68,6 +68,4 @@ xchacha20_cipher::~xchacha20_cipher(){
 
     delete [] config -> key;
     delete [] config -> iv;
-
-    delete config;
 }
