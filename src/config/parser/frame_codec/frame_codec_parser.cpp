@@ -10,9 +10,9 @@ frame_codec_parser::frame_codec_parser(provider_parser *p, cipher_parser *c) {
     _cipher_parser = c;
 }
 
-void frame_codec_parser::_update_cipher_config(int payload_size){
+void frame_codec_parser::_update_cipher_config(int encrypted_size){
     memcpy((video_config*)&_cipher_parser->context_in, &context_in, sizeof(video_config));
-    _cipher_parser->context_in.payload_size = payload_size;
+    _cipher_parser->context_in.encrypted_size = encrypted_size;
 }
 
 frame_codec* frame_codec_parser::parse(json obj){
@@ -26,10 +26,11 @@ frame_codec* frame_codec_parser::parse(json obj){
 
 json frame_codec_parser::serialize(frame_codec *codec){
     _provider_parser->context_in = context_in;
-    _update_cipher_config(codec->payload_size());
+    cipher *ciph = codec->get_cipher();
+    _update_cipher_config(ciph->encrypted_size());
     json obj = json::object();
     obj["provider"] = _provider_parser->serialize(codec->get_provider());
-    obj["cipher"] = _cipher_parser->serialize(codec->get_cipher());
+    obj["cipher"] = _cipher_parser->serialize(ciph);
 
     return obj;
 }

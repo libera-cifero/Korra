@@ -12,7 +12,7 @@ bool none_cipher_parser::can_serialize(cipher *c){
 }
 
 cipher *none_cipher_parser::parse(json j){
-    return new none_cipher(context_in.payload_size);
+    return new none_cipher(context_in);
 }
 
 json none_cipher_parser::serialize(cipher *c){

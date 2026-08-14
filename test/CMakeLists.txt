@@ -12,6 +12,7 @@ file(GLOB video_codec_test_src "src/video_codec/video_codec_test.cpp")
 file(GLOB video_config_parser_test_src "src/parser/video_config_parser_test.cpp")
 file(GLOB frame_codec_parser_test_src "src/parser/frame_codec_parser_test.cpp")
 file(GLOB data_boxer_test_src "src/data_boxer_test.cpp")
+file(GLOB xchacha20_cipher_test "src/video_codec/frame_codec/cipher/xchacha20_cipher_test.cpp")
 
 file(GLOB frame_gen_tool_src "tool/gen_frame/frame_generator.cpp")
 file(GLOB mosaic_generator_src "tool/gen_frame/size_generator/mosaic_generator.cpp")
@@ -87,7 +88,12 @@ target_link_libraries(frame_codec_parser_test PUBLIC test_lib)
 #data_boxer_test
 add_executable(data_boxer_test ${data_boxer_test_src})
 target_setup(data_boxer_test)
-target_link_libraries(data_boxer_test PUBLIC data_boxer test_lib)
+target_link_libraries(data_boxer_test PUBLIC test_lib)
+
+#xchacha20_cipher_test
+add_executable(xchacha20_cipher_test ${xchacha20_cipher_test})
+target_setup(xchacha20_cipher_test)
+target_link_libraries(xchacha20_cipher_test PUBLIC test_lib)
 #======END======
 
 #TEST TOOLS

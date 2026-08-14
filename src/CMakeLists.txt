@@ -26,7 +26,7 @@ target_include_directories(lib PUBLIC ${INCLUDE_DIR})
 #video_codec
 add_library(video_codec STATIC ${video_codec_src})
 target_include_directories(video_codec PUBLIC ${INCLUDE_DIR})
-target_link_libraries(video_codec PUBLIC lib)
+target_link_libraries(video_codec PUBLIC lib ${CRYPTOPP_LIB})
 
 #config
 add_library(config STATIC ${config_src})

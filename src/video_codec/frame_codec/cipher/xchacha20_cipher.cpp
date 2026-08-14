@@ -4,7 +4,8 @@
 #include "video_codec/frame_codec/cipher/xchacha20_cipher.hpp"
 
 xchacha20_cipher::xchacha20_cipher(xchacha20_config *config) : cipher(config) {    
-    _encyptor.SetKey(config->key, KEY_SIZE, CryptoPP::g_nullNameValuePairs);
+    _encryptor.SetKeyWithIV(config->key, KEY_SIZE, config->iv);
+    _decryptor.SetKeyWithIV(config->key, KEY_SIZE, config->iv);
 }
 
 int xchacha20_cipher::header_size() { 
@@ -14,6 +15,8 @@ int xchacha20_cipher::header_size() {
 char *xchacha20_cipher::encrypt(char *data){
     byte nonce[NONCE_SIZE];
     _seed_gen.GenerateBlock(nonce, NONCE_SIZE);
+    auto config = __config<xchacha20_config>();
+    _encryptor.SetKeyWithIV(config->key, KEY_SIZE, nonce, NONCE_SIZE);
 
     int enc_size = encrypted_size();
     byte *encrypted = new byte[enc_size];
@@ -22,7 +25,7 @@ char *xchacha20_cipher::encrypt(char *data){
     ArraySource src (
         data, payload_size(),
         new AuthenticatedEncryptionFilter(
-            _encyptor, 
+            _encryptor, 
             new ArraySink(
                 encrypted + NONCE_SIZE, 
                 enc_size - NONCE_SIZE
@@ -40,7 +43,8 @@ char *xchacha20_cipher::decrypt(char *encrypted){
     const byte *data = reinterpret_cast<byte*>(encrypted);
     const byte* nonce = data;
     auto config = __config<xchacha20_config>();
-    _encyptor.SetKeyWithIV(config -> key, KEY_SIZE, nonce, NONCE_SIZE);
+    _decryptor.SetKeyWithIV(config -> key, KEY_SIZE, nonce, NONCE_SIZE);
+
     const byte* ciphertext = data + NONCE_SIZE;
     int size = payload_size();
     byte* decrypted = new byte[size];
@@ -51,7 +55,7 @@ char *xchacha20_cipher::decrypt(char *encrypted){
         tagged_data_size,
         true,
         new AuthenticatedDecryptionFilter(
-            _encyptor, 
+            _decryptor, 
             new ArraySink(decrypted, size)
         )
     );
@@ -63,4 +67,7 @@ xchacha20_cipher::~xchacha20_cipher(){
     auto config = __config<xchacha20_config>();
 
     delete [] config -> key;
+    delete [] config -> iv;
+
+    delete config;
 }

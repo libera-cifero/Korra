@@ -7,7 +7,7 @@ private:
     cipher_config *_config;
 protected:
     template<std::derived_from<cipher_config> T>
-    T *__config();
+    T *__config(){ return static_cast<T*>(_config); }
 public:
     cipher(cipher_config *config);
     int payload_size();

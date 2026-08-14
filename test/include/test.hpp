@@ -7,7 +7,7 @@ extern "C"{
 void printPass(const char *testName);
 void printWarning(const char *text, ...);
 void printFail(const char *testName, const char *text, ...);
-void fail(const char *testName, const char *text, int code, ...);
+void fail(const char *testName, const char *text, int code = 1, ...);
 void printInfo(const char *info, ...);
 
 #ifdef __cplusplus

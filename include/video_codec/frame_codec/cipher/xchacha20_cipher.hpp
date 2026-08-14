@@ -10,12 +10,14 @@ using namespace CryptoPP;
 
 struct xchacha20_config : cipher_config {
     byte *key;
+    byte *iv;
 };
 
 class xchacha20_cipher : public cipher {
 private:
     AutoSeededRandomPool _seed_gen;
-    XChaCha20Poly1305::Encryption _encyptor;
+    XChaCha20Poly1305::Encryption _encryptor;
+    XChaCha20Poly1305::Decryption _decryptor;
 public:
     static const int KEY_SIZE = 32;
     static const int NONCE_SIZE = 24;
