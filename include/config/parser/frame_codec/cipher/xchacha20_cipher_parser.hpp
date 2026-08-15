@@ -5,7 +5,7 @@
 
 using crypto_byte = CryptoPP::byte;
 
-class xchacha20_cipher_parser : public specific_parser<cipher*>, public contexted_in<cipher_config*> {
+class xchacha20_cipher_parser : public specific_parser<cipher*>, public contexted_in<cipher_config> {
 private:
     static int _get_seed(crypto_byte *key);
     static int _rand_int(int seed);

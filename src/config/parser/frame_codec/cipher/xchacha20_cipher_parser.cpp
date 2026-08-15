@@ -116,14 +116,10 @@ cipher *xchacha20_cipher_parser::parse(json j){
     }
     else throw runtime_error("xchacha20_cipher_parser.parse: key, keyFile and password are undefined!");
 
-    xchacha20_settings *config = new xchacha20_settings;
-    config->key = key;
-    config->iv = iv;
-    config->encrypted_size = context_in->encrypted_size;
-    config->frame_width = context_in->frame_width;
-    config->frame_height = context_in->frame_height;
-
-    delete context_in;
+    xchacha20_settings config;
+    memcpy((cipher_config*)&config, &context_in, sizeof(cipher_config));
+    config.key = key;
+    config.iv = iv;
     return new xchacha20_cipher(config);
 }
 
@@ -143,8 +139,7 @@ string xchacha20_cipher_parser::_write_hex(crypto_byte *bytes, int bytes_count) 
 
 json xchacha20_cipher_parser::serialize(cipher *c){
     auto ciph = static_cast<xchacha20_cipher*>(c);
-    auto cfg = ciph->config<xchacha20_settings>();
-    string key_str = _write_hex(cfg -> key, ciph -> KEY_SIZE);
-    string iv_str = _write_hex(cfg -> iv, ciph -> NONCE_SIZE);
+    string key_str = _write_hex(ciph -> key(), ciph -> KEY_SIZE);
+    string iv_str = _write_hex(ciph -> iv(), ciph -> NONCE_SIZE);
     return json({{"key", key_str}, {"iv", iv_str}});
 }

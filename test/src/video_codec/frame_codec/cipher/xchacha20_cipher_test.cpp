@@ -5,22 +5,20 @@
 #include <string>
 #include <vector>
 
-using namespace CryptoPP;
-using random_bytes_engine = std::independent_bits_engine<std::default_random_engine, CHAR_BIT, byte>;
+using random_bytes_engine = std::independent_bits_engine<std::default_random_engine, CHAR_BIT, crypto_byte>;
 
-byte *get_random_key(){
+crypto_byte *get_random_key(){
     int size = xchacha20_cipher::KEY_SIZE;
-    byte *key = new byte[size];
-    
+    crypto_byte *key = new crypto_byte[size];
     random_bytes_engine engine;
     std::generate_n(key, size, std::ref(engine));
 
     return key;
 }
 
-byte *get_random_iv(){
+crypto_byte *get_random_iv(){
     int size = xchacha20_cipher::NONCE_SIZE;
-    byte *iv = new byte[size];
+    crypto_byte *iv = new crypto_byte[size];
     random_bytes_engine engine;
     std::generate_n(iv, size, std::ref(engine));
 
@@ -38,10 +36,10 @@ bool strings_are_equaled(char *str_a, char *str_b, int length){
 void test_encode_decode() {
     const char *test_name = "xchacha20_cipher_test.test_encode_decode";
     printInfo(test_name);
-    xchacha20_settings *config = new xchacha20_settings;
-    config -> key = get_random_key();
-    config -> iv = get_random_iv();
-    config -> encrypted_size = 140;
+    xchacha20_settings config;
+    config.key = get_random_key();
+    config.iv = get_random_iv();
+    config.encrypted_size = 140;
     auto cipher = new xchacha20_cipher(config);
 
     std::vector<std::string> test_cases = { 

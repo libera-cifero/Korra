@@ -3,7 +3,7 @@
 #include "video_codec/frame_codec/cipher/cipher.hpp"
 #include <cstring>
 
-none_cipher::none_cipher(cipher_config *config) : cipher(config) { }
+none_cipher::none_cipher(cipher_config &config) : cipher(config) { }
 
 int none_cipher::header_size() { return 0; }
 

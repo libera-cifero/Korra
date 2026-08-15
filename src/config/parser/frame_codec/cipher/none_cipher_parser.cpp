@@ -8,7 +8,7 @@ string none_cipher_parser::type(){
 }
 
 bool none_cipher_parser::can_serialize(cipher *c){
-    return dynamic_cast<none_cipher*>(c);
+    return dynamic_cast<cipher*>(c);
 }
 
 cipher *none_cipher_parser::parse(json j){

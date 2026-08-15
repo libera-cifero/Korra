@@ -3,16 +3,12 @@
 #include "config/parser/parser.hpp"
 #include "video_codec/frame_codec/cipher/cipher.hpp"
 
-cipher_parser::cipher_parser(){
-    context_in = new cipher_config;
-}
-
 cipher* cipher_parser::parse(json j){
     string t = j["type"];
 
     for(auto p : specific_parsers){
         if(p->type() == t){
-            if(auto in = dynamic_cast<contexted_in<cipher_config*>*>(p)) in -> context_in = context_in;
+            if(auto in = dynamic_cast<contexted_in<cipher_config>*>(p)) in -> context_in = context_in;
             return p -> parse(j[t + "Settings"]);
         }
     }
@@ -24,7 +20,7 @@ cipher* cipher_parser::parse(json j){
 json cipher_parser::serialize(cipher *c){
     for(auto parser : specific_parsers){
         if(parser -> can_serialize(c)){
-            if(auto in = dynamic_cast<contexted_in<cipher_config*>*>(parser)) in -> context_in = context_in;
+            if(auto in = dynamic_cast<contexted_in<cipher_config>*>(parser)) in -> context_in = context_in;
             string type = parser->type();
             json obj=json::object({{"type", type}});
             obj[type + "Settings"] = parser->serialize(c);
@@ -32,8 +28,4 @@ json cipher_parser::serialize(cipher *c){
         }
     }
     throw runtime_error("Can't serialize cipher!");
-}
-
-cipher_parser::~cipher_parser(){
-    delete context_in;
 }
