@@ -1,3 +1,4 @@
+#include "config/data/cipher_config.hpp"
 #include "config/data/mosaic_config.hpp"
 #include "config/data/palette_codec_config.hpp"
 #include "config/data/video_config.hpp"
@@ -86,7 +87,9 @@ map<string, frame_codec*> get_test_cases(){
     settings0->codec = new rgb_palette_codec(config0);
     
     provider *p0 = new mosaic_provider(settings0);
-    none_cipher *c0 = new none_cipher(p0->payload_size());
+    cipher_config *cfg = new cipher_config;
+    cfg->encrypted_size = p0->payload_size();
+    none_cipher *c0 = new none_cipher(cfg);
     frame_codec *codec0 = new frame_codec(p0, c0);
     cases["config0.json"] = codec0;
 

@@ -6,5 +6,4 @@ cipher::cipher(cipher_config *config) {
 }
 int cipher::encrypted_size(){ return _config -> encrypted_size; }
 int cipher::payload_size(){ return _config -> encrypted_size - header_size(); }
-
 cipher::~cipher() { delete _config; }

@@ -14,4 +14,6 @@ json_parser<video_listener*>* static_parser_factory::build(){
     parser->pipes->out->specific_parsers = { new ffmpeg_rtmp_pipe_out_parser };
 
     return parser;*/
+
+    return nullptr;
 }

@@ -12,7 +12,7 @@ frame_codec_parser::frame_codec_parser(provider_parser *p, cipher_parser *c) {
 
 void frame_codec_parser::_update_cipher_config(int encrypted_size){
     memcpy((video_config*)&_cipher_parser->context_in, &context_in, sizeof(video_config));
-    _cipher_parser->context_in.encrypted_size = encrypted_size;
+    _cipher_parser->context_in->encrypted_size = encrypted_size;
 }
 
 frame_codec* frame_codec_parser::parse(json obj){
