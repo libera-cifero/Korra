@@ -46,7 +46,7 @@ void test_encode(){
     vector<char*> frames;
     FILE *video_maker = begin_video_making(1280, 720, 30, DATA_OUT_PATH / "output.mp4");
     frame_io io_context;
-    io_context.iterate_frame_test_cases(test_name.c_str(), "rgb_palette0/1280x720", [&](ITER_ACTION_ARGS) {
+    io_context.iterate_frame_test_cases(test_name.c_str(), "rgb_xchacha20/1280x720", [&](ITER_ACTION_ARGS) {
         if(!inited){
             t = new thread([&](frame_expected_out meta){
                 video_codec *video = new video_codec(meta.codec, 30);
@@ -107,7 +107,7 @@ void test_pop_frame(){
     printInfo(test_name.c_str());
     frame_io io_context;
     
-    io_context.iterate_frame_test_cases(test_name.c_str(), "rgb_palette0/1280x720", [&](ITER_ACTION_ARGS) {
+    io_context.iterate_frame_test_cases(test_name.c_str(), "rgb_xchacha20/1280x720", [&](ITER_ACTION_ARGS) {
         sync_signals *signals = new sync_signals;
         payload_storage *storage = new payload_storage(meta.codec, signals);
 
