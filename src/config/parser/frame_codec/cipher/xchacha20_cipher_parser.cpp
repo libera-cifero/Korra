@@ -90,13 +90,14 @@ crypto_byte *xchacha20_cipher_parser::_generate_iv(crypto_byte *key) {
 
 cipher *xchacha20_cipher_parser::parse(json j){
     crypto_byte *key, *iv;
-    if(j["key"].is_string()){
-        if(!j["iv"].is_string())
+    
+    if(j.contains("key") && j["key"].is_string()){
+        if(!j.contains("iv") || !j["iv"].is_string())
             throw runtime_error("xchacha20_cipher_parser.parse: field iv must be defined and string!");
         key = _read_hex(j["key"], 32);
         iv = _read_hex(j["iv"], 24);
     }
-    else if(j["keyFile"].is_string()){
+    else if(j.contains("keyFile") && j["keyFile"].is_string()){
         string key_str, iv_str;
         {
             fstream file(j["keyFile"], ios_base::in);
@@ -109,12 +110,12 @@ cipher *xchacha20_cipher_parser::parse(json j){
         key = _read_hex(key_str, 32);
         iv = _read_hex(iv_str, 24);
     }
-    else if(j["password"].is_string()){
+    else if(j.contains("password") && j["password"].is_string()){
         string password = j["password"];
         key = _generate_key(password);
         iv = _generate_iv(key);
     }
-    else throw runtime_error("xchacha20_cipher_parser.parse: key, keyFile and password are undefined!");
+    else throw runtime_error("xchacha20_cipher_parser.parse: key, keyFile and password are undefined or they aren't strings!");
 
     xchacha20_settings config;
     memcpy((cipher_config*)&config, &context_in, sizeof(cipher_config));

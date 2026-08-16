@@ -5,7 +5,7 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/xchacha20_cipher_test",
+            "target": "./bin/xchacha20_cipher_parser_test",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
             "arguments": ""
