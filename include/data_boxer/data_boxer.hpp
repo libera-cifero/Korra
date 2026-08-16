@@ -1,3 +1,4 @@
+#pragma once
 #include "data_boxer/data/korra_data.hpp"
 #include "video_codec/payload_storage.hpp"
 

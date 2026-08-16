@@ -1,3 +1,4 @@
+#pragma once
 #include "data/korra_data.hpp"
 #include "data_boxer/data/piecable_data.hpp"
 #include "data_boxer/data/begin_label_data.hpp"

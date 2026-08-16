@@ -14,6 +14,7 @@ file(GLOB frame_codec_parser_test_src "src/parser/frame_codec_parser_test.cpp")
 file(GLOB data_boxer_test_src "src/data_boxer_test.cpp")
 file(GLOB xchacha20_cipher_test "src/video_codec/frame_codec/cipher/xchacha20_cipher_test.cpp")
 file(GLOB xchacha20_cipher_parser_test_src "src/parser/xchacha20_cipher_parser_test.cpp")
+file(GLOB linux_tun_test_src "src/tun/linux_tun_test.cpp")
 
 file(GLOB frame_gen_tool_src "tool/gen_frame/frame_generator.cpp")
 file(GLOB mosaic_generator_src "tool/gen_frame/size_generator/mosaic_generator.cpp")
@@ -50,7 +51,7 @@ endfunction()
 #=====BEGIN=====
 add_library(test_lib SHARED ${test_lib_src})
 target_setup(test_lib)
-target_link_libraries(test_lib PUBLIC lib video_codec config data_boxer)
+target_link_libraries(test_lib PUBLIC lib video_codec config data_boxer tun)
 #======END======
 
 #TESTS
@@ -100,6 +101,13 @@ target_link_libraries(xchacha20_cipher_test PUBLIC test_lib)
 add_executable(xchacha20_cipher_parser_test ${xchacha20_cipher_parser_test_src})
 target_setup(xchacha20_cipher_parser_test)
 target_link_libraries(xchacha20_cipher_parser_test PUBLIC test_lib)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    #linux_tun_test
+    add_executable(linux_tun_test ${linux_tun_test_src})
+    target_setup(linux_tun_test)
+    target_link_libraries(linux_tun_test PUBLIC test_lib)
+endif()
 #======END======
 
 #TEST TOOLS

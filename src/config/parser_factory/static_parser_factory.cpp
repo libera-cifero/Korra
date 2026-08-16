@@ -1,7 +1,7 @@
 #include "config/parser_factory/static_parser_factory.hpp"
-#include "video/video_socket.hpp"
+#include "video_socket.hpp"
 
-json_parser<video_listener*>* static_parser_factory::build(){
+json_parser<video_socket*>* static_parser_factory::build(){
    /* auto parser = new root_parser();
 
     auto basic_pp = new basic_provider_parser;

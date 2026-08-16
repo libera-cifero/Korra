@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 4.3.1)
 project(korra.src)
 
-set(PROVIDER_DIR video_codec/frame_codec/provider)
-set(CIPHER_DIR video_codec/frame_codec/cipher)
-set(MOSAIC_DIR ${PROVIDER_DIR}/mosaic)
-
 #lib/*
 file(GLOB_RECURSE lib_src lib/*.cpp)
 
@@ -37,3 +33,13 @@ target_link_libraries(config PUBLIC lib video_codec)
 add_library(data_boxer STATIC ${data_boxer_src})
 target_include_directories(data_boxer PUBLIC ${INCLUDE_DIR})
 target_link_libraries(data_boxer PUBLIC lib video_codec config)
+
+#tun
+set(tun_src tun/tun.cpp tun/)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    set(tun_src ${tun_src}/linux_tun.cpp)
+else()
+    message(FATAL_ERROR "Unsupported OS: ${CMAKE_SYSTEM_NAME}")
+endif()
+add_library(tun STATIC ${tun_src})
+target_include_directories(tun PUBLIC ${INCLUDE_DIR})
