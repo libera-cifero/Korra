@@ -2,6 +2,7 @@
 #include "video_codec/frame_codec/cipher/xchacha20_cipher.hpp"
 #include "config/parser/frame_codec/cipher/xchacha20_cipher_parser.hpp"
 #include "test.hpp"
+#include "string_utils.hpp"
 #include <cstring>
 
 void test_parse(){
@@ -23,11 +24,13 @@ void test_parse(){
         char *encrypted = data->encrypt(test_case.data());
         char *decrypted = data->decrypt(encrypted);
 
-        if(strcmp(decrypted, test_case.data()) != 0){
+        if(!strings_are_equaled(decrypted, test_case.data(), data->payload_size())){
             delete data;
             fail(test_name, "decrypted and input data don't equal!");
         }
 
+        delete [] encrypted;
+        delete [] decrypted;
         delete data;
         printPass(test_name);
     }

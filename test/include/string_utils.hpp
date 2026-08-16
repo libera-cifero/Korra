@@ -1,0 +1,1 @@
+bool strings_are_equaled(char *str_a, char *str_b, int length);

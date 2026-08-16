@@ -1,5 +1,6 @@
 #include "video_codec/frame_codec/cipher/xchacha20_cipher.hpp"
 #include "test.hpp"
+#include "string_utils.hpp"
 #include <algorithm>
 #include <random>
 #include <string>
@@ -25,13 +26,6 @@ crypto_byte *get_random_iv(){
     return iv;
 }
 
-bool strings_are_equaled(char *str_a, char *str_b, int length){
-    for(int i = 0; i < length; i++){
-        if(str_a[i] != str_b[i]) return false;
-    }
-
-    return true;
-}
 
 void test_encode_decode() {
     const char *test_name = "xchacha20_cipher_test.test_encode_decode";
