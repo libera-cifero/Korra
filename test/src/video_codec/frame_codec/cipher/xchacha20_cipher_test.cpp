@@ -1,7 +1,9 @@
 #include "video_codec/frame_codec/cipher/xchacha20_cipher.hpp"
 #include "test.hpp"
+#include "time.hpp"
 #include "string_utils.hpp"
 #include <algorithm>
+#include <ctime>
 #include <random>
 #include <string>
 #include <vector>
@@ -34,6 +36,9 @@ void test_encode_decode() {
     config.key = get_random_key();
     config.iv = get_random_iv();
     config.encrypted_size = 140;
+    config.fps = 30;
+    config.frame_height = -1;
+    config.frame_width = -1;
     auto cipher = new xchacha20_cipher(config);
 
     std::vector<std::string> test_cases = { 
@@ -44,12 +49,21 @@ void test_encode_decode() {
         "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live."
     };
 
+    struct timespec t0,t1;
     for(int i = 0; i < test_cases.size(); i++){
         char *encrypted, *decrypted;
         try{
             char *payload = test_cases[i].data();
+            clock_gettime(CLOCK_MONOTONIC, &t0);
             encrypted = cipher->encrypt(payload);
+            clock_gettime(CLOCK_MONOTONIC, &t1);
+            double delta_ms = get_delta_millis(t0, t1);
+            printInfo("time to encrypt: %.3lfms", delta_ms);
+            clock_gettime(CLOCK_MONOTONIC, &t0);
             decrypted = cipher->decrypt(encrypted);
+            clock_gettime(CLOCK_MONOTONIC, &t1);
+            delta_ms = get_delta_millis(t0, t1);
+            printInfo("time to decrypt: %.3lfms", delta_ms);
 
             if(!strings_are_equaled(payload, decrypted, cipher->payload_size())){
                 delete cipher;

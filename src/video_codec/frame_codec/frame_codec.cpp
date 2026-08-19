@@ -25,9 +25,9 @@ int frame_codec::frame_size(){
 }
 
 char *frame_codec::encode(char *data) {
-    char *encryptd = _cipher->encrypt(data);
-    char *frame = _provider->to_frame(encryptd);
-    delete [] encryptd;
+    char *encrypted = _cipher->encrypt(data);
+    char *frame = _provider->to_frame(encrypted);
+    delete [] encrypted;
     return frame;
 }
 

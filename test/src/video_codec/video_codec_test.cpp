@@ -112,7 +112,14 @@ void test_pop_frame(){
         payload_storage *storage = new payload_storage(meta.codec, signals);
 
         char *buffer = storage->current_payload();
-        memcpy(buffer, meta.data.payload.data(), storage->payload_size());
+        auto d = meta.data.payload;
+        int p_size = storage->payload_size();
+        for(int i = 0; i < p_size; i++){
+            buffer[i] = d[i];
+            printf("%d/%d/%s\n", i,p_size, file_name.c_str());
+        }
+        
+        //memcpy(buffer, , storage->payload_size());
         regex r("frame_\\d+");
         smatch m;
         regex_search(meta.data.path, m, r);

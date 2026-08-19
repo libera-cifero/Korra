@@ -100,10 +100,9 @@ void test_read(){
     size_t received_payload_len = udp_len_field - 8;
     char *udp_payload = ip_packet + ihl + 8;
 
+    bool equal = (received_payload_len == payload_len) && (memcmp(udp_payload, test_payload, payload_len) == 0);
+
     delete [] ip_packet;
-    
-    bool equal = (received_payload_len == payload_len) &&
-                 (memcmp(udp_payload, test_payload, payload_len) == 0);
 
     if (!equal) {
         fail(test_name, "payload mismatch: expected '%s', got '%.*s'", -1,

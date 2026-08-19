@@ -15,8 +15,8 @@ struct xchacha20_settings : cipher_config {
 
 class xchacha20_cipher : public cipher {
 private:
-    crypto_byte *_key;
-    crypto_byte *_iv;
+    crypto_byte *_key = nullptr;
+    crypto_byte *_iv = nullptr;
     CryptoPP::AutoSeededRandomPool _seed_gen;
     CryptoPP::XChaCha20Poly1305::Encryption _encryptor;
     CryptoPP::XChaCha20Poly1305::Decryption _decryptor;

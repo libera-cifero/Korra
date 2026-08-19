@@ -5,10 +5,10 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/xchacha20_cipher_parser_test",
+            "target": "./bin/tool/frame_gen_tool",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
-            "arguments": ""
+            "arguments": "--width 1280 --height 720 --fps 30 --frame_codec_path \"rgb_xchacha20.json\" --expected_path \"rgb_xchacha20/1280x720/frame_16.json\" --data_path \"rgb_xchacha20/1280x720/frame_59.bmp\""
         },
         {
             "name": "Python Debugger: Python File",

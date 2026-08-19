@@ -25,7 +25,6 @@ char *payload_storage::current_payload(){
 }
 
 char *payload_storage::begin_new_payload(){
-
     int size = payload_size();
     char *payload = new char[size];
     memset(payload, 0, size);
