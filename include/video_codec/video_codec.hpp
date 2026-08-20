@@ -1,4 +1,5 @@
 #pragma once
+#include "data_boxer/data/korra_data.hpp"
 #include "video_codec/frame_codec/frame_codec.hpp"
 #include "video_codec/payload_storage.hpp"
 #include "clock_generator.hpp"
@@ -12,5 +13,10 @@ public:
     video_codec(frame_codec *encoder, int fps);
     void launch();
     payload_storage *storage();
+    int frame_size();
+    int payload_size();
+
+    char *decode(char *frame);
+    
     ~video_codec();
 };

@@ -1,4 +1,5 @@
 #include "video_codec/video_codec.hpp"
+#include "data_boxer/data/korra_data.hpp"
 #include "video_codec/payload_storage.hpp"
 #include <cmath>
 
@@ -8,11 +9,23 @@ video_codec::video_codec(frame_codec *encoder, int fps){
     _payload_storage = new payload_storage(encoder, _clock_generator->signals());
 }
 
+int video_codec::frame_size(){
+    return _frame_codec->frame_size();
+}
+
+int video_codec::payload_size(){
+    return _payload_storage->payload_size();
+}
+
 void video_codec::launch(){
     _clock_generator->launch();
 }
 
 payload_storage *video_codec::storage() { return _payload_storage; }
+
+char *video_codec::decode(char *frame){
+    return _frame_codec->decode(frame);
+}
 
 video_codec::~video_codec(){
     delete _payload_storage;

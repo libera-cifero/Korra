@@ -36,6 +36,7 @@ FILE *begin_video_making(int width, int height, int fps, string output){
 void test_encode(){
     const string test_name = base_name + ".test_encode";
     printInfo(test_name.c_str());   
+    printWarning("Check test/context/out/frame/test_encode, test/context/out/frames_outputmp4, test/context/out/output.mp4 after the test!");
 
     bool inited = false;
     thread *t;
@@ -54,10 +55,12 @@ void test_encode(){
                 sync.release();
                 payloads_token.acquire();//waiting while payload will be full
                 video->launch();
+                int frame_index = 0;
                 do{
                     char *frame = storage->pop_frame();
                     frames.push_back(frame);
                     fwrite(frame, 1, storage->frame_size(), video_maker);
+                    printInfo("frame[%d] was wroten", frame_index++);
                 }
                 while(--counter > 0);
 
@@ -105,6 +108,7 @@ void test_encode(){
 void test_pop_frame(){
     const string test_name = base_name + ".test_pop_frame";
     printInfo(test_name.c_str());
+    printWarning("Check directory test/context/out/frame/test_pop_frame after the test!");
     frame_io io_context;
     
     io_context.iterate_frame_test_cases(test_name.c_str(), "rgb_xchacha20/1280x720", [&](ITER_ACTION_ARGS) {
@@ -116,8 +120,8 @@ void test_pop_frame(){
         int p_size = storage->payload_size();
         for(int i = 0; i < p_size; i++){
             buffer[i] = d[i];
-            printf("%d/%d/%s\n", i,p_size, file_name.c_str());
         }
+        printInfo("%s", file_name.c_str());
         
         //memcpy(buffer, , storage->payload_size());
         regex r("frame_\\d+");
