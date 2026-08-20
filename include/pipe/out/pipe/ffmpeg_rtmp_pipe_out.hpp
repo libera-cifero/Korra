@@ -1,15 +1,15 @@
 #pragma once
-#include "ffmpeg_rtmp/ffmpeg_rtmp_settings.hpp"
+#include "config/data/ffmpeg_rtmp_config.hpp"
 #include "video_pipe_out.hpp"
 
 class ffmpeg_rtmp_pipe_out : public video_pipe_out {
 private:
-    ffmpeg_rtmp_settings _config;
+    ffmpeg_rtmp_config _config;
     FILE *_pipe_out;
 
     int _frame_size();
 public:
-    ffmpeg_rtmp_pipe_out(ffmpeg_rtmp_settings config);
+    ffmpeg_rtmp_pipe_out(ffmpeg_rtmp_config config);
     void write(uint8_t *data, int size) override;
     ~ffmpeg_rtmp_pipe_out();
 };
