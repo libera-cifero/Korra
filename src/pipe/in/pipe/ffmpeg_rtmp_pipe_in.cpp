@@ -1,17 +1,19 @@
-#include "pipe/ffmpeg_rtmp_pipe_in.hpp"
-#include "pipe/ffmpeg_rtmp/ffmpeg_rtmp_settings.hpp"
+#include "pipe/in/pipe/ffmpeg_rtmp_pipe_in.hpp"
 #include <cstdint>
 #include <cstdio>
 #include <chrono>
 #include <thread>
 
-ffmpeg_rtmp_pipe_in::ffmpeg_rtmp_pipe_in(ffmpeg_rtmp_settings config){
+ffmpeg_rtmp_pipe_in::ffmpeg_rtmp_pipe_in(ffmpeg_rtmp_config &config){
     _config = config;
     char command[256];
     sprintf(command, "ffmpeg -i %s -f rawvideo -pix_fmt bgr24 -an pipe:1", config.rtmp_url.c_str());
     _pipe_in = popen(command, "r");
 }
 
+std::string ffmpeg_rtmp_pipe_in::url(){
+    return _config.rtmp_url;
+}
 int ffmpeg_rtmp_pipe_in::_frame_size() { return _config.frame_height * _config.frame_width  * 3; }
 
 uint8_t *ffmpeg_rtmp_pipe_in::read(int size) {

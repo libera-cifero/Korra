@@ -8,7 +8,8 @@ private:
     FILE *_pipe_in;
     int _frame_size();
 public:
-    ffmpeg_rtmp_pipe_in(ffmpeg_rtmp_config config);
+    ffmpeg_rtmp_pipe_in(ffmpeg_rtmp_config &config);
     uint8_t *read(int size) override;
+    std::string url();
     ~ffmpeg_rtmp_pipe_in();
 };
