@@ -1,5 +1,5 @@
 #include "video_codec/video_codec.hpp"
-#include "data_boxer/data/korra_data.hpp"
+#include "video_codec/frame_codec/frame_codec.hpp"
 #include "video_codec/payload_storage.hpp"
 #include <cmath>
 
@@ -7,6 +7,10 @@ video_codec::video_codec(frame_codec *encoder, int fps){
     _frame_codec = encoder;
     _clock_generator = new clock_generator((int)round(1000.0f / fps));
     _payload_storage = new payload_storage(encoder, _clock_generator->signals());
+}
+
+frame_codec *video_codec::fcodec(){
+    return _frame_codec;
 }
 
 int video_codec::frame_size(){

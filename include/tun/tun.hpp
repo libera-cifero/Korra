@@ -4,6 +4,7 @@
 using namespace std;
 class tun {
 private:
+    string _name;
     string _ip;
     uint8_t _subnet_mask;
 public:
@@ -13,5 +14,6 @@ public:
     string ip();
     string ip_with_mask();
     uint8_t subnet_mask();
+    string name();
     virtual ~tun() = default;
 };

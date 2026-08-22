@@ -17,3 +17,7 @@ uint8_t tun::subnet_mask(){
 string tun::ip_with_mask() {
     return format("{}/{}",_ip, _subnet_mask);
 }
+
+string tun::name(){
+    return _name;
+}
