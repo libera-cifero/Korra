@@ -1,3 +1,4 @@
+#pragma once
 #include "config/parser/frame_codec/frame_codec_parser.hpp"
 #include "config/parser/pipe/out/video_pipe_out_parser.hpp"
 #include "config/parser/video_config_parser.hpp"

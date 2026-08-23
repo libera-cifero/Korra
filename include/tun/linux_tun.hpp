@@ -1,3 +1,4 @@
+#pragma once
 #include "tun.hpp"
 #include <cstdint>
 #include <string>

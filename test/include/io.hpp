@@ -14,4 +14,6 @@ const path DATA_OUT_PATH = DATA_PATH / "out";
 
 const path DATA_PARSER_PATH = DATA_PATH / "config" / "parser";
 
+const path DATA_SECRET_PATH = DATA_PATH / "secret";
+
 path to_native_path(std::string file_name);

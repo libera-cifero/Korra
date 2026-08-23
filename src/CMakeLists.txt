@@ -13,7 +13,11 @@ file(GLOB_RECURSE config_src config/*.cpp)
 #data_boxer/*
 file(GLOB_RECURSE data_boxer_src data_boxer/*.cpp)
 
-message(STATUS "DATA_BOXER_SRC: ${data_boxer_src}")
+#pipe/*
+file(GLOB_RECURSE pipe_src pipe/*.cpp)
+
+#video_socket_src
+file(GLOB video_socket_src video_socket.cpp video_stream_in.cpp video_stream_out.cpp)
 
 #lib
 add_library(lib STATIC ${lib_src})
@@ -24,18 +28,13 @@ add_library(video_codec STATIC ${video_codec_src})
 target_include_directories(video_codec PUBLIC ${INCLUDE_DIR})
 target_link_libraries(video_codec PUBLIC lib ${CRYPTOPP_LIB})
 
-#config
-add_library(config STATIC ${config_src})
-target_include_directories(config PUBLIC ${INCLUDE_DIR})
-target_link_libraries(config PUBLIC lib video_codec)
-
 #data_boxer
 add_library(data_boxer STATIC ${data_boxer_src})
 target_include_directories(data_boxer PUBLIC ${INCLUDE_DIR})
-target_link_libraries(data_boxer PUBLIC lib video_codec config)
+target_link_libraries(data_boxer PUBLIC lib video_codec)
 
 #tun
-set(tun_src tun/tun.cpp tun/)
+set(tun_src tun/tun.cpp tun/tun_builder.cpp tun/)
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     set(tun_src ${tun_src}/linux_tun.cpp)
 else()
@@ -43,3 +42,13 @@ else()
 endif()
 add_library(tun STATIC ${tun_src})
 target_include_directories(tun PUBLIC ${INCLUDE_DIR})
+
+#video_socket
+add_library(video_socket STATIC ${video_socket_src} ${pipe_src})
+target_include_directories(video_socket PUBLIC ${INCLUDE_DIR})
+target_link_libraries(video_socket PUBLIC lib video_codec data_boxer tun)
+
+#config
+add_library(config SHARED ${config_src})
+target_include_directories(config PUBLIC ${INCLUDE_DIR})
+target_link_libraries(config PUBLIC lib video_codec data_boxer tun video_socket)

@@ -17,7 +17,7 @@ video_socket_parser::video_socket_parser(frame_codec_parser *codec, video_pipe_i
 
 video_socket *video_socket_parser::parse(json j){
     video_socket_settings settings;
-    settings.tun = _tun_parser->parse(j["tun"]);
+    settings.tunnel = _tun_parser->parse(j["tun"]);
     settings.stream_in = _stream_in_parser->parse(j["in"]);
     settings.stream_out = _stream_out_parser->parse(j["out"]);
 
@@ -26,7 +26,7 @@ video_socket *video_socket_parser::parse(json j){
 
 json video_socket_parser::serialize(video_socket *socket){
     json root = json::object();
-    root["tun"] = _tun_parser -> serialize(socket->tun());
+    root["tun"] = _tun_parser -> serialize(socket->get_tun());
     root["in"] = _stream_in_parser -> serialize(socket->stream_in());
     root["out"] = _stream_out_parser -> serialize(socket->stream_out());
 

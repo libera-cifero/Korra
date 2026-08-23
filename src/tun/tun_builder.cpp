@@ -9,7 +9,7 @@
 
 tun *build_tun(tun_config &config){
     #ifdef __linux__
-    return new linux_tun(*config.name, *config.ip, config.mask);
+    return new linux_tun(config.name, config.ip, config.mask);
     #endif
 
     return nullptr;

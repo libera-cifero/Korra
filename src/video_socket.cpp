@@ -1,9 +1,6 @@
 #include "video_socket.hpp"
-#include "config/data/video_config.hpp"
 #include "data_boxer/data/ip_data.hpp"
 #include "data_boxer/data/korra_data.hpp"
-#include <cstdint>
-#include <mutex>
 #include <thread>
 #include <vector>
 
@@ -11,7 +8,7 @@ video_socket::video_socket(video_socket_settings &settings)
 {
     _stream_in = settings.stream_in;
     _stream_out = settings.stream_out;
-    _tun = settings.tun;
+    _tun = settings.tunnel;
 }
 
 void video_socket::_run_writer(){
@@ -46,12 +43,13 @@ void video_socket::_run_reader(){
 
 void video_socket::run(){
     _is_running = true;
-    _run_codec_handler();
     _run_writer();
     _run_reader();
 }
 
-tun *video_socket::tun() { return _tun; }
+tun *video_socket::get_tun() { return _tun; }
+video_stream_in *video_socket::stream_in(){ return _stream_in; }
+video_stream_out *video_socket::stream_out(){ return _stream_out; }
 
 video_socket::~video_socket(){
     _is_running = false;
