@@ -6,6 +6,7 @@ find_library(CRYPTOPP_LIB cryptopp /usr/lib /usr/local/lib /opt/homebrew/lib)
 if(NOT CRYPTOPP_INCLUDE OR NOT CRYPTOPP_LIB)
     message(FATAL_ERROR "Crypto++ is not found!")
 endif()
+#find_package(Boost REQUIRED COMPONENTS ALL)
 
 set(BIN_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(LIB_DIR ${BIN_DIR}/lib)

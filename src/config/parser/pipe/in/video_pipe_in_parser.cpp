@@ -10,7 +10,7 @@ video_pipe_in *video_pipe_in_parser::parse(json j) {
         if(auto x = dynamic_cast<contexted_in<video_config>*>(p)){
             x->context_in = context_in;
         }
-        if(p->type() == type) return p->parse(j);
+        if(p->type() == type) return p->parse(j[type + "Settings"]);
     }
 
     throw runtime_error(std::format("video_pipe_in_parser.parse: Can't parse video_pipe_in! Unknown type \"{}!\"", type));

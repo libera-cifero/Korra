@@ -28,10 +28,11 @@ bool tun_parser::_check_address(uint32_t ip, int mask){
     if(mask > 32) throw runtime_error(format("tun_parser._check_address: invalid mask {}", mask));
     const int count = 3;
     uint32_t available_nets[count] = { 0xC0A80100, 0xAC100000, 0x0A000000 };//192.168.1.0, 172.16.0.0, 10.0.0.0
-    int mask_val = (1 << mask) - 1;
+    uint32_t net_masks[count] = { 24, 16, 8 };
     for(int i = 0; i < count; i++){
+        uint32_t mask_val = (1 << net_masks[i]) - 1;
         uint32_t net = ip & mask_val;
-        uint32_t available_net = available_nets[i];
+        uint32_t available_net = ntohl(available_nets[i]);
         if(net == available_net && net != ip) return true;
     }
 
@@ -43,7 +44,7 @@ tun *tun_parser::parse(json j){
     if(j.contains("name") && j["name"].is_string()) config.name = j["name"];
     else throw runtime_error("tun_parser.parse: property \"name\" is undefined or not string!");
     if(j.contains("address") && j["address"].is_string()){
-        string pattern = "((\\d{1,3}\\.){3}\\d{1,3}\\)/(\\d{1,2})";
+        string pattern = "((\\d{1,3}\\.){3}\\d{1,3})\\/(\\d{1,2})";
         regex address_check(pattern);
         string raw_address = j["address"];
         smatch result;

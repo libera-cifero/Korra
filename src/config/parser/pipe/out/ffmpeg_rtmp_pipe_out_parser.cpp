@@ -10,7 +10,7 @@
 
 using namespace filesystem;
 string ffmpeg_rtmp_pipe_out_parser::type(){
-    return "ffmpeg_rtmp";
+    return "ffmpegRtmp";
 }
 
 bool ffmpeg_rtmp_pipe_out_parser::can_serialize(video_pipe_out *pipe){

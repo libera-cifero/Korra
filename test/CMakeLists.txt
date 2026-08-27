@@ -16,6 +16,7 @@ file(GLOB xchacha20_cipher_test "src/video_codec/frame_codec/cipher/xchacha20_ci
 file(GLOB xchacha20_cipher_parser_test_src "src/parser/xchacha20_cipher_parser_test.cpp")
 file(GLOB linux_tun_test_src "src/tun/linux_tun_test.cpp")
 file(GLOB video_socket_test_src "src/video_socket_test.cpp")
+file(GLOB ffmpeg_rtmp_pipe_out_test_src "src/pipe_test/out/ffmpeg_rtmp_pipe_out_test.cpp")
 
 file(GLOB frame_gen_tool_src "tool/gen_frame/frame_generator.cpp")
 file(GLOB mosaic_generator_src "tool/gen_frame/size_generator/mosaic_generator.cpp")
@@ -109,6 +110,11 @@ add_executable(xchacha20_cipher_parser_test ${xchacha20_cipher_parser_test_src})
 target_setup(xchacha20_cipher_parser_test)
 target_link_libraries(xchacha20_cipher_parser_test PUBLIC test_lib)
 
+#ffmpeg_rtmp_pipe_out_test
+add_executable(ffmpeg_rtmp_pipe_out_test ${ffmpeg_rtmp_pipe_out_test_src})
+target_setup(ffmpeg_rtmp_pipe_out_test)
+target_link_libraries(ffmpeg_rtmp_pipe_out_test PUBLIC test_lib)
+
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     #linux_tun_test
     add_executable(linux_tun_test ${linux_tun_test_src})
@@ -119,6 +125,7 @@ endif()
 #video_socket_test
 add_executable(video_socket_test ${video_socket_test_src})
 target_setup_test(video_socket_test)
+#target_link_libraries(video_socket_test Boost::filesystem)
 #======END======
 
 #TEST TOOLS
