@@ -5,6 +5,9 @@
 #define UNBOX_RGB(color, r, g, b)\
 char r = (char)((color & 0xff0000) >> 16), g = (char)((color & 0x00ff00) >> 8), b = (char)(color & 0x0000ff)
 
+#define UNBOX_RGB_INT(color, r, g, b)\
+int r = (color & 0xff0000) >> 16, g = (color & 0x00ff00) >> 8, b = color & 0x0000ff
+
 rgb_palette_codec::rgb_palette_codec(palette_codec_config<int> &config) : palette_codec<int>(config) { }
 
 void rgb_palette_codec::encode(char *frame, int number, int block_index) {
@@ -25,14 +28,14 @@ void rgb_palette_codec::encode(char *frame, int number, int block_index) {
     }
 }
 
-int rgb_palette_codec::_find_nearest(char r, char g, char b) {
+int rgb_palette_codec::_find_nearest(int r, int g, int b) {
     int count = numbers_count();
     int min = 0;
     uint32_t min_delta = 0xffffffff;
     for(int i = 0; i < count; i++){
         int color = __palette[i];
-        UNBOX_RGB(color, r1, g1, b1);
-        int dr = r1 - r, dg = g1 - g, db = b1 - b;
+        UNBOX_RGB_INT(color, r1, g1, b1);
+        int dr = r - r1, dg = g - g1, db = b - b1;
         int delta = dr * dr + dg * dg + db * db;
         if(delta < min_delta){
             min_delta = delta;
@@ -60,9 +63,7 @@ int rgb_palette_codec::decode(char *frame, int block_index) {
         }
     }
     
-    char r = (char)(r_sum / c);
-    char g = (char)(g_sum / c);
-    char b = (char)(b_sum / c);
+    int r = r_sum / c, g = g_sum / c, b = b_sum / c;
 
     return _find_nearest(r, g, b);
 }

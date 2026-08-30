@@ -22,7 +22,7 @@ size_t mosaic_provider::frame_size() { return _frame_size; }
 
 size_t mosaic_provider::payload_size() { return _payload_size; }
 
-bit_area mosaic_provider::_write_block_to_out(char *out, bit_area area, int block) {
+bit_area mosaic_provider::_write_block_to_out(char *out, bit_area &area, int block) {
     //bd - bit data, bb - bit block
     uint32_t bit0 = area.bit0, bit1 = area.bit1;
     for(size_t bd = bit0; bd < bit1; bd++){ 

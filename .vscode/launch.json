@@ -5,10 +5,10 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/ffmpeg_rtmp_pipe_out_test",
+            "target": "./bin/ffmpeg_rtmp_pipe_in_test",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
-            "arguments": "--width 1280 --height 720 --fps 30 --frame_codec_path \"rgb_xchacha20.json\" --expected_path \"rgb_xchacha20/1280x720/frame_16.json\" --data_path \"rgb_xchacha20/1280x720/frame_59.bmp\""
+            "arguments": ""
         },
         {
             "name": "Python Debugger: Python File",

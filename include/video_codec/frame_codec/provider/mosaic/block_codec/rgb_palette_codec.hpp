@@ -3,7 +3,7 @@
 
 class rgb_palette_codec : public palette_codec<int> {
 private:
-    int _find_nearest(char r, char g, char b);
+    int _find_nearest(int r, int g, int b);
 public:
     rgb_palette_codec(palette_codec_config<int> &config);
 

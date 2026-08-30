@@ -16,7 +16,7 @@ private:
     int _get_block(char *data, int block_index);
 
     int _read_block_from_frame(char *frame, int block_index);
-    bit_area _write_block_to_out(char *bytes, bit_area area, int block);
+    bit_area _write_block_to_out(char *bytes, bit_area &area, int block);
 
 public:
     mosaic_provider(mosaic_settings *settings);

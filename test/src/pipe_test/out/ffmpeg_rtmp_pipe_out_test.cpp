@@ -3,11 +3,9 @@
 #include "test.hpp"
 #include "frame_io.hpp"
 #include "io.hpp"
-#include <chrono>
 #include <cstdint>
 #include <cstring>
 #include <fstream>
-#include <thread>
 #include <tuple>
 #include <filesystem>
 using namespace filesystem;
@@ -28,6 +26,7 @@ void test_write(){
     bool config_inited = false;
     printInfo("reading frames...");
     int index = 0;
+    
     context.iterate_frame_test_cases(test_name, "rgb_xchacha20/1280x720", [&](ITER_ACTION_ARGS){
         int size = meta.codec->frame_size();
         uint8_t *data1 = new uint8_t[size];
@@ -40,6 +39,7 @@ void test_write(){
         printInfo("frame %d", index++);
         delete meta.codec;
     });
+    printWarning("This is handled test. Please open %s to check video", config.rtmp_url.c_str());
     config.rtmp_url = read_link(DATA_SECRET_PATH / "ffmpeg_rtmp_pipe_out_test.test_write.link");
     ffmpeg_rtmp_pipe_out *out = new ffmpeg_rtmp_pipe_out(config);
     //auto delay = chrono::milliseconds(1000 / config.fps);
@@ -53,6 +53,7 @@ void test_write(){
         delete [] frame;
     }
     delete out;
+    printWarning("Handled test");
     printPass(test_name);
 }
 
