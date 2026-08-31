@@ -3,6 +3,7 @@
 #include <fcntl.h>
 #include <linux/if.h>
 #include <linux/if_tun.h>
+#include <stdexcept>
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <cstring>
@@ -11,13 +12,17 @@ linux_tun::linux_tun(string &tun_name, string &ip, uint8_t subnet_mask) : tun(ip
     _tun_name = tun_name;
 
     struct ifreq ifr;
-    _file_descriptor = open("/dev/net/tun", O_RDWR);
+    if((_file_descriptor = open("/dev/net/tun", O_RDWR)) == -1) throw runtime_error("/dev/net/tun open error!");
 
     memset(&ifr, 0, sizeof(ifr));
     ifr.ifr_flags = IFF_TUN | IFF_NO_PI;
     strncpy(ifr.ifr_name, tun_name.c_str(), IFNAMSIZ);
 
-    ioctl(_file_descriptor, TUNSETIFF, (void *)&ifr);
+    int err;
+    if((err = ioctl(_file_descriptor, TUNSETIFF, (void *)&ifr)) == -1){
+        close(_file_descriptor);
+        throw runtime_error("ioctl TUNSETIFF");
+    }
 }
 
 char *linux_tun::read(){

@@ -34,7 +34,7 @@ void video_socket::_run_reader(){
                 if(auto ip = dynamic_cast<ip_data*>(data)){
                     _tun->write(ip->ip_package());
                 }
-                delete data;
+                if(data != nullptr) delete data;
             }
             buffer.clear();
         }

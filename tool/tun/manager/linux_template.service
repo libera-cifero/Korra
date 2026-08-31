@@ -1,0 +1,12 @@
+[Unit]
+Description=Create TUN interface
+After=network.target
+
+[Service]
+User=root
+Type=oneshot
+ExecStart=/usr/bin/korra-tun make $address/$mask $tun_name $user
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -57,7 +57,7 @@ void test_read(){
     const char *test_payload = "korra_tun_read_test_payload";
     size_t payload_len = strlen(test_payload);
 
-    string dst_ip = "10.12.34.57";   // любой адрес внутри подсети tun, отличный от tun_ip
+    string dst_ip = "10.18.195.2";   // любой адрес внутри подсети tun, отличный от tun_ip
     uint16_t dst_port = 9999;
 
     std::thread sender([&]() {

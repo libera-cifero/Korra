@@ -6,6 +6,7 @@ class frame_codec {
 private:
     provider *_provider;
     cipher *_cipher;
+    bool _is_void_payload(char *frame);
 public:
     frame_codec(provider *provider, cipher *cipher);
 

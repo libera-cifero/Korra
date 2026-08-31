@@ -19,9 +19,10 @@ void video_stream_out::run(){
     _codec->launch();
     _sender_thread = thread([&](){
         payload_storage *storage = _codec->storage();
+        int frame_size = storage->frame_size();
         while(_is_running){
             uint8_t *encoded = reinterpret_cast<uint8_t*>(storage->pop_frame());
-            _pipe->write(encoded, storage->frame_size());
+            _pipe->write(encoded, frame_size);
         }
     });
 }

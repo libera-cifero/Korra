@@ -31,10 +31,20 @@ char *frame_codec::encode(char *data) {
     return frame;
 }
 
+bool frame_codec::_is_void_payload(char *payload){
+    int size = frame_size();
+    for(int i = 0; i < size; i++) if(payload[i] != 0) return false;
+    return true;
+}
+
 char *frame_codec::decode(char *frame) {
-    char *encryptd = _provider->to_payload(frame);
-    char *data = _cipher->decrypt(encryptd);
-    delete [] encryptd;
+    char *encrypted = _provider->to_payload(frame);
+    if(_is_void_payload(encrypted)) {
+        delete [] encrypted;
+        return nullptr;
+    }
+    char *data = _cipher->decrypt(encrypted);
+    delete [] encrypted;
     return data;
 }
 

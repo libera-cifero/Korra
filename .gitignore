@@ -1,4 +1,4 @@
 bin/
 build/
 .vscode/launch.json
-tool/__pycache__
+__pycache__

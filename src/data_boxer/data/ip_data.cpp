@@ -3,6 +3,11 @@
 #include <cstdint>
 #include <cstring>
 #include <stdexcept>
+#ifdef _WIN32
+  #include <winsock2.h>
+#else
+  #include <arpa/inet.h>
+#endif
 
 ip_data::ip_data() : piecable_data() { }
 
@@ -23,7 +28,7 @@ int ip_data::size(){ return piecable_data::size(); }
 int ip_data::size(char *raw_bytes){
     uint16_t size = 0;
     memcpy(&size, raw_bytes + 2, 2);
-    return size;
+    return ntohs(size);
 }
 
 char *ip_data::ip_package() { 

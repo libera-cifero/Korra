@@ -4,17 +4,22 @@
 #include "video_socket.hpp"
 #include "random_data.hpp"
 #include "test.hpp"
+#include <arpa/inet.h>
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/ip/address.hpp>
 #include <boost/asio/ip/address_v4.hpp>
 #include <boost/asio/registered_buffer.hpp>
+#include <chrono>
 #include <cstdlib>
 #include <cstring>
 #include <exception>
 #include <filesystem>
 #include <fstream>
+#include <netinet/in.h>
 #include <sstream>
 #include <stdexcept>
+#include <sys/socket.h>
+#include <thread>
 #include <unistd.h>
 #include <vector>
 #include <boost/asio.hpp>
@@ -100,7 +105,7 @@ video_socket *read_socket_from_file(path &file_path){
 }
 
 void test_write_udp(){
-        const char *test_name = "video_socket_test.test_write_udp";
+    const char *test_name = "video_socket_test.test_write_udp";
     printInfo(test_name);
 
     path socket_A_path = DATA_PATH / "config" / "socket_A.json";
@@ -109,11 +114,14 @@ void test_write_udp(){
 
     udp::socket *udp_socket_A = make_udp_socket(video_socket_A->get_tun()->ip());
 
-    path seed_path = DATA_SECRET_PATH / "video_socket_test.test_read_write.seed";
-    vector<int> sizes = { 100, 4000, 2349, 42400, 1, 2, 3, 400, 10, 900 };
-    int len_count = sizes.size();
-    auto test_cases = get_random_payloads(seed_path, sizes.data(), len_count);
+    int udp_socket_native = socket(AF_INET, SOCK_DGRAM, 0);
+    struct sockaddr_in dest{
+        .sin_family = AF_INET,
+        .sin_port = 9999
+    };
+    inet_pton(AF_INET, "10.18.193.2", &dest.sin_addr);
 
+    path seed_path = DATA_SECRET_PATH / "video_socket_test.test_read_write.seed";
     video_socket_A->run();
 
     string error_reason;
@@ -123,13 +131,13 @@ void test_write_udp(){
     auto dest_ep = udp::endpoint(dest_ip, 1234);
     uint64_t seed = get_seed(seed_path);
     try{
-        for(int i = 0; i < 10000; i++){
-            auto test_case = test_cases[i];
+        for(int i = 0; i < 100000; i++){
             printInfo("%d sending...", i);
-            int size = rand() % 65535;
+            int size = rand() % 65000;
             char *payload = random_array(seed, size, seed);
-            udp_socket_A->send_to(boost::asio::buffer(payload, size), dest_ep);
+            int sent_count = sendto(udp_socket_native, payload, size, 0, (struct sockaddr*)&dest, sizeof(dest));
             delete [] payload;
+            this_thread::sleep_for(chrono::milliseconds(100));
         }
     }
     catch(exception &e){

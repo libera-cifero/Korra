@@ -14,15 +14,17 @@ video_stream_in::video_stream_in(video_config &config, video_pipe_in *pipe, vide
 video_config video_stream_in::config() { return _config; }
 
 void video_stream_in::read(vector<korra_data*> &buffer) {
-    uint8_t * frame = _pipe->read(_codec->frame_size());
+    uint8_t *frame = _pipe->read(_codec->frame_size());
     char *payload = _codec->decode(reinterpret_cast<char*>(frame));
-    _unboxer->put_payload(payload, _codec->payload_size());
-    korra_data *data = nullptr;
-    do{
-        data = _unboxer->unbox();
-        buffer.push_back(data);
+    if(payload != nullptr){
+        _unboxer->put_payload(payload, _codec->payload_size());
+        korra_data *data = nullptr;
+        do{
+            data = _unboxer->unbox();
+            buffer.push_back(data);
+        }
+        while(data != nullptr);
     }
-    while(data != nullptr);
 }
 
 video_stream_in::~video_stream_in(){
