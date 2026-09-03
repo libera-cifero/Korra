@@ -16,6 +16,8 @@
 #include <filesystem>
 #include <fstream>
 #include <netinet/in.h>
+#include <spdlog/common.h>
+#include <spdlog/spdlog.h>
 #include <sstream>
 #include <stdexcept>
 #include <sys/socket.h>
@@ -130,14 +132,15 @@ void test_write_udp(){
     auto dest_ip = boost::asio::ip::address_v4::from_string("10.18.193.2");
     auto dest_ep = udp::endpoint(dest_ip, 1234);
     uint64_t seed = get_seed(seed_path);
+    int max_size = video_socket_A->get_tun()->mtu() - 100;
     try{
         for(int i = 0; i < 100000; i++){
             printInfo("%d sending...", i);
-            int size = rand() % 65000;
+            int size = rand() % max_size;
             char *payload = random_array(seed, size, seed);
             int sent_count = sendto(udp_socket_native, payload, size, 0, (struct sockaddr*)&dest, sizeof(dest));
             delete [] payload;
-            this_thread::sleep_for(chrono::milliseconds(100));
+            this_thread::sleep_for(chrono::milliseconds(10));
         }
     }
     catch(exception &e){
@@ -258,6 +261,7 @@ void test_io_udp(){
 }
 
 int main(){
+    spdlog::set_level(spdlog::level::debug);
     test_write_udp();
     test_io_udp();
     test_io_tcp();

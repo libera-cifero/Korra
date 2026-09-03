@@ -1,4 +1,6 @@
-#args: ipv4_address/mask tun_name username
+#args: make|del MAKE_ARGS|DEL_ARGS
+#MAKE_ARGS: ipv4_address/mask tun_name username
+#DEL_ARGS: tun_name
 import sys
 import ipaddress
 from manager import linux_tun_manager, windows_tun_manager, macos_tun_manager, android_tun_manager, ios_tun_manager

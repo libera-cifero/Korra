@@ -22,16 +22,17 @@ file(GLOB video_socket_src video_socket.cpp video_stream_in.cpp video_stream_out
 #lib
 add_library(lib STATIC ${lib_src})
 target_include_directories(lib PUBLIC ${INCLUDE_DIR})
+target_link_libraries(lib PUBLIC spdlog)
 
 #video_codec
 add_library(video_codec STATIC ${video_codec_src})
 target_include_directories(video_codec PUBLIC ${INCLUDE_DIR})
-target_link_libraries(video_codec PUBLIC lib ${CRYPTOPP_LIB})
+target_link_libraries(video_codec PUBLIC lib ${CRYPTOPP_LIB} spdlog)
 
 #data_boxer
 add_library(data_boxer STATIC ${data_boxer_src})
 target_include_directories(data_boxer PUBLIC ${INCLUDE_DIR})
-target_link_libraries(data_boxer PUBLIC lib video_codec)
+target_link_libraries(data_boxer PUBLIC spdlog lib video_codec)
 
 #tun
 set(tun_src tun/tun.cpp tun/tun_builder.cpp tun/)
@@ -42,13 +43,14 @@ else()
 endif()
 add_library(tun STATIC ${tun_src})
 target_include_directories(tun PUBLIC ${INCLUDE_DIR})
+target_link_libraries(tun PUBLIC spdlog)
 
 #video_socket
 add_library(video_socket STATIC ${video_socket_src} ${pipe_src})
 target_include_directories(video_socket PUBLIC ${INCLUDE_DIR})
-target_link_libraries(video_socket PUBLIC lib video_codec data_boxer tun)
+target_link_libraries(video_socket PUBLIC spdlog lib video_codec data_boxer tun)
 
 #config
 add_library(config SHARED ${config_src})
 target_include_directories(config PUBLIC ${INCLUDE_DIR})
-target_link_libraries(config PUBLIC lib video_codec data_boxer tun video_socket)
+target_link_libraries(config PUBLIC spdlog lib video_codec data_boxer tun video_socket)
