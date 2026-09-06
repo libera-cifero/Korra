@@ -31,7 +31,10 @@ void video_stream_in::read(vector<korra_data*> &buffer) {
             spdlog::info("{} korra_data unboxed!", prefix);
         }
         while(data != nullptr);
+        delete [] payload;
     }
+
+    delete [] frame;
 
     spdlog::info("{} success!", prefix);
 }

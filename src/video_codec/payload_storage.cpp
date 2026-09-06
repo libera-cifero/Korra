@@ -5,6 +5,7 @@
 #include <cstring>
 #include <mutex>
 #include <spdlog/spdlog.h>
+#include <thread>
 
 int payload_storage::payload_size(){
     return _encoder -> payload_size();
@@ -63,7 +64,8 @@ void payload_storage::_update_frame(){
 char *payload_storage::pop_frame(){
     _signals->ready_request()->acquire();
 
-    _update_frame();
+    thread th([&]{_update_frame();});
+    th.detach();
     
     return _frame;
 }

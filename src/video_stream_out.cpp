@@ -30,6 +30,7 @@ void video_stream_out::run(){
             spdlog::info("{} writing the frame to pipe...", prefix);
             _pipe->write(encoded, frame_size);
             spdlog::info("{} wrote the frame!", prefix);
+            delete [] encoded;
         }
     },prefix);
 }
@@ -37,6 +38,9 @@ void video_stream_out::run(){
 void video_stream_out::write(korra_data *data){
     auto prefix = get_method_prefix("video_stream_out.write");
     spdlog::info("{} writing the data with size {}...", prefix, data->size());
+    if(data->size() == 1144){
+        int a = 0;
+    }
     _boxer->box(data);
     spdlog::info("{} success!", prefix);
 }

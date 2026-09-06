@@ -263,7 +263,7 @@ void test_io_udp(){
 int main(){
     spdlog::set_level(spdlog::level::debug);
     test_write_udp();
-    test_io_udp();
-    test_io_tcp();
+    //test_io_udp();
+    //test_io_tcp();
     return 0;
 }

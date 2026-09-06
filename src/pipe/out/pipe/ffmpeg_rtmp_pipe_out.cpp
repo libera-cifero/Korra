@@ -7,7 +7,7 @@ ffmpeg_rtmp_pipe_out::ffmpeg_rtmp_pipe_out(ffmpeg_rtmp_config &config){
     _config = config;
     char command[1024];
     sprintf(command, 
-        "ffmpeg -f rawvideo -pix_fmt bgr24 -s %dx%d -r %d -i pipe:0 "
+        "ffmpeg  -fflags nobuffer -flags low_delay -f rawvideo -pix_fmt bgr24 -s %dx%d -r %d -i pipe:0 "
         "-c:v libx264 -preset ultrafast -tune zerolatency "
         "-pix_fmt yuv420p -f flv %s",
         _config.frame_width, _config.frame_height, _config.fps, _config.rtmp_url.c_str());

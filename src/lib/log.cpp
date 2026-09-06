@@ -20,8 +20,8 @@ string get_byte_str(void *bytes){
     uint8_t *data = reinterpret_cast<uint8_t*>(bytes);
     string str = "";
     for(int i = 0; i < BYTE_STR_DISPLAY_COUNT; i++){
-        str+=to_string(data[i]);
         if(i>0) str+=" ";
+        str+=to_string(data[i]);
     }
 
     str+="...";
