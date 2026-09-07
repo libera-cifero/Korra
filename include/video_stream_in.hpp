@@ -4,6 +4,7 @@
 #include "data_boxer/data_unboxer.hpp"
 #include "pipe/in/pipe/video_pipe_in.hpp"
 #include "video_codec/video_codec.hpp"
+#include <vector>
 
 class video_stream_in {
 private:
@@ -14,6 +15,7 @@ private:
 public:
     video_stream_in(video_config &config, video_pipe_in *pipe, video_codec *codec, data_unboxer *unboxer);
     video_config config();
-    void read(vector<korra_data*> &buffer);
+    char *read_frame();
+    void unbox_frame(char *frame, vector<korra_data*> &buffer);
     ~video_stream_in();
 };

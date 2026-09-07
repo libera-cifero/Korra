@@ -47,27 +47,19 @@ char *payload_storage::_pop_payload(){
     return first;
 }
 
-void payload_storage::_update_frame(){
-    char *payload = _pop_payload();
+char *payload_storage::pop_frame(){
+    char *payload = _pop_payload(), *frame = nullptr;
     try{
         lock_guard<mutex> frame_lock(_frame_access);
-        _frame = _encoder -> encode(payload);
+        frame = _encoder -> encode(payload);
     }
-    catch(...) { 
+    catch(...) {
         delete [] payload;
         throw;
     }
 
     delete [] payload;
-}
-
-char *payload_storage::pop_frame(){
-    _signals->ready_request()->acquire();
-
-    thread th([&]{_update_frame();});
-    th.detach();
-    
-    return _frame;
+    return frame;
 }
 
 payload_storage::~payload_storage(){

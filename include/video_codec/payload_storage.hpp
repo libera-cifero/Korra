@@ -15,7 +15,6 @@ private:
     char *_frame;
 
     char *_pop_payload();
-    void _update_frame();
 public:
     int payload_index;
 

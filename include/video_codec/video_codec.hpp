@@ -1,6 +1,6 @@
 #pragma once
-#include "video_codec/frame_codec/frame_codec.hpp"
-#include "video_codec/payload_storage.hpp"
+#include "frame_codec/frame_codec.hpp"
+#include "payload_storage.hpp"
 #include "clock_generator.hpp"
 
 class video_codec {

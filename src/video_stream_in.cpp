@@ -2,8 +2,8 @@
 #include "config/data/video_config.hpp"
 #include "data_boxer/data/korra_data.hpp"
 #include "lib/log.hpp"
-#include <cstdint>
 #include <spdlog/spdlog.h>
+#include <vector>
 
 video_stream_in::video_stream_in(video_config &config, video_pipe_in *pipe, video_codec *codec, data_unboxer *unboxer)
 {
@@ -15,11 +15,12 @@ video_stream_in::video_stream_in(video_config &config, video_pipe_in *pipe, vide
 
 video_config video_stream_in::config() { return _config; }
 
-void video_stream_in::read(vector<korra_data*> &buffer) {
-    auto prefix = get_method_prefix("video_stream_in.read");
-    spdlog::info("{} reading the frame from pipe...", prefix);
-    uint8_t *frame = _pipe->read(_codec->frame_size());
-    spdlog::info("{} decoding the frame...", prefix);
+char *video_stream_in::read_frame(){
+    return _pipe->read(_codec->frame_size());
+}
+
+void video_stream_in::unbox_frame(char *frame, vector<korra_data*> &buffer) {
+    auto prefix = get_method_prefix("video_stream_in.unbox_frame");
     char *payload = _codec->decode(reinterpret_cast<char*>(frame));
     if(payload != nullptr){
         spdlog::info("{} unboxing payload...", prefix);
@@ -33,8 +34,6 @@ void video_stream_in::read(vector<korra_data*> &buffer) {
         while(data != nullptr);
         delete [] payload;
     }
-
-    delete [] frame;
 
     spdlog::info("{} success!", prefix);
 }

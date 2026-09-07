@@ -1,6 +1,4 @@
 #include "video_codec/video_codec.hpp"
-#include "video_codec/frame_codec/frame_codec.hpp"
-#include "video_codec/payload_storage.hpp"
 #include <cmath>
 
 video_codec::video_codec(frame_codec *encoder, int fps){

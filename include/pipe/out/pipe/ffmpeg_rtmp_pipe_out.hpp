@@ -10,7 +10,7 @@ private:
     int _frame_size();
 public:
     ffmpeg_rtmp_pipe_out(ffmpeg_rtmp_config &config);
-    void write(uint8_t *data, int size) override;
+    void write(char *data, int size) override;
     std::string url();
     ~ffmpeg_rtmp_pipe_out();
 };
