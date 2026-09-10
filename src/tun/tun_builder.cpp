@@ -8,9 +8,12 @@
 #endif
 
 tun *build_tun(tun_config &config){
-    #ifdef __linux__
-    return new linux_tun(config.name, config.ip, config.mask);
-    #endif
-
+    tun *t;
+#ifdef __linux__
+    t = new linux_tun(config.name, config.ip, config.mask);
+#else
     return nullptr;
+#endif
+    t->init_buffer();
+    return t;
 }

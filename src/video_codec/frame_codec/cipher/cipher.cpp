@@ -5,14 +5,14 @@
 
 cipher::cipher(cipher_config &config) {
     auto prefix = get_method_prefix("cipher.cipher");
-    spdlog::debug("{} constructing...");
+    spdlog::debug("{} constructing...", prefix);
     __config = config;
-    spdlog::debug("{} constructing completed!");
+    spdlog::debug("{} constructing completed!", prefix);
 }
 int cipher::encrypted_size(){ return __config.encrypted_size; }
 int cipher::payload_size(){ return __config.encrypted_size - header_size(); }
 
 cipher::~cipher() { 
-    auto prefix = get_method_prefix("cipher.cipher");
-    spdlog::debug("{} destucted!");
+    auto prefix = get_method_prefix("cipher.~cipher");
+    spdlog::debug("{} destucted!", prefix);
 }

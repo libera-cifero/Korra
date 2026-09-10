@@ -9,7 +9,9 @@
   #include <arpa/inet.h>
 #endif
 
-ip_data::ip_data() : piecable_data() { }
+ip_data::ip_data() : piecable_data() {
+    _header = nullptr;
+}
 
 ip_data::ip_data(uint16_t package_size){
     init_buffer(package_size);
@@ -112,5 +114,5 @@ char *ip_data::from_bytes(char *bytes) {
 
 ip_data::~ip_data() { 
     delete [] __buffer;
-    delete _header;
+    if(_header != nullptr) delete _header;
 }

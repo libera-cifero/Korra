@@ -46,8 +46,7 @@ event_loop::~event_loop(){
     auto prefix = get_method_prefix("event_loop.~event_loop");
     spdlog::debug("{} destructing...", prefix);
     _is_running = false;
-    for(auto kvp : _event_handlers){
-        delete kvp.second;
-    }
+    for(auto kvp : _event_handlers) delete kvp.second;
+    for(auto e : _listening_events) delete e;
     spdlog::debug("{} event_loop was destucted!", prefix);
 }

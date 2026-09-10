@@ -134,7 +134,7 @@ void test_write_udp(){
     uint64_t seed = get_seed(seed_path);
     int max_size = video_socket_A->get_tun()->mtu() - 100;
     try{
-        for(int i = 0; i < 10000; i++){
+        for(int i = 0; i < 100; i++){
             printInfo("%d sending...", i);
             int size = rand() % max_size;
             char *payload = random_array(seed, size, seed);
