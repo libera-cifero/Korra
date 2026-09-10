@@ -8,7 +8,6 @@ private:
     payload_storage *_payload_storage;
 public:
     video_codec(frame_codec *encoder, int fps);
-    void launch();
     payload_storage *storage();
     frame_codec *fcodec();
     int frame_size();

@@ -53,7 +53,6 @@ void test_encode(){
                 storage = video->storage();
                 sync.release();
                 payloads_token.acquire();//waiting while payload will be full
-                video->launch();
                 int frame_index = 0;
                 do{
                     char *frame = storage->pop_frame();

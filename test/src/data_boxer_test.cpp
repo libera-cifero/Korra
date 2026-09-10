@@ -92,7 +92,6 @@ void test_box_unbox(){
         for(korra_data *data : datas) boxer.box(data);
 
         vector<char*> payloads;
-        vc->launch();
         char *prev_frame = nullptr;
         while(true){
             char *frame = vc->storage()->pop_frame();

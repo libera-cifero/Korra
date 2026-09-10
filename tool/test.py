@@ -20,7 +20,9 @@ def get_test_targets():
     return tests
 
 def build_tests(targets):
-    subprocess.run([ "cmake", "--build", "build", "--target", *targets ])
+    result = subprocess.run([ "cmake", "--build", "build", "--target", *targets ])
+    if result.returncode != 0:
+        raise Exception(f"build failure!")
 
 def run_tests(tests):
     for test in tests: 

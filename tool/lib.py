@@ -35,7 +35,7 @@ def get_launch_cmd(exe_name: str):
 def run_test(exe_name : str):
     launch_cmd = get_launch_cmd(exe_name)
     dirs = ["test", "context", "log"]
-    log_path = os.path.join(*dirs, exe_name)
+    valgrind_log_path = os.path.join(*dirs, exe_name+'.valgrind')
     p = ""
     for d in dirs:
         p = os.path.join(p, d)
@@ -46,7 +46,15 @@ def run_test(exe_name : str):
     
     if code == 0:
         print("\x1b[1;95mMEMORY TEST\x1b[0m")
-        process = subprocess.run(["valgrind", "--tool=memcheck", "--leak-check=full", "--quiet", "--track-origins=yes" ,f"--log-file={log_path}", launch_cmd])
+        log_path = os.path.join(*dirs, exe_name+'.log')
+        log_file = open(log_path, 'w')
+        process = subprocess.run(
+            ["valgrind", "--tool=memcheck", "--leak-check=full", "--quiet", "--track-origins=yes" ,f"--log-file={valgrind_log_path}", launch_cmd], 
+            stdout=log_file,
+            stderr=log_file
+        )
+        log_file.close()
+
     else:
         print("\x1b[1;91mTEST FAILED\x1b[0m")
         
