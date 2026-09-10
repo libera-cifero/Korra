@@ -18,6 +18,7 @@ void video_stream_out::send_current_frame(){
     spdlog::debug("{} writing the frame to pipe_out...", prefix);
     _pipe->write(frame, _codec->frame_size());
     spdlog::debug("{} frame was writen to pipe_out!", prefix);
+    delete [] frame;
     spdlog::debug("{} succsess!", prefix);
 }
 

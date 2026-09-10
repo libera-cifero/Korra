@@ -4,7 +4,6 @@
 #include "frame_io.hpp"
 #include "io.hpp"
 #include "video_codec/payload_storage.hpp"
-#include "video_codec/sync_signals.hpp"
 #include "video_codec/video_codec.hpp"
 #include <cstdint>
 #include <cstdio>
@@ -112,8 +111,7 @@ void test_pop_frame(){
     frame_io io_context;
     
     io_context.iterate_frame_test_cases(test_name.c_str(), "rgb_xchacha20/1280x720", [&](ITER_ACTION_ARGS) {
-        sync_signals *signals = new sync_signals;
-        payload_storage *storage = new payload_storage(meta.codec, signals);
+        payload_storage *storage = new payload_storage(meta.codec);
 
         char *buffer = storage->current_payload();
         auto d = meta.data.payload;
@@ -134,12 +132,10 @@ void test_pop_frame(){
         p /= "test_pop_frame";
         if(!is_directory(p)) create_directory(p);
         p /= (m.str()+".bmp");
-        signals->ready_request()->release();
         char *frame = storage->pop_frame();
         io_context.write_frame_data(reinterpret_cast<uint8_t*>(frame), meta.frame_width, meta.frame_height, p);
         delete[] frame;
         delete storage;
-        delete signals;
         delete meta.codec;
     });
     printPass(test_name.c_str());

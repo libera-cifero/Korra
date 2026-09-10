@@ -1,11 +1,9 @@
 #pragma once
 #include "frame_codec/frame_codec.hpp"
 #include "payload_storage.hpp"
-#include "clock_generator.hpp"
 
 class video_codec {
 private:
-    clock_generator *_clock_generator;   
     frame_codec *_frame_codec;
     payload_storage *_payload_storage;
 public:

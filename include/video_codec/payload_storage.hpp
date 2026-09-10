@@ -1,6 +1,5 @@
 #pragma once
 #include "frame_codec/frame_codec.hpp"
-#include "sync_signals.hpp"
 #include <mutex>
 #include <deque>
 
@@ -8,7 +7,6 @@ using namespace std;
 class payload_storage {
 private:
     frame_codec *_encoder;
-    sync_signals *_signals;
     
     mutex _payloads_access, _frame_access;
     deque<char*> _payloads;
@@ -18,7 +16,7 @@ private:
 public:
     int payload_index;
 
-    payload_storage(frame_codec *encoder, sync_signals *signals);
+    payload_storage(frame_codec *encoder);
 
     int payload_size();
     int frame_size();

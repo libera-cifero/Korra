@@ -1,10 +1,10 @@
 #include "video_codec/video_codec.hpp"
-#include <cmath>
+#include "lib/log.hpp"
+#include <spdlog/spdlog.h>
 
 video_codec::video_codec(frame_codec *encoder, int fps){
     _frame_codec = encoder;
-    _clock_generator = new clock_generator((int)round(1000.0f / fps));
-    _payload_storage = new payload_storage(encoder, _clock_generator->signals());
+    _payload_storage = new payload_storage(encoder);
 }
 
 frame_codec *video_codec::fcodec(){
@@ -19,10 +19,6 @@ int video_codec::payload_size(){
     return _payload_storage->payload_size();
 }
 
-void video_codec::launch(){
-    _clock_generator->launch();
-}
-
 payload_storage *video_codec::storage() { return _payload_storage; }
 
 char *video_codec::decode(char *frame){
@@ -30,7 +26,9 @@ char *video_codec::decode(char *frame){
 }
 
 video_codec::~video_codec(){
+    auto prefix = get_method_prefix("video_codec.~video_codec");
+    spdlog::debug("{} destructing...", prefix);
     delete _payload_storage;
     delete _frame_codec;
-    delete _clock_generator;
+    spdlog::debug("{} video_codec was destructed!", prefix);
 }

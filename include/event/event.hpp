@@ -2,12 +2,15 @@
 #include "lib/string_literal.hpp"
 #include <string>
 using namespace std;
-struct event_args { };
+struct event_args { 
+    virtual ~event_args() = default;
+};
 
 class event {
 public:
     virtual string name() = 0;
     virtual event_args *check() = 0;
+    virtual ~event() = default;
 };
 
 template<string_literal event_name>

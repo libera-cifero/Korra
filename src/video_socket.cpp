@@ -86,7 +86,7 @@ static std::string format_ip_header(ip_header* header) {
         ss << "IPv4: " << ipv4_to_string(h->src_ip) << " -> " 
            << ipv4_to_string(h->dst_ip) << " | "
            << "Protocol: " << get_protocol_name(h->protocol) << " | "
-           << "Length: " << ntohs(h->total_length) << " | "
+           << "Length: " << h->total_length << " | "
            << "TTL: " << (int)h->ttl << " | "
            << "Flags: [" << flags_str << "] | "
            << "ID: 0x" << std::hex << ntohs(h->identification);
@@ -152,13 +152,20 @@ void video_socket::run(){
     _loop->run();
 }
 
+void video_socket::stop(){
+    _loop->stop();
+}
+
 tun *video_socket::get_tun() { return _tun; }
 video_stream_in *video_socket::stream_in(){ return _stream_in; }
 video_stream_out *video_socket::stream_out(){ return _stream_out; }
 
 video_socket::~video_socket(){
+    auto prefix = get_method_prefix("video_socket.~video_socket");
+    spdlog::debug("{} destructing...", prefix);
     delete _loop;
     delete _tun;
     delete _stream_in;
     delete _stream_out;
+    spdlog::debug("{} video_socket destructed!", prefix);
 }

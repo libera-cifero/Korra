@@ -39,7 +39,10 @@ void video_stream_in::unbox_frame(char *frame, vector<korra_data*> &buffer) {
 }
 
 video_stream_in::~video_stream_in(){
+    auto prefix = get_method_prefix("video_stream_in.~video_stream_in");
+    spdlog::debug("{} destructing...", prefix);
     delete _pipe;
     delete _codec;
     delete _unboxer;
+    spdlog::debug("{} video_stream_in was destructed!", prefix);
 }

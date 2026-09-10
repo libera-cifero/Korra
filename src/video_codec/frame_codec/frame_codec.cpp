@@ -57,6 +57,9 @@ char *frame_codec::decode(char *frame) {
 }
 
 frame_codec::~frame_codec(){
+    string prefix = get_method_prefix("frame_codec.~frame_codec");
+    spdlog::debug("{} destructing...", prefix);
     delete _provider;
     delete _cipher;
+    spdlog::debug("{} destructed...", prefix);
 }

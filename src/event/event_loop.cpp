@@ -1,7 +1,9 @@
 #include "event/event_loop.hpp"
+#include "lib/log.hpp"
 #include <chrono>
 #include <cstddef>
 #include <functional>
+#include <spdlog/spdlog.h>
 #include <thread>
 #include <unistd.h>
 #include <vector>
@@ -15,10 +17,10 @@ void event_loop::observe(event *e){
 }
 
 void event_loop::subscribe(string event_name, function<void(event_args *)> action){
-    if(!_loop_executor.contains(event_name)){
-        _loop_executor[event_name] = new vector<function<void(event_args *)>>;
+    if(!_event_handlers.contains(event_name)){
+        _event_handlers[event_name] = new vector<function<void(event_args *)>>;
     }
-    _loop_executor[event_name]->push_back(action);
+    _event_handlers[event_name]->push_back(action);
 }
 
 void event_loop::run(){
@@ -27,8 +29,8 @@ void event_loop::run(){
         for(auto e : _listening_events){
             auto result = e->check();
             if(result != nullptr){
-                auto funcs = *_loop_executor[e->name()];
-                for(auto action : funcs) action(result);
+                auto handlers = *_event_handlers[e->name()];
+                for(auto handler : handlers) handler(result);
             }
             delete result;
         }
@@ -36,9 +38,16 @@ void event_loop::run(){
     }
 }
 
-event_loop::~event_loop(){
+void event_loop::stop(){
     _is_running = false;
-    for(auto kvp : _loop_executor){
+}
+
+event_loop::~event_loop(){
+    auto prefix = get_method_prefix("event_loop.~event_loop");
+    spdlog::debug("{} destructing...", prefix);
+    _is_running = false;
+    for(auto kvp : _event_handlers){
         delete kvp.second;
     }
+    spdlog::debug("{} event_loop was destucted!", prefix);
 }

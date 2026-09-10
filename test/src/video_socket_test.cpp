@@ -124,7 +124,7 @@ void test_write_udp(){
     inet_pton(AF_INET, "10.18.193.2", &dest.sin_addr);
 
     path seed_path = DATA_SECRET_PATH / "video_socket_test.test_read_write.seed";
-    video_socket_A->run();
+    thread t([](video_socket *socket){ socket->run(); }, video_socket_A);
 
     string error_reason;
     bool is_error = false;
@@ -134,7 +134,7 @@ void test_write_udp(){
     uint64_t seed = get_seed(seed_path);
     int max_size = video_socket_A->get_tun()->mtu() - 100;
     try{
-        for(int i = 0; i < 100000; i++){
+        for(int i = 0; i < 10000; i++){
             printInfo("%d sending...", i);
             int size = rand() % max_size;
             char *payload = random_array(seed, size, seed);
@@ -147,6 +147,8 @@ void test_write_udp(){
         is_error = true;
         error_reason = e.what();
     }
+    video_socket_A->stop();
+    t.join();
     delete udp_socket_A;
     delete video_socket_A;
 

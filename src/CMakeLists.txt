@@ -16,8 +16,11 @@ file(GLOB_RECURSE data_boxer_src data_boxer/*.cpp)
 #pipe/*
 file(GLOB_RECURSE pipe_src pipe/*.cpp)
 
+#event/*
+file(GLOB_RECURSE event_src event/*.cpp)
+
 #video_socket_src
-file(GLOB video_socket_src video_socket.cpp video_stream_in.cpp video_stream_out.cpp)
+file(GLOB_RECURSE video_socket_src video_socket.cpp video_stream_in.cpp video_stream_out.cpp)
 
 #lib
 add_library(lib STATIC ${lib_src})
@@ -46,7 +49,7 @@ target_include_directories(tun PUBLIC ${INCLUDE_DIR})
 target_link_libraries(tun PUBLIC spdlog)
 
 #video_socket
-add_library(video_socket STATIC ${video_socket_src} ${pipe_src})
+add_library(video_socket STATIC ${video_socket_src} ${pipe_src} ${event_src})
 target_include_directories(video_socket PUBLIC ${INCLUDE_DIR})
 target_link_libraries(video_socket PUBLIC spdlog lib video_codec data_boxer tun)
 

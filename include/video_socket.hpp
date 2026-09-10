@@ -6,7 +6,6 @@
 #include "event/event_loop.hpp"
 #include "video_stream_in.hpp"
 #include "video_stream_out.hpp"
-#include <thread>
 
 struct video_socket_settings {
     tun* tunnel;
@@ -33,5 +32,6 @@ public:
     video_stream_in *stream_in();
     video_stream_out *stream_out();
     void run();
+    void stop();
     ~video_socket();
 };

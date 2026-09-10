@@ -9,7 +9,7 @@
 class event_loop {
 private:
     vector<event *> _listening_events;
-    map<string, vector<function<void(event_args*)>>*> _loop_executor;
+    map<string, vector<function<void(event_args*)>>*> _event_handlers;
     bool _is_running = false;
     size_t _delay;
 public:
@@ -17,5 +17,6 @@ public:
     void observe(event *e);
     void subscribe(string event_name, function<void(event_args *)> action);
     void run();
+    void stop();
     ~event_loop();
 };

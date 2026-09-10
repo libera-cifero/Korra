@@ -99,6 +99,9 @@ char* mosaic_provider::to_frame(char* data) {
 }
 
 mosaic_provider::~mosaic_provider(){
+    string prefix = get_method_prefix("mosaic_provider.~mosaic_provider");
+    spdlog::debug("{} destructing...", prefix);
     delete _settings->codec;
     delete _settings;
+    spdlog::debug("{} mosaic_provider was destructed!", prefix);
 }

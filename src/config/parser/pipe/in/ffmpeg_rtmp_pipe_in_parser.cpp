@@ -1,12 +1,13 @@
 #include "config/parser/pipe/in/ffmpeg_rtmp_pipe_in_parser.hpp"
 #include "config/data/video_config.hpp"
-#include "pipe/in/pipe/ffmpeg_rtmp_pipe_in.hpp"
+#include "pipe/in/pipe/ffmpeg_rtmp/ffmpeg_rtmp_pipe_in_unix.hpp"
 #include "pipe/in/pipe/video_pipe_in.hpp"
 #include <cstring>
 #include <fstream>
 #include <stdexcept>
 #include <filesystem>
 #include <string>
+#include <stdexcept>
 
 using namespace filesystem;
 string ffmpeg_rtmp_pipe_in_parser::type(){
@@ -33,7 +34,13 @@ video_pipe_in *ffmpeg_rtmp_pipe_in_parser::parse(json j){
     }
     else throw runtime_error("ffmpeg_rtmp_pipe_in_parser.parse: It can't parse json! rtmpUrl, rtmpUrlFile are undefined or not strings!");
 
-    return new ffmpeg_rtmp_pipe_in(config);
+#ifdef __linux__
+    return new ffmpeg_rtmp_pipe_in_unix(config);
+#elif _WIN32
+    throw std::runtime_error("Unsupported OS");
+#else
+    throw runtime_error("Unsupported OS!");
+#endif
 }
 
 json ffmpeg_rtmp_pipe_in_parser::serialize(video_pipe_in *p) {

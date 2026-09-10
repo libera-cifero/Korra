@@ -5,6 +5,7 @@
 #include <fcntl.h>
 #include <linux/if.h>
 #include <linux/if_tun.h>
+#include <netinet/in.h>
 #include <spdlog/spdlog.h>
 #include <stdexcept>
 #include <sys/ioctl.h>
@@ -16,6 +17,9 @@ linux_tun::linux_tun(string &tun_name, string &ip, uint8_t subnet_mask) : tun(ip
 
     struct ifreq ifr;
     if((_file_descriptor = open("/dev/net/tun", O_RDWR)) == -1) throw runtime_error("/dev/net/tun open error!");
+
+    int flags = fcntl(_file_descriptor, F_GETFL, 0);
+    fcntl(_file_descriptor, F_SETFL, flags | O_NONBLOCK);
 
     memset(&ifr, 0, sizeof(ifr));
     ifr.ifr_flags = IFF_TUN | IFF_NO_PI;
@@ -47,16 +51,19 @@ char *linux_tun::_current_read_buffer(){ return _read_buffer + _readed_count; }
 char *linux_tun::read(){
     char *buff = _current_read_buffer();
     if(_is_header_reading){
-        int recv_count = recv(_file_descriptor, buff, 20, 0);
+        int recv_count = ::read(_file_descriptor, buff, 20 - _readed_count);
         if(recv_count < 0) return nullptr;
+        spdlog::debug("something was recieved! count={}", recv_count);
         _readed_count += recv_count;
         _is_header_reading = _readed_count < 20;
         memcpy(&_package_read_count, _read_buffer + 2, 2);
+        _package_read_count = ntohs(_package_read_count);
         if(_is_header_reading) return nullptr;
     }
     buff = _current_read_buffer();
-    int recv_count = recv(_file_descriptor, buff, _package_read_count, 0);
+    int recv_count = ::read(_file_descriptor, buff, _package_read_count - _readed_count);
     if(recv_count < 0) return nullptr;
+    spdlog::debug("something was recieved! count={}", recv_count);
     _readed_count += recv_count;
     if(_readed_count >= _package_read_count){
         char *ip_package = new char[_package_read_count];
@@ -81,6 +88,9 @@ void linux_tun::write(char *ip_package) {
 int linux_tun::mtu() { return _mtu; }
 
 linux_tun::~linux_tun(){
+    auto prefix = get_method_prefix("linux_tun.~linux_tun");
+    spdlog::debug("{} destructing...", prefix);
     delete [] _read_buffer;
     close(_file_descriptor);
+    spdlog::debug("{} linux_tun was destructed!", prefix);
 }

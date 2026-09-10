@@ -1,11 +1,9 @@
 #include "video_codec/payload_storage.hpp"
 #include "lib/log.hpp"
-#include "video_codec/sync_signals.hpp"
 #include "video_codec/frame_codec/frame_codec.hpp"
 #include <cstring>
 #include <mutex>
 #include <spdlog/spdlog.h>
-#include <thread>
 
 int payload_storage::payload_size(){
     return _encoder -> payload_size();
@@ -15,9 +13,8 @@ int payload_storage::frame_size(){
     return _encoder -> frame_size();
 }
 
-payload_storage::payload_storage(frame_codec *encoder, sync_signals *signals) {
+payload_storage::payload_storage(frame_codec *encoder) {
     _encoder = encoder;
-    _signals = signals;
 
     begin_new_payload();
 }
@@ -63,7 +60,10 @@ char *payload_storage::pop_frame(){
 }
 
 payload_storage::~payload_storage(){
+    auto prefix = get_method_prefix("payload_storage.~payload_storage");
+    spdlog::debug("{} destructing...", prefix);
     for(int i = 0; i < _payloads.size(); i++) delete [] _payloads[i];
     _payloads.clear();
+    spdlog::debug("{} payload_storage was destructed!", prefix);
     //delete [] _frame;
 }

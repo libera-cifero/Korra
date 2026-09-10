@@ -6,6 +6,7 @@ struct timer_event_args : event_args { };
 
 class timer_event : public static_named_event<"timer_event"> {
 private:
+    bool _is_first_check;
     timespec _previous_time;
     int _timout_millis;
 public:

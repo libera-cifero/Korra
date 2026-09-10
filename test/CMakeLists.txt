@@ -7,7 +7,6 @@ file(GLOB test_lib_src "lib/*.cpp")
 
 file(GLOB color_test_src "src/color_test.cpp")
 file(GLOB mosaic_test_src "src/video_codec/frame_codec/provider/mosaic_provider_test.cpp")
-file(GLOB clock_gen_test_src "src/video_codec/clock_generator_test.cpp")
 file(GLOB video_codec_test_src "src/video_codec/video_codec_test.cpp")
 file(GLOB video_config_parser_test_src "src/parser/video_config_parser_test.cpp")
 file(GLOB frame_codec_parser_test_src "src/parser/frame_codec_parser_test.cpp")
@@ -75,11 +74,6 @@ add_executable(mosaic_test ${mosaic_test_src})
 target_setup(mosaic_test)
 target_link_libraries(mosaic_test PUBLIC test_lib)
 #target_link_libraries(mosaic PUBLIC base_utils color_codec)
-
-#clock_generator_test
-add_executable(clock_generator_test ${clock_gen_test_src})
-target_setup(clock_generator_test)
-target_link_libraries(clock_generator_test PUBLIC test_lib)
 
 #video_codec_test
 add_executable(video_codec_test ${video_codec_test_src})
