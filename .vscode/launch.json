@@ -5,7 +5,7 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/video_socket_test",
+            "target": "./bin/linux_tun_test",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
             "arguments": ""
@@ -15,7 +15,7 @@
             "type": "debugpy",
             "request": "launch",
             "program": "tool/test.py",
-            "args": []
+            "args": ["color_test"]
         }
     ]
 }

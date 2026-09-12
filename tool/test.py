@@ -1,6 +1,6 @@
 import os
 import subprocess
-import lib
+from lib import test_result, runner
 import sys
 import re
 
@@ -25,8 +25,9 @@ def build_tests(targets):
         raise Exception(f"build failure!")
 
 def run_tests(tests):
-    for test in tests: 
-        lib.run_test(test)
+    with test_result.test_result() as t:
+        for test in tests: 
+            runner.run_test(test, t)
 
 if len(sys.argv) < 2:
     tests = get_test_targets()

@@ -8,14 +8,17 @@
 #include "test.hpp"
 #include "video_codec/payload_storage.hpp"
 #include "video_codec/video_codec.hpp"
+#include <cstdint>
 #include <cstring>
 #include <functional>
+#include <netinet/in.h>
 #include <vector>
 #include <random>
 
 char *random_ip_package(uint16_t size) {
     char *package = new char[size];
-    memcpy(package + 2, &size, 2);
+    uint16_t net_size = htons(size);
+    memcpy(package + 2, &net_size, 2);
     std::random_device seed; 
     std::mt19937_64 gen(seed());
     std::uniform_int_distribution<> dis(-127, 128);

@@ -12,7 +12,7 @@ xchacha20_cipher::xchacha20_cipher(xchacha20_settings &config) : cipher(config) 
     _key = config.key;
     _iv = config.iv;
     spdlog::debug("{} _key and _iv ARE SECURE INFORMATION! PLEASE DON'T SHARE IT!!!\n_key={} _iv={}", prefix, get_byte_str(_key), get_byte_str(_iv));
-    spdlog::info("{} constructing completed!", prefix);
+    spdlog::debug("{} constructing completed!", prefix);
 }
 
 int xchacha20_cipher::header_size() { 

@@ -42,20 +42,15 @@ char *tun::_current_read_buffer(){ return _read_buffer + _readed_count; }
 
 char *tun::read(){
     char *buff = _current_read_buffer();
-    if(_is_header_reading){
-        int recv_count = __read(buff, 20 - _readed_count);
-        if(recv_count < 0) return nullptr;
-        spdlog::debug("something was recieved! count={}", recv_count);
-        _readed_count += recv_count;
-        _is_header_reading = _readed_count < 20;
-        memcpy(&_package_read_count, _read_buffer + 2, 2);
-        _package_read_count = ntohs(_package_read_count);
-        if(_is_header_reading) return nullptr;
-    }
-    buff = _current_read_buffer();
-    int recv_count = __read(buff, _package_read_count - _readed_count);
+    int recv_count = __read(buff, mtu());
     if(recv_count < 0) return nullptr;
-    spdlog::debug("something was recieved! count={}", recv_count);
+    memcpy(&_package_read_count, _read_buffer + 2, 2);
+    _package_read_count = ntohs(_package_read_count);
+    buff = _current_read_buffer();
+    if(is_debug_level()){
+        string prefix = get_method_prefix("tun.read");
+        spdlog::debug("{} something was recieved! count={}", prefix, recv_count);
+    }
     _readed_count += recv_count;
     if(_readed_count >= _package_read_count){
         char *ip_package = new char[_package_read_count];

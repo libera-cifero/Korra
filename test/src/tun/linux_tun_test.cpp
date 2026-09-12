@@ -1,11 +1,14 @@
+#include "data_boxer/data/ip_data.hpp"
 #include "tun/linux_tun.hpp"
 #include "test.hpp"
 #include <arpa/inet.h>
+#include <chrono>
 #include <cstdlib>
 #include <cstring>
 #include <format>
 #include <filesystem>
 #include <netinet/in.h>
+#include <semaphore>
 #include <string>
 #include <sys/socket.h>
 #include <thread>
@@ -52,14 +55,15 @@ void test_read(){
         fail(test_name, "tun %s doesn't exist!\nTry to launch it\n%s", -1, tun_name.c_str(), tun_build_script.c_str());
     }
     linux_tun tun(tun_name, ip, subnet_mask);
-    
-        // заранее подготовленный кусок данных, который должен дойти как payload
+    tun.init_buffer();
+    // заранее подготовленный кусок данных, который должен дойти как payload
     const char *test_payload = "korra_tun_read_test_payload";
     size_t payload_len = strlen(test_payload);
 
-    string dst_ip = "10.18.195.2";   // любой адрес внутри подсети tun, отличный от tun_ip
+    string dst_ip = "10.12.34.57";   // любой адрес внутри подсети tun, отличный от tun_ip
     uint16_t dst_port = 9999;
 
+    binary_semaphore sync(0);
     std::thread sender([&]() {
         int sock = socket(AF_INET, SOCK_DGRAM, 0);
         if (sock < 0) {
@@ -72,41 +76,39 @@ void test_read(){
         dst_addr.sin_port = htons(dst_port);
         inet_pton(AF_INET, dst_ip.c_str(), &dst_addr.sin_addr);
 
-        // даём основному потоку время встать на блокирующий read()
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-
-        ssize_t sent = sendto(sock, test_payload, payload_len, 0,
-                               (struct sockaddr *)&dst_addr, sizeof(dst_addr));
-        if (sent < 0) {
-            fail(test_name, "sendto failed: %s", -1, strerror(errno));
+        sync.acquire();
+        for(int i =0; i < 2; i++){
+            ssize_t sent = sendto(sock, test_payload, payload_len, 0, (struct sockaddr *)&dst_addr, sizeof(dst_addr));
+            if (sent < 0) {
+                fail(test_name, "sendto failed: %s", -1, strerror(errno));
+            }
         }
         close(sock);
     });
 
-    char *ip_packet = tun.read();  // блокируется до прихода пакета
+    char *ip_packet = nullptr;
+    
+    while(ip_packet == nullptr){
+        ip_packet = tun.read();
+        sync.release();
+        std::this_thread::sleep_for(chrono::milliseconds(10));
+    }
 
     sender.join();
 
-    // парсим IP-заголовок: IHL в младших 4 битах первого байта, длина в 32-битных словах
-    uint8_t ihl = (ip_packet[0] & 0x0F) * 4;
-    uint8_t protocol = (uint8_t)ip_packet[9];
+    ip_data data(ip_packet);
+    auto header = (ipv4_header*)data.header();
 
-    if (protocol != IPPROTO_UDP) {
-        fail(test_name, "unexpected protocol in received packet: %d", -1, protocol);
+    if (header->protocol != IPPROTO_UDP) {
+        fail(test_name, "unexpected protocol in received packet: %d", -1, header->protocol);
     }
 
-    // UDP-заголовок: src_port(2) + dst_port(2) + length(2) + checksum(2) = 8 байт
-    uint16_t udp_len_field = ntohs(*(uint16_t *)(ip_packet + ihl + 4));
-    size_t received_payload_len = udp_len_field - 8;
-    char *udp_payload = ip_packet + ihl + 8;
-
-    bool equal = (received_payload_len == payload_len) && (memcmp(udp_payload, test_payload, payload_len) == 0);
-
-    delete [] ip_packet;
+    int header_len = header->ihl * 4;
+    char *udp_payload = ip_packet+header_len + 8; //+8 because size of udp header is 8 byte and it places after IP header
+    bool equal = memcmp(udp_payload, test_payload, payload_len) == 0;
 
     if (!equal) {
-        fail(test_name, "payload mismatch: expected '%s', got '%.*s'", -1,
-             test_payload, (int)received_payload_len, udp_payload);
+        fail(test_name, "payload mismatch: expected '%s', got '%.*s'", -1, test_payload, udp_payload);
     }
 
 

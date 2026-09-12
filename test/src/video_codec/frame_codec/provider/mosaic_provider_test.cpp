@@ -10,6 +10,7 @@
 #include <cstdint>
 #include <cstring>
 #include <ctime>
+#include <spdlog/spdlog-inl.h>
 #include <vector>
 #include <random>
 
@@ -128,6 +129,8 @@ void make_output_dir_if_not_exists(string block_codec_name){
 }
 
 void test_to_frame_to_payload(){
+    auto level = spdlog::get_level();
+    spdlog::set_level(spdlog::level::off);
     const char *test_name = "mosaic_provider_test.test_to_frame_to_payload";
     printInfo(test_name);
 
@@ -152,6 +155,7 @@ void test_to_frame_to_payload(){
     test_settings_list(test_name, settings_list);
 
     printPass(test_name);
+    spdlog::set_level(level);
 }
 
 int main(){
