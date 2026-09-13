@@ -267,5 +267,6 @@ int main(){
     test_write_udp();
     //test_io_udp();
     //test_io_tcp();
+    delete socket_parser;
     return 0;
 }

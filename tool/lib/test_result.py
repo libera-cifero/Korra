@@ -18,7 +18,6 @@ class test_result:
         file = open(self.__path, 'r+')
         content = file.read()
         lines = content.splitlines()
-        print(lines)
 
         header = 'test name,plain test log,plain test passed,memory test log,memory test passed'
 

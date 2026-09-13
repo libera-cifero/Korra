@@ -37,7 +37,7 @@ char *frame_codec::encode(char *data) {
 }
 
 bool frame_codec::_is_void_payload(char *payload){
-    int size = frame_size();
+    int size = payload_size();
     for(int i = 0; i < size; i++) if(payload[i] != 0) return false;
     return true;
 }

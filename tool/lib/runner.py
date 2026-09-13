@@ -1,6 +1,7 @@
 import sys
 import os
 import subprocess
+import re
 from lib.test_result import test_result, test_type
 from lib.path_util import *
 
@@ -23,15 +24,41 @@ def run_plain_test(exe_name:str, log_path:str, result_file: test_result) -> bool
     result_file.mark_test(exe_name, test_type.PLAIN, log_path, passed)
     return passed
 
+def __has_heap_leackage(log_lines: list[str]):
+    for line in log_lines:
+        match = re.match("==\\d+==\\s{5}in use at exit: (\\d+) bytes in \\d+ blocks", line)
+        if match is not None:
+            leaked_bytes = int(match.groups()[0])
+            return leaked_bytes != 0
+    return False
+
+def __has_errors(log_lines: list[str]):
+    summary_line = log_lines[-1]
+    match = re.match("==\\d+== ERROR SUMMARY: (\\d+) errors from \\d+ contexts \\(suppressed: \\d+ from \\d+\\)", summary_line)
+    if match is None:
+        return True
+    errors = int(match.groups()[0])
+    return errors != 0
+
+def __check_valgrind_status(valgrind_log_path:str):
+    log = open(valgrind_log_path, 'r')
+    data = log.readlines()
+    log.close()
+    return not __has_errors(data) and not __has_heap_leackage(data)
+
 def run_memory_test(exe_name:str, valgrind_log_path:os.PathLike, result_file: test_result) -> bool:
     launch_cmd = get_launch_cmd(exe_name)
     print("\x1b[1;95mMEMORY TEST\x1b[0m")
     print(f"For memory leaking check {valgrind_log_path}")
-    process = subprocess.run(["valgrind", "--tool=memcheck", "--leak-check=full", "--quiet", "--track-origins=yes" ,f"--log-file={valgrind_log_path}", launch_cmd])
-    valgrind_passed = False
-    with open(valgrind_log_path, 'r') as v:
-        content = v.read()
-        valgrind_passed = not content.strip() or len(content) == 0
+    process = subprocess.run([
+        "valgrind", 
+        "--tool=memcheck", 
+        "--leak-check=full",
+        "--track-origins=yes",
+        "--show-leak-kinds=all",
+        f"--log-file={valgrind_log_path}", 
+        launch_cmd])
+    valgrind_passed = __check_valgrind_status(valgrind_log_path)
     result_file.mark_test(exe_name, test_type.MEMORY, valgrind_log_path, valgrind_passed)
     return valgrind_passed
 

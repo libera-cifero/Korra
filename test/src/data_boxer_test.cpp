@@ -12,6 +12,7 @@
 #include <cstring>
 #include <functional>
 #include <netinet/in.h>
+#include <spdlog/spdlog-inl.h>
 #include <vector>
 #include <random>
 
@@ -92,20 +93,23 @@ void test_box_unbox(){
         data_boxer boxer(vc->storage());
         vector<korra_data*> datas = get<2>(test_case);
 
-        for(korra_data *data : datas) boxer.box(data);
+        for(int i = 0; i < datas.size(); i++) {
+            auto data = datas[i];
+            printInfo("boxing %d...", i);
+            boxer.box(data);
+        }
 
         vector<char*> payloads;
-        char *prev_frame = nullptr;
-        while(true){
+        char *prev_frame = nullptr, *payload = nullptr;
+        do{
             char *frame = vc->storage()->pop_frame();
-            char *payload = codec->decode(frame);
+            payload = codec->decode(frame);
             delete [] frame;
-            if(payload[0] == 0 && payload[1] == 0){
-                delete [] payload;
-                break;
-            }
-            payloads.push_back(payload);
+            if(payload != nullptr)
+                payloads.push_back(payload);
         }
+        while(payload != nullptr);
+
         int payload_size = codec->payload_size();
         delete vc;
 
@@ -148,6 +152,7 @@ void test_box_unbox(){
 }
 
 int main(){
+    spdlog::set_level(spdlog::level::debug);
     test_box_unbox();
     return 0;
 }
