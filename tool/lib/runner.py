@@ -17,8 +17,8 @@ class color:
    UNDERLINE = '\033[4m'
    END = '\033[0m'
 
-def run_plain_test(exe_name:str, log_path:str, result_file: test_result) -> bool:
-    print("\x1b[1;95mPLAIN TEST\x1b[0m")
+def run_classic_test(exe_name:str, log_path:str, result_file: test_result) -> bool:
+    print("\x1b[1;95mCLASSIC TEST\x1b[0m")
     print(f"Result of test is placed in {os.path.abspath(log_path)}")
     passed = run_binary(exe_name, [], log_path) == 0
     result_file.mark_test(exe_name, test_type.PLAIN, log_path, passed)
@@ -65,9 +65,9 @@ def run_memory_test(exe_name:str, valgrind_log_path:os.PathLike, result_file: te
 def __print_memory_test_status(passed:bool):
     msg = ""
     if passed:
-        msg = "\x1b[1;92mMEMORY PASSED\x1b[0m"
+        msg = "\x1b[1;92mMEMORY TEST PASSED\x1b[0m"
     else:
-        msg = "\x1b[1;91mMEMORY FAILED\x1b[0m"
+        msg = "\x1b[1;91mMEMORY TEST FAILED\x1b[0m"
     print(msg + '\n')
 
 def run_test(exe_name: str, result_file: test_result):
@@ -77,14 +77,14 @@ def run_test(exe_name: str, result_file: test_result):
     make_dir_if_not_exists(dirs)
     print(f"\x1b[1m{exe_name}\x1b[0m")
     
-    plain_passed = run_plain_test(exe_name, log_path, result_file)
-    if plain_passed:
+    classic_passed = run_classic_test(exe_name, log_path, result_file)
+    if classic_passed:
         valgrind_log_path = os.path.abspath(os.path.join(*dirs, exe_name+'.valgrind'))
-        print("\x1b[1;92mPASSED\x1b[0m")
+        print("\x1b[1;92mCLASSIC TEST PASSED\x1b[0m")
         memory_passed = run_memory_test(exe_name, valgrind_log_path, result_file)
         __print_memory_test_status(memory_passed)
     else:
-        print("\x1b[1;91mTEST FAILED\x1b[0m\n")
+        print("\x1b[1;91mCLASSIC TEST FAILED\x1b[0m\n")
         
 def run_binary(exe_name : str, args : list[str], filename_stdout:str | None = None):
     file = get_binary_path(exe_name)

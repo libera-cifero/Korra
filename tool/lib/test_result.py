@@ -19,7 +19,7 @@ class test_result:
         content = file.read()
         lines = content.splitlines()
 
-        header = 'test name,plain test log,plain test passed,memory test log,memory test passed'
+        header = 'test name,classic test log,classic test passed,memory test log,memory test passed'
 
         if len(lines) < 1:
             lines.append(header)
