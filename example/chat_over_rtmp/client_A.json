@@ -1,0 +1,141 @@
+{
+    "tun":{
+        "name": "korra_tun_A",
+        "address": "10.18.193.1/24"
+    },
+    "in": {
+        "frameWidth": 1280,
+        "frameHeight": 720,
+        "fps":30,
+        
+        "pipe": {
+            "type":"ffmpegRtmp",
+            "ffmpegRtmpSettings":{
+                "url": "rtmp://localhost:1935/live/clientA"
+            }
+        },
+        
+        "frameCodec":{
+            "cipher": {
+                "type": "xchacha20",
+                "xchacha20Settings":{
+                    "password": "password-for-client-A"
+                }
+            },
+            "provider": {
+                "type": "mosaic",
+                "mosaicSettings": {
+                    "blockSize": 16,
+                    "blockCodec": {
+                        "type": "rgbPalette",
+                        "bitsPerNumber": 5,
+                        "rgbPaletteSettings": {
+                            "palette":[
+                                "#000000",
+                                "#F8F8F8",
+                                "#0078F8",
+                                "#78F800",
+                                "#F80078",
+                                "#909090",
+                                "#00F880",
+                                "#8000F8",
+                                "#F88000",
+                                "#009808",
+                                "#080098",
+                                "#980800",
+                                "#60F8F8",
+                                "#F860F8",
+                                "#F8F860",
+                                "#484848",
+                                "#008888",
+                                "#7070F8",
+                                "#70F870",
+                                "#880088",
+                                "#888800",
+                                "#F87070",
+                                "#00E0E8",
+                                "#E0E800",
+                                "#E800E0",
+                                "#1818F8",
+                                "#18F818",
+                                "#F81818",
+                                "#B0B8E8",
+                                "#4848A8",
+                                "#48A848",
+                                "#A84848"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "out": {
+        "frameWidth": 1280,
+        "frameHeight": 720,
+        "fps":30,
+        
+        "pipe": {
+            "type":"ffmpegRtmp",
+            "ffmpegRtmpSettings":{
+                "url": "rtmp://localhost:1935/live/clientB"
+            }
+        },
+        
+        "frameCodec":{
+            "cipher": {
+                "type": "xchacha20",
+                "xchacha20Settings":{
+                    "password": "password-for-client-B-abracacadabra"
+                }
+            },
+            "provider": {
+                "type": "mosaic",
+                "mosaicSettings": {
+                    "blockSize": 16,
+                    "blockCodec": {
+                        "type": "rgbPalette",
+                        "bitsPerNumber": 5,
+                        "rgbPaletteSettings": {
+                            "palette":[
+                                "#000000",
+                                "#F8F8F8",
+                                "#0078F8",
+                                "#78F800",
+                                "#F80078",
+                                "#909090",
+                                "#00F880",
+                                "#8000F8",
+                                "#F88000",
+                                "#009808",
+                                "#080098",
+                                "#980800",
+                                "#60F8F8",
+                                "#F860F8",
+                                "#F8F860",
+                                "#484848",
+                                "#008888",
+                                "#7070F8",
+                                "#70F870",
+                                "#880088",
+                                "#888800",
+                                "#F87070",
+                                "#00E0E8",
+                                "#E0E800",
+                                "#E800E0",
+                                "#1818F8",
+                                "#18F818",
+                                "#F81818",
+                                "#B0B8E8",
+                                "#4848A8",
+                                "#48A848",
+                                "#A84848"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+}
