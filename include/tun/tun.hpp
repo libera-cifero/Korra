@@ -16,9 +16,10 @@ private:
 protected:
     virtual int __read(char *buffer, int count) = 0;
     virtual int __write(char *buffer, int count) = 0;
+    virtual void __init_properties(string name, string &ip, uint8_t &subnet_mask) = 0;
 public:
-    tun(string &name,string &ip, uint8_t subnet_mask);
-    void init_buffer();
+    tun(string &name);
+    void init();
     char *read();
     void write(char *ip_package);
     virtual int mtu() = 0;

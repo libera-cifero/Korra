@@ -10,10 +10,10 @@
 tun *build_tun(tun_config &config){
     tun *t;
 #ifdef __linux__
-    t = new linux_tun(config.name, config.ip, config.mask);
+    t = new linux_tun(config.name);
 #else
     return nullptr;
 #endif
-    t->init_buffer();
+    t->init();
     return t;
 }

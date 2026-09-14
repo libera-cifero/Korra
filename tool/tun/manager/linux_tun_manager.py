@@ -1,7 +1,12 @@
 from manager import tun_manager
 import os, sys, subprocess, shutil, ipaddress, shlex
+import re
+import pwd
 
 class linux_tun_manager(tun_manager.tun_manager):
+    def __init__(self):
+        self.__tun_info_pattern = "\\d+: ([^\\s]+):.+mtu (\\d+).+inet (\\d{1,3}(?:\\.\\d{1,3}){3})\\/(\\d+).+inet6 ([0-f:]+)\\/(\\d+)"
+
     def __tun_name_to_service_path(self, tun_name:str) -> str:
         return f"/etc/systemd/system/korra-tun-{tun_name}.service"
 
@@ -95,3 +100,50 @@ class linux_tun_manager(tun_manager.tun_manager):
 
     def is_usable(self):
         return sys.platform == 'linux'
+
+    def __get_username(self, tun_name:str) -> str:
+        result = subprocess.run(["ip", "tuntap", "show"], capture_output=True, text=True)
+        if result.returncode != 0:
+            raise Exception("Error when executed command \"ip tuntap show\"!")
+        pattern = f"{tun_name}:.+user (\\d+)"
+        match = re.search(pattern, result.stdout)
+        if match is None:
+            raise Exception(f"Tried to get user id\nInvalid pattern {pattern} for output\n{result.stdout}")
+        
+        user_id = int(match.group(1))
+        return pwd.getpwuid(user_id).pw_name
+
+    def __match_to_tun_info(self, match: re.Match):
+        groups = match.groups()
+        return tun_manager.tun_info(
+            name = groups[0], 
+            mtu = int(groups[1]),
+            address = ipaddress.IPv4Address(groups[2]), 
+            net = ipaddress.IPv4Network(int(groups[3])),
+            user = None
+        )
+
+    def get_info_by_name(self, tun_name:str) -> tun_manager.tun_info: 
+        cmd = f"ip addr show {tun_name}"
+        result = subprocess.run(["ip", "addr", "show", tun_name], capture_output = True)
+        if result.returncode != 0:
+            raise tun_manager.TunInfoNotFoundException(f"Tun interface \"{tun_name}\" not found or execution error!")
+        pattern = self.__tun_info_pattern
+        match = re.match(pattern, text)
+        if match is None:
+            raise Exception(f"Tried to get general TUN info\nInvalid pattern {pattern} for output\n{text}")
+        info = self.__match_to_tun_info(match)
+        info.user = self.__get_username(info.tun_name)
+        return info
+    
+    def get_info_by_ip(self, ip: ipaddress.IPv4Address) -> tun_manager.tun_info: 
+        cmd = f"ip addr show {tun_name}"
+        result = subprocess.run(["ip", "addr", "show"], capture_output = True)
+        pattern:str = self.__tun_info_pattern
+        entries:list[re.Match] = re.findall(pattern, result.stdout)
+        for match in entries:
+            info = self.__match_to_tun_info(match)
+            if ip in info.net:
+                info.user = self.__get_username(info.name)
+                return info
+        raise tun_manager.TunInfoNotFoundException(f"Tun interface for ip {ip} not found!")

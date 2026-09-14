@@ -12,9 +12,7 @@
 #endif
 
 
-tun::tun(string &tun_name, string &ip, uint8_t subnet_mask) {
-    _ip = ip;
-    _subnet_mask = subnet_mask;
+tun::tun(string &tun_name) {
     _name = tun_name;
     _is_header_reading = true;
     _readed_count = _package_read_count = 0;
@@ -34,8 +32,9 @@ string tun::name(){
     return _name;
 }
 
-void tun::init_buffer(){
+void tun::init(){
     _read_buffer = new char[mtu()];
+    __init_properties(name(), _ip, _subnet_mask);
 }
 
 char *tun::_current_read_buffer(){ return _read_buffer + _readed_count; }

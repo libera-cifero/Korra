@@ -54,8 +54,8 @@ void test_read(){
         );
         fail(test_name, "tun %s doesn't exist!\nTry to launch it\n%s", -1, tun_name.c_str(), tun_build_script.c_str());
     }
-    linux_tun tun(tun_name, ip, subnet_mask);
-    tun.init_buffer();
+    linux_tun tun(tun_name);
+    tun.init();
     // заранее подготовленный кусок данных, который должен дойти как payload
     const char *test_payload = "korra_tun_read_test_payload";
     size_t payload_len = strlen(test_payload);

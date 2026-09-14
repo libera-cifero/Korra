@@ -11,8 +11,9 @@ private:
 protected:
     int __read(char *buffer, int count) override;
     int __write(char *buffer, int count) override;
+    void __init_properties(string name, string &ip, uint8_t &subnet_mask) override;
 public:
-    linux_tun(string &tun_name, string &ip, uint8_t subnet_mask);
+    linux_tun(string &tun_name);
     int mtu() override;
     ~linux_tun();
 };

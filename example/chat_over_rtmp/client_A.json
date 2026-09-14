@@ -1,8 +1,6 @@
 {
-    "tun":{
-        "name": "korra_tun_A",
-        "address": "10.18.193.1/24"
-    },
+    "endpoint": "10.18.193.2:1234",
+    
     "in": {
         "frameWidth": 1280,
         "frameHeight": 720,

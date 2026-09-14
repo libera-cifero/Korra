@@ -1,15 +1,21 @@
-#args: make|del MAKE_ARGS|DEL_ARGS
+#args: make|del|info MAKE_ARGS|DEL_ARGS|INFO_ARGS
 #MAKE_ARGS: ipv4_address/mask tun_name username
 #DEL_ARGS: tun_name
+#INFO_ARGS: INFO.ADDRESS_ARGS|INFO.NAME_ARGS
+#INFO.ADDRESS_ARGS: --address|-a ipv4_address
+#INFO.NAME_ARGS: --name|-n tun_name
+
 import sys
 import ipaddress
 from manager import linux_tun_manager, windows_tun_manager, macos_tun_manager, android_tun_manager, ios_tun_manager
 
-if len(sys.argv) < 2:
+argv = sys.argv
+
+if len(argv) < 2:
     print("Too less args!")
 
-action = sys.argv[1]
-if action not in ['make', 'del']:
+action = argv[1]
+if action not in ['make', 'del', 'info']:
     print(f"Unsuppored action {action}! make and del are availble only!")
     exit(-1)
 
@@ -32,20 +38,34 @@ if manager == None:
     exit(-2)
 
 if action == 'make':
-    if len(sys.argv) < 5:
+    if len(argv) < 5:
         print("Too few arguments!")
         exit(-3)
 
-    net = ipaddress.IPv4Network(sys.argv[2], strict=False)
-    address = ipaddress.IPv4Address(sys.argv[2].split('/')[0])
-    name = sys.argv[3]
-    user = sys.argv[4]
+    net = ipaddress.IPv4Network(argv[2], strict=False)
+    address = ipaddress.IPv4Address(argv[2].split('/')[0])
+    name = argv[3]
+    user = argv[4]
     manager.make_tun(address, net, name, user)
 
 elif action == 'del':
-    if len(sys.argv) < 3:
+    if len(argv) < 3:
         print("Too few arguments!")
         exit(-4)
 
-    manager.remove_tun(sys.argv[2])
+    manager.remove_tun(argv[2])
 
+elif action == 'info':
+    if len(argv) < 4: #korra-tun info --address 10.12.34.56
+        print("Too few args")
+        exit(-5)
+    info_type = argv[2]
+    if info_type in ['--address', '-a']:
+        info = manager.get_info_by_ip(ipaddress.ip_address(argv[3]))
+    elif info_type in ['--name', '-n']:
+        info = manager.get_info_by_name(argv[3])
+    else:
+        print(f"Invalid info type \"{info_type}\"! --address, -a or --name, -n are available!")
+        exit(-6)
+    
+    print(f"NAME={info.name}\nNET={info.net}\nADDRESS={info.address}\nMTU={info.mtu}\nUSER={info.user}")
