@@ -6,9 +6,10 @@
 #include <cstdlib>
 #include <cstring>
 #include <format>
-#include <filesystem>
 #include <netinet/in.h>
 #include <semaphore>
+#include <spdlog/common.h>
+#include <spdlog/spdlog.h>
 #include <string>
 #include <sys/socket.h>
 #include <thread>
@@ -40,9 +41,8 @@ void test_read(){
     is_test_read = true;
     const char *test_name = "linux_tun_test.test_read";
     printInfo(test_name);
-    string tun_name = "korra_tun", ip = "10.12.34.56", tun_ip;
-    uint8_t subnet_mask = 24;
-    tun_ip = ip + "/" + to_string(subnet_mask);
+    string ip = "10.12.34.56";
+    /*uint8_t subnet_mask = 24;
     bool tun_made = is_tun_made(tun_name);
     if(!tun_made){
         string exe_file = std::filesystem::canonical("/proc/self/exe");
@@ -53,8 +53,8 @@ void test_read(){
             tun_name, tun_name, tun_ip, tun_name
         );
         fail(test_name, "tun %s doesn't exist!\nTry to launch it\n%s", -1, tun_name.c_str(), tun_build_script.c_str());
-    }
-    linux_tun tun(tun_name);
+    }*/
+    linux_tun tun(ip);
     tun.init();
     // заранее подготовленный кусок данных, который должен дойти как payload
     const char *test_payload = "korra_tun_read_test_payload";
@@ -121,6 +121,7 @@ void test_write(){
 }
 
 int main(){
+    spdlog::set_level(spdlog::level::debug);
     test_read();
     test_write();
     return 0;

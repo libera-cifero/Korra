@@ -1,9 +1,12 @@
 #include "tun/tun.hpp"
 #include "lib/log.hpp"
+#include <cstring>
 #include <spdlog/spdlog.h>
 #include <cstdint>
 #include <format>
+#include <stdexcept>
 #include <string>
+#include <sys/socket.h>
 #ifdef _WIN32
     #include <winsock2.h>
     #pragma comment(lib, "ws2_32.lib")
@@ -12,8 +15,10 @@
 #endif
 
 
-tun::tun(string &tun_name) {
-    _name = tun_name;
+tun::tun(string &ip) {
+    _ip = ip;
+    _ip_val = 0;
+    if(!inet_pton(AF_INET, _ip.c_str(), &_ip_val)) throw runtime_error(format("Invalid IP {}!", _ip));
     _is_header_reading = true;
     _readed_count = _package_read_count = 0;
 }
@@ -33,11 +38,20 @@ string tun::name(){
 }
 
 void tun::init(){
+    __init_properties(_ip, &_name, &_subnet_mask);
     _read_buffer = new char[mtu()];
-    __init_properties(name(), _ip, _subnet_mask);
 }
 
 char *tun::_current_read_buffer(){ return _read_buffer + _readed_count; }
+
+bool tun::_must_transmit(){
+    int src_ip;
+    memcpy(&src_ip, _read_buffer + 12, 4);
+    int mask_val = (1 << _subnet_mask) - 1;
+    bool self_ip = src_ip == _ip_val;
+    bool different_networks = (src_ip & mask_val) != (_ip_val & mask_val);
+    return self_ip || different_networks;
+}
 
 char *tun::read(){
     char *buff = _current_read_buffer();
@@ -52,8 +66,11 @@ char *tun::read(){
     }
     _readed_count += recv_count;
     if(_readed_count >= _package_read_count){
-        char *ip_package = new char[_package_read_count];
-        memcpy(ip_package, _read_buffer, _package_read_count);
+        char *ip_package = nullptr;
+        if(_must_transmit()){
+            ip_package = new char[_package_read_count];
+            memcpy(ip_package, _read_buffer, _package_read_count);
+        }
         _is_header_reading = true;
         _readed_count = _package_read_count = 0;
         return ip_package;

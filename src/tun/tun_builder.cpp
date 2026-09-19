@@ -10,7 +10,7 @@
 tun *build_tun(tun_config &config){
     tun *t;
 #ifdef __linux__
-    t = new linux_tun(config.name);
+    t = new linux_tun(config.ip);
 #else
     return nullptr;
 #endif

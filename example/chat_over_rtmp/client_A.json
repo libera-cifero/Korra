@@ -1,5 +1,7 @@
 {
-    "endpoint": "10.18.193.2:1234",
+    "tun":{
+        "name": "korra_tun"
+    },
     
     "in": {
         "frameWidth": 1280,

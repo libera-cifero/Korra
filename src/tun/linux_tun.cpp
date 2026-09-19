@@ -4,6 +4,7 @@
 #include <asm-generic/ioctls.h>
 #include <cstdint>
 #include <fcntl.h>
+#include <format>
 #include <linux/if.h>
 #include <linux/if_tun.h>
 #include <ifaddrs.h>
@@ -16,7 +17,19 @@
 #include <unistd.h>
 #include <cstring>
 
-linux_tun::linux_tun(string &tun_name) : tun(tun_name) {
+linux_tun::linux_tun(string &ip) : tun(ip) { }
+
+static uint8_t mask_to_prefix_len(int mask) {
+    int len = 0, m = mask;
+    do{
+        m >>= 1;
+        len++;
+    }
+    while(m != 0);
+    return (uint8_t)len;
+}
+
+void linux_tun::_open_tun(){
     struct ifreq ifr;
     if((_file_descriptor = open("/dev/net/tun", O_RDWR)) == -1) throw runtime_error("/dev/net/tun open error!");
 
@@ -25,7 +38,7 @@ linux_tun::linux_tun(string &tun_name) : tun(tun_name) {
 
     memset(&ifr, 0, sizeof(ifr));
     ifr.ifr_flags = IFF_TUN | IFF_NO_PI;
-    strncpy(ifr.ifr_name, tun_name.c_str(), IFNAMSIZ);
+    strncpy(ifr.ifr_name, name().c_str(), IFNAMSIZ);
 
     if(ioctl(_file_descriptor, TUNSETIFF, &ifr) == -1){
         close(_file_descriptor);
@@ -43,23 +56,16 @@ linux_tun::linux_tun(string &tun_name) : tun(tun_name) {
     _mtu = ifr.ifr_mtu;
 }
 
-static uint8_t mask_to_prefix_len(int mask) {
-    int len = 0, m = mask;
-    do{
-        m >>= 1;
-        len++;
-    }
-    while(m != 0);
-    return (uint8_t)len;
-}
-
-void linux_tun::__init_properties(string name, string &ip, uint8_t &subnet_mask){
+void linux_tun::__init_properties(string ip, string *name, uint8_t *subnet_mask){
     bool success = false;
     ifaddrs* first = nullptr;
 
     if (getifaddrs(&first) != 0) {
         throw runtime_error("Can't get if addresses!");
     }
+
+    int ip_val;
+    if(!inet_pton(AF_INET, ip.c_str(), &ip_val)) throw runtime_error(format("Invalid ip {}!",ip));
 
     for (ifaddrs* item = first; item != nullptr && !success; item = item->ifa_next) {
         if (!item->ifa_name || !item->ifa_addr || !item->ifa_netmask || item->ifa_addr->sa_family != AF_INET) continue;
@@ -70,18 +76,18 @@ void linux_tun::__init_properties(string name, string &ip, uint8_t &subnet_mask)
         int mask, tun_ip;
         memcpy(&mask, &netmask->sin_addr, 4);
         memcpy(&tun_ip, &address->sin_addr, 4);
-        if(strcmp(item->ifa_name, name.c_str()) == 0){
-            char addressText[INET_ADDRSTRLEN];
-            inet_ntop(AF_INET, &address->sin_addr, addressText, INET_ADDRSTRLEN);
-            ip = string(addressText);
-            subnet_mask = mask_to_prefix_len(mask);
+
+        if((ip_val & mask) == (tun_ip & mask)) { //if nets of tun_ip and ip are same
+            *name = string(item->ifa_name);
+            *subnet_mask = mask_to_prefix_len(mask);
             freeifaddrs(first);
+            _open_tun();
             return;
         }
     }
 
     freeifaddrs(first);
-    throw runtime_error(format("tun \"{}\" doesn't exist!", ip));
+    throw runtime_error(format("tun interface for ip \"{}\" doesn't exist!", ip));
 }
 
 int linux_tun::__read(char *buffer, int count){
