@@ -21,5 +21,5 @@ class deploy_manager:
     def install(self, auto_yes: bool): pass
     def remove(self, auto_yes: bool): pass
 
-class os_deploy_manager(os_specifiable):
+class os_deploy_manager(os_specifiable, deploy_manager):
     pass

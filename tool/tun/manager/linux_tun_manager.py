@@ -1,5 +1,6 @@
 from manager import tun_manager
 from ...lib.crossplatform.linux.linux_specifiable import linux_specifiable
+from ...lib.crossplatform.linux.util import get_package_manager
 import os, sys, subprocess, shutil, ipaddress, shlex
 import re
 import pwd
@@ -39,14 +40,8 @@ class linux_tun_manager(linux_specifiable, tun_manager.tun_manager):
                 return ret
         return 0
 
-    def __get_package_manager(self) -> str | None:
-        for cmd in ("apt", "dnf", "yum", "pacman", "zypper", "apk", "emerge", "xbps-install", "nix-env"):
-            if shutil.which(cmd):
-                return cmd
-        return None
-
     def __get_installation_command(self)-> str | None:
-        pckg_manager = self.__get_package_manager()
+        pckg_manager = get_package_manager()
         cmd_map = {
             "apt": "sudo apt update\nsudo apt install iproute2",
             "dnf": "sudo dnf install iproute",
@@ -56,7 +51,7 @@ class linux_tun_manager(linux_specifiable, tun_manager.tun_manager):
             "apk": "sudo apk add iproute2",
             "emerge": "sudo emerge sys-apps/iproute2",
             "xbps-install": "sudo xbps-install -S iproute2",
-            "nix-env": "nix-env -iA nixpkgs.iproute2",
+            "nix-env": "sudo nix-env -iA nixpkgs.iproute2",
             None: None
         }
 
