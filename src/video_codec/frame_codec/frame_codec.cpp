@@ -28,11 +28,12 @@ int frame_codec::frame_size(){
 
 char *frame_codec::encode(char *data) {
     auto prefix = get_method_prefix("frame_codec.encode");
-    spdlog::info("{} encoding...", prefix);
+    spdlog::trace("{} encoding...", prefix);
     char *encrypted = _cipher->encrypt(data);
     char *frame = _provider->to_frame(encrypted);
     delete [] encrypted;
-    spdlog::info("{} encoding completed!", prefix);
+    spdlog::trace("{} encoding completed!", prefix);
+
     return frame;
 }
 
@@ -44,7 +45,7 @@ bool frame_codec::_is_void_payload(char *payload){
 
 char *frame_codec::decode(char *frame) {
     auto prefix = get_method_prefix("frame_codec.decode");
-    spdlog::info("{} decoding...", prefix);
+    spdlog::trace("{} decoding...", prefix);
     char *encrypted = _provider->to_payload(frame);
     if(_is_void_payload(encrypted)) {
         delete [] encrypted;
@@ -52,7 +53,7 @@ char *frame_codec::decode(char *frame) {
     }
     char *data = _cipher->decrypt(encrypted);
     delete [] encrypted;
-    spdlog::info("{} decoding completed!", prefix);
+    spdlog::trace("{} decoding completed!", prefix);
     return data;
 }
 

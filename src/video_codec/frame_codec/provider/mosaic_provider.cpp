@@ -2,6 +2,7 @@
 #include "video_codec/frame_codec/provider/mosaic/mosaic_math.hpp"
 #include "video_codec/frame_codec/provider/mosaic/mosaic_settings.hpp"
 #include "lib/log.hpp"
+#include <format>
 #include <spdlog/common.h>
 #include <spdlog/spdlog.h>
 #include <cstddef>
@@ -45,10 +46,8 @@ bit_area mosaic_provider::_write_block_to_out(char *out, bit_area &area, int blo
 
 char* mosaic_provider::to_payload(char* frame) {
     string func_prefix = get_method_prefix("mosaic_provider.to_payload");
-    spdlog::info("{} block_count={} bits_per_block={}", func_prefix, _block_count, _bits_per_block);
-    if(is_debug_level()){
-        spdlog::debug("{} frame={}", func_prefix, get_byte_str(frame));
-    }
+    spdlog::trace("{} block_count={} bits_per_block={}", func_prefix, _block_count, _bits_per_block);
+    spdlog::trace("{} frame={}", func_prefix, get_byte_str(frame));
     char *payload = new char[_block_count];
     memset(payload, 0, _block_count);
     bit_area area = {0, _bits_per_block};
@@ -56,10 +55,8 @@ char* mosaic_provider::to_payload(char* frame) {
         int block = _settings->codec->decode(frame, i);
         area = _write_block_to_out(payload, area, block);
     }
-    if(is_debug_level()){
-        spdlog::debug("{} payload={}", func_prefix, get_byte_str(payload));
-    }
-    spdlog::info("{} success!", func_prefix);
+    spdlog::trace("{} payload={}", func_prefix, get_byte_str(payload));
+    spdlog::trace("{} success!", func_prefix);
     return payload;
 }
 
@@ -80,10 +77,10 @@ int mosaic_provider::_get_block(char *data, int block_index) {
 
 char* mosaic_provider::to_frame(char* data) {
     string func_prefix = get_method_prefix("mosaic_provider.to_frame");
-    spdlog::info("{} frame_size={}", func_prefix, _frame_size);
-    if(is_debug_level()){
-        spdlog::debug("{} data={}", func_prefix, get_byte_str(data));
-    }
+
+    spdlog::trace("{} frame_size={}", func_prefix, _frame_size);
+    spdlog::trace("{} data={}", func_prefix, get_byte_str(data));
+
     char *frame = new char[_frame_size];
     memset(frame, 0, _frame_size);
     bit_area area = {0, _bits_per_block};
@@ -91,10 +88,8 @@ char* mosaic_provider::to_frame(char* data) {
         int block = _get_block(data, i);
         _settings->codec->encode(frame, block, i);
     }
-    if(is_debug_level()){
-        spdlog::debug("{} frame={}", func_prefix, get_byte_str(frame));
-    }
-    spdlog::info("{} success!", func_prefix);
+    spdlog::trace("{} frame={}", func_prefix, get_byte_str(frame));
+    spdlog::trace("{} success!", func_prefix);
     return frame;
 }
 

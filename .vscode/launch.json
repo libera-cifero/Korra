@@ -5,10 +5,10 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "./bin/linux_tun_test",
+            "target": "./bin/korra",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
-            "arguments": ""
+            "arguments": "--log-level trace --config test/context/data/config/socket_A.json"
         },
         {
             "name": "Python Debugger: Python File",

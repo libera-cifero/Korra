@@ -31,6 +31,9 @@ video_codec:
 	cmake --build build --target video_codec
 
 build_src: base_utils color_codec len_reader timer
+
+korra:
+	cmake --build build --target korra
 #======END======
 
 #TESTS

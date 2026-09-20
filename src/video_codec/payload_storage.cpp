@@ -26,13 +26,13 @@ char *payload_storage::current_payload(){
 
 char *payload_storage::begin_new_payload(){
     auto prefix = get_method_prefix("payload_storage.begin_new_payload");
-    spdlog::debug("{} new payload begining...", prefix);
+    spdlog::trace("{} new payload begining...", prefix);
     int size = payload_size();
     char *payload = new char[size];
     memset(payload, 0, size);
     _payloads.push_back(payload);
     payload_index = 2;//first 2 bytes of buffer are used for data_count encounting
-    spdlog::debug("{} new payload was begun!", prefix);
+    spdlog::trace("{} new payload was begun!", prefix);
     return payload;
 }
 

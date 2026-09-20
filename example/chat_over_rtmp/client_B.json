@@ -1,7 +1,8 @@
 {
     "tun":{
-        "name": "korra_tun"
+        "name": "10.12.34.58"
     },
+    
     "in": {
         "frameWidth": 1280,
         "frameHeight": 720,

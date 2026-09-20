@@ -1,11 +1,12 @@
 #include "video_codec/frame_codec/cipher/xchacha20_cipher.hpp"
 #include "lib/log.hpp"
+#include <spdlog/common.h>
 #include <spdlog/spdlog.h>
 #include <cryptopp/cryptlib.h>
 #include <cryptopp/filters.h>
 #include <string>
 #include <cstring>
-
+using namespace spdlog::level;
 xchacha20_cipher::xchacha20_cipher(xchacha20_settings &config) : cipher(config) {
     auto prefix = get_method_prefix("xchacha20_cipher.xchacha20_cipher");
     spdlog::debug("{} constructing...", prefix);
@@ -29,15 +30,14 @@ crypto_byte *xchacha20_cipher::iv(){
 
 char *xchacha20_cipher::encrypt(char *data){
     std::string prefix = get_method_prefix("xchacha20_cipher.encrypt"); 
-    spdlog::info("{} encrypting...", prefix);
+    spdlog::trace("{} encrypting...", prefix);
 
     crypto_byte* plaintext = reinterpret_cast<crypto_byte*>(data);
 
     int plaintext_len = payload_size();
     int ciphertext_len = plaintext_len + TAG_SIZE;
     int enc_len = NONCE_SIZE + ciphertext_len;
-    if(is_debug_level())
-        spdlog::debug("{} size={} data={}", prefix, plaintext_len, get_byte_str(data));
+    spdlog::trace("{} size={} data={}", prefix, plaintext_len, get_byte_str(data));
 
     crypto_byte* encrypted = new crypto_byte[enc_len];
     memset(encrypted, 0, enc_len);
@@ -59,20 +59,18 @@ char *xchacha20_cipher::encrypt(char *data){
             CryptoPP::DEFAULT_CHANNEL
         )
     );
-    if(is_debug_level())
-        spdlog::debug("{} size={} encrypted={}", prefix, enc_len, get_byte_str(data));
-    spdlog::info("{} success!", prefix);
+    spdlog::trace("{} size={} encrypted={}", prefix, enc_len, get_byte_str(data));
+    spdlog::trace("{} success!", prefix);
 
     return reinterpret_cast<char*>(encrypted);
 }
 
 char *xchacha20_cipher::decrypt(char *encrypted){
     auto prefix = get_method_prefix("xchacha20_cipher.decrypt");
-    spdlog::info("{} decrypting...", prefix);
+    spdlog::trace("{} decrypting...", prefix);
     int size = payload_size();
     size_t tagged_data_size = size + TAG_SIZE;
-    if(is_debug_level())
-        spdlog::debug("{} size={} encrypted={}", prefix, tagged_data_size, get_byte_str(encrypted));
+    spdlog::trace("{} size={} encrypted={}", prefix, tagged_data_size, get_byte_str(encrypted));
 
     const crypto_byte *data = reinterpret_cast<crypto_byte*>(encrypted);
     const crypto_byte* nonce = data;
@@ -90,9 +88,8 @@ char *xchacha20_cipher::decrypt(char *encrypted){
             new CryptoPP::ArraySink(decrypted, size)
         )
     );
-    if(is_debug_level())
-        spdlog::debug("{} size={} data={}", prefix, size, get_byte_str(decrypted));
-    spdlog::info("{} decryption success!", prefix);    
+    spdlog::trace("{} size={} data={}", prefix, size, get_byte_str(decrypted));
+    spdlog::trace("{} decryption success!", prefix);
     return reinterpret_cast<char*>(decrypted);
 }
 

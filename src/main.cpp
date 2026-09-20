@@ -1,65 +1,149 @@
-#include <stdlib.h>
-#include <linux/videodev2.h>
-#include <fcntl.h>
-#include <time.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
+#include "lib/log.hpp"
+#include "video_socket.hpp"
+#include "config/parser_factory/static_parser_factory.hpp"
+#include "lib/CLI11.hpp"
+#include <csignal>
+#include <exception>
+#include <filesystem>
+#include <fstream>
+#include <map>
+#include <spdlog/common.h>
+#include <spdlog/spdlog.h>
+#include <string>
+using namespace filesystem;
+using namespace spdlog;
 
-typedef struct v4l2_format v4l2_format;
+struct cli_args {
+    level::level_enum log_level;
+    path config_path;
+};
 
-v4l2_format get_format(int width, int height){
-    v4l2_format fmt = {0};
+auto socket_parser = static_parser_factory().build();
+video_socket *socket;
 
-    fmt.type = V4L2_BUF_TYPE_VIDEO_OUTPUT;
-
-    fmt.fmt.pix.width = width;
-    fmt.fmt.pix.height = height;
-
-    fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_RGB24;
-    fmt.fmt.pix.field = V4L2_FIELD_NONE;
-
-    fmt.fmt.pix.bytesperline = width * 3;
-    fmt.fmt.pix.sizeimage = width * height * 3;
-    fmt.fmt.pix.colorspace = V4L2_COLORSPACE_SRGB;
-    return fmt;
+video_socket *read_socket_from_file(path &file_path){
+    string prefix = get_method_prefix("main.read_socket_from_file");
+    video_socket *socket = nullptr;
+    try{
+        ifstream file(file_path);
+        stringstream stream;
+        stream << file.rdbuf();
+        string config_str = stream.str();
+        file.close();
+        
+        auto config = json::parse(config_str);
+        socket = socket_parser->parse(config);
+    }
+    catch(exception &e){
+        spdlog::error("{} invalid config!", prefix);
+        spdlog::error("{} {}", prefix, e.what());
+    }
+    catch(...){
+        spdlog::error("{} invalid config!", prefix);
+    }
+    return socket;
 }
 
-char rand_byte(){
-    return (rand() % 255) - 127;
-}
-
-void fill_camera_data(int fd, int width, int heigth) {
-    int frame_size = width*heigth*3;
-    char *frame = (char*)malloc(frame_size);
-    for(int y = 0; y < heigth; y++){
-        for(int x = 0; x < width; x++){
-            int r = (y * width + x) * 3;
-            int g = r + 1;
-            int b = r + 2;
-
-            frame[r] = rand_byte();
-            frame[g] = rand_byte();
-            frame[b] = rand_byte();
+int parse_args(int argc, char **argv, cli_args &args){
+    string prefix = get_method_prefix("main.parse_args");
+    CLI::App app{"korra-proxy"};
+    argv = app.ensure_utf8(argv);
+    string log_level = "info", config_path;
+    app.add_option("-l,--log-level", log_level);
+    app.add_option("-c,--config", config_path)->required();
+    CLI11_PARSE(app, argc, argv);
+    map<string, level::level_enum> levels {
+        { "trace", level::trace },
+        { "debug", level::debug },
+        { "info", level::info },
+        { "warn", level::warn },
+        { "err", level::err },
+        { "critical", level::critical },
+        { "off", level::off }
+    };
+    
+    if(!levels.contains(log_level)) {
+        string str = "";
+        for(auto x = levels.begin(); x != levels.end(); x++){
+            if(x != levels.begin()) str += ", ";
+            str+=x->first;
         }
+        spdlog::error("{} invalid log level {}! Available values: {}", prefix, log_level, str);
+        return -1;
+    }
+    args.log_level = levels[log_level];
+    try{
+        args.config_path = current_path() / config_path;
+    }
+    catch(exception &e){
+        spdlog::error("{} invalid path {}!", prefix, config_path);
+        spdlog::error("{} {}!", prefix, e.what());
+        return -1;
+    }
+    catch (...){
+        spdlog::error("{} invalid path {}!", prefix, config_path);
+        return -1;
     }
 
-    write(fd, frame, frame_size);
-    free(frame);
+    return 0;
 }
 
-int main(){
-    int width = 640, height = 480;
+void free_context(){
+    string prefix = get_method_prefix("main.free_context");
+    spdlog::debug("{} context cleaning...", prefix);
+    delete socket_parser;
+    delete socket;
+    spdlog::debug("{} context was cleaned successfully!", prefix);
+}
 
-    v4l2_format fmt = get_format(640, 480);
+void quit(int sig){
+    string prefix = get_method_prefix("main.quit");
+    map<int, string> signal_names={
+        {SIGHUP, "SIGHUP"},
+        {SIGINT, "SIGINT"},
+        {SIGQUIT, "SIGQUIT"},
+        {SIGABRT, "SIGABRT"},
+        {SIGILL, "SIGILL" },
+        {SIGSEGV, "SIGSEGV"},
+        {SIGTERM, "SIGTERM"},
+        {SIGSTOP, "SIGSTOP"},
+        {SIGCHLD, "SIGCHLD"},
+        {SIGALRM, "SIGALRM"},
+        {SIGUSR1, "SIGUSR1"},
+        {SIGUSR2, "SIGUSR2"}
+    };
+    if(sig == SIGSEGV) spdlog::critical("{} socket stopping by signal {}={}...", prefix, signal_names[sig], sig);
+    else spdlog::info("{} socket stopping by signal {}={}...", prefix, signal_names[sig], sig);
+    
+    socket->stop();
+    spdlog::info("{} socket stopped!", prefix);
+    free_context();
+    spdlog::info("{} program ended!", prefix);
+    exit(0);
+}
 
-    int fd = open("/dev/video10", O_WRONLY);
-    ioctl(fd, VIDIOC_S_FMT, &fmt);
-
-    srand(time(NULL));
-    while(1){
-        fill_camera_data(fd, width, height);
-        usleep(16667);
+int main(int argc, char **argv){
+    string prefix = get_method_prefix("main.main");
+    cli_args args;
+    int code = parse_args(argc, argv, args);
+    if(code != 0) return code;
+    spdlog::set_level(args.log_level);
+    socket = read_socket_from_file(args.config_path);
+    if(socket == nullptr) return -2;
+    try{
+        int signals[]{SIGINT, SIGTERM, SIGQUIT, SIGABRT, SIGSEGV};
+        for(int i = 0; i < sizeof(signals) / sizeof(int); i++) signal(signals[i], quit);
+        socket->run();
     }
-    close(fd);
+    catch(exception &e){
+        spdlog::critical("{} {}", prefix, e.what());
+        free_context();
+        return -3;
+    }
+    catch(...){
+        spdlog::critical("{} something went wrong!", prefix);
+        free_context();
+        return -3;
+    }
     return 0;
 }

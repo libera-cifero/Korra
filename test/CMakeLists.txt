@@ -72,60 +72,48 @@ target_link_libraries(color_test PUBLIC test_lib)
 #mosaic_test
 add_executable(mosaic_test ${mosaic_test_src})
 target_setup(mosaic_test)
-target_link_libraries(mosaic_test PUBLIC test_lib)
-#target_link_libraries(mosaic PUBLIC base_utils color_codec)
 
 #video_codec_test
 add_executable(video_codec_test ${video_codec_test_src})
 target_setup(video_codec_test)
-target_link_libraries(video_codec_test PUBLIC test_lib)
 
 #video_config_parser_test
 add_executable(video_config_parser_test ${video_config_parser_test_src})
 target_setup(video_config_parser_test)
-target_link_libraries(video_config_parser_test PUBLIC test_lib)
 
 #frame_codec_parser_test
 add_executable(frame_codec_parser_test ${frame_codec_parser_test_src} )
 target_setup(frame_codec_parser_test)
-target_link_libraries(frame_codec_parser_test PUBLIC test_lib)
 
 #data_boxer_test
 add_executable(data_boxer_test ${data_boxer_test_src})
 target_setup(data_boxer_test)
-target_link_libraries(data_boxer_test PUBLIC test_lib)
 
 #xchacha20_cipher_test
 add_executable(xchacha20_cipher_test ${xchacha20_cipher_test})
 target_setup(xchacha20_cipher_test)
-target_link_libraries(xchacha20_cipher_test PUBLIC test_lib)
 
 #xchacha20_cipher_parser_test
 add_executable(xchacha20_cipher_parser_test ${xchacha20_cipher_parser_test_src})
 target_setup(xchacha20_cipher_parser_test)
-target_link_libraries(xchacha20_cipher_parser_test PUBLIC test_lib)
 
 #ffmpeg_rtmp_pipe_out_test
 add_executable(ffmpeg_rtmp_pipe_out_test ${ffmpeg_rtmp_pipe_out_test_src})
 target_setup(ffmpeg_rtmp_pipe_out_test)
-target_link_libraries(ffmpeg_rtmp_pipe_out_test PUBLIC test_lib)
 
 #ffmpeg_rtmp_pipe_in_test
 add_executable(ffmpeg_rtmp_pipe_in_test ${ffmpeg_rtmp_pipe_in_test_src})
 target_setup(ffmpeg_rtmp_pipe_in_test)
-target_link_libraries(ffmpeg_rtmp_pipe_in_test PUBLIC test_lib)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     #linux_tun_test
     add_executable(linux_tun_test ${linux_tun_test_src})
     target_setup(linux_tun_test)
-    target_link_libraries(linux_tun_test PUBLIC test_lib)
 endif()
 
 #video_socket_test
 add_executable(video_socket_test ${video_socket_test_src})
 target_setup_test(video_socket_test)
-#target_link_libraries(video_socket_test Boost::filesystem)
 #======END======
 
 #TEST TOOLS

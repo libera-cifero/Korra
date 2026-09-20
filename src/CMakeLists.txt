@@ -57,3 +57,8 @@ target_link_libraries(video_socket PUBLIC spdlog lib video_codec data_boxer tun)
 add_library(config SHARED ${config_src})
 target_include_directories(config PUBLIC ${INCLUDE_DIR})
 target_link_libraries(config PUBLIC spdlog lib video_codec data_boxer tun video_socket)
+
+#korra
+add_executable(korra main.cpp)
+target_include_directories(korra PUBLIC ${INCLUDE_DIR})
+target_link_libraries(korra PUBLIC spdlog lib video_codec config data_boxer tun video_socket)

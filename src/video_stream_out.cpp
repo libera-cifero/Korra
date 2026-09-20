@@ -12,21 +12,21 @@ video_stream_out::video_stream_out(video_pipe_out *pipe, video_codec *codec, dat
 
 void video_stream_out::send_current_frame(){
     string prefix = get_method_prefix("video_stream_out.send_current_frame");
-    spdlog::debug("{} frame popping...", prefix);
+    spdlog::trace("{} frame popping...", prefix);
     auto frame = _codec->storage()->pop_frame();
-    spdlog::debug("{} frame was popped!", prefix);
-    spdlog::debug("{} writing the frame to pipe_out...", prefix);
+    spdlog::trace("{} frame was popped!", prefix);
+    spdlog::trace("{} writing the frame to pipe_out...", prefix);
     _pipe->write(frame, _codec->frame_size());
-    spdlog::debug("{} frame was writen to pipe_out!", prefix);
+    spdlog::trace("{} frame was writen to pipe_out!", prefix);
     delete [] frame;
-    spdlog::debug("{} succsess!", prefix);
+    spdlog::trace("{} succsess!", prefix);
 }
 
 void video_stream_out::write(korra_data *data){
     auto prefix = get_method_prefix("video_stream_out.write");
-    spdlog::debug("{} writing the data with size {}...", prefix, data->size());
+    spdlog::trace("{} writing the data with size {}...", prefix, data->size());
     _boxer->box(data);
-    spdlog::debug("{} success!", prefix);
+    spdlog::trace("{} success!", prefix);
 }
 
 video_stream_out::~video_stream_out(){
