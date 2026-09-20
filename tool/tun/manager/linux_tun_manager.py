@@ -1,9 +1,10 @@
 from manager import tun_manager
+from ...lib.crossplatform.linux.linux_specifiable import linux_specifiable
 import os, sys, subprocess, shutil, ipaddress, shlex
 import re
 import pwd
 
-class linux_tun_manager(tun_manager.tun_manager):
+class linux_tun_manager(linux_specifiable, tun_manager.tun_manager):
     def __init__(self):
         self.__tun_info_pattern = "\\d+: ([^\\s]+):.+mtu (\\d+).+inet (\\d{1,3}(?:\\.\\d{1,3}){3})\\/(\\d+).+inet6 ([0-f:]+)\\/(\\d+)"
 
@@ -97,9 +98,6 @@ class linux_tun_manager(tun_manager.tun_manager):
 
         self.__remove_systemd_autostart(tun_name)
         self.__execute_command_chain(["systemctl daemon-reload"])
-
-    def is_usable(self):
-        return sys.platform == 'linux'
 
     def __get_username(self, tun_name:str) -> str:
         result = subprocess.run(["ip", "tuntap", "show"], capture_output=True, text=True)
