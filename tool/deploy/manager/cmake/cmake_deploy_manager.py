@@ -84,6 +84,7 @@ class cmake_deploy_manager(deploy_manager):
                 self._update(auto_yes)
             else:
                 raise deploy_canceled_exception
+        print("cmake is installed successfully!")
 
     def _remove(self, auto_yes: bool): pass
 
