@@ -1,2 +1,5 @@
 #!/usr/bin/bash
-/usr/bin/python3 /usr/local/bin/korra/tun/tun.py $*
+$root=$(pwd)
+cd /usr/bin/korra
+/usr/bin/python3 -m tool.tun.tun $*
+cd $root
