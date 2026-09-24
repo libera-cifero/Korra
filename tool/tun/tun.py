@@ -7,7 +7,7 @@
 
 import sys
 import ipaddress
-from manager import linux_tun_manager, windows_tun_manager, macos_tun_manager, android_tun_manager, ios_tun_manager
+from .manager import linux_tun_manager, windows_tun_manager, macos_tun_manager, android_tun_manager, ios_tun_manager
 
 argv = sys.argv
 

@@ -1,4 +1,4 @@
-from manager.tun_manager import tun_manager
+from .tun_manager import tun_manager
 from ...lib.crossplatform.android.android_specifiable import android_specifiable
 import ipaddress
 

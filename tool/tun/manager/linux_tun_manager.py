@@ -1,11 +1,11 @@
-from manager import tun_manager
+from .tun_manager import (tun_manager, tun_info)
 from ...lib.crossplatform.linux.linux_specifiable import linux_specifiable
 from ...lib.crossplatform.linux.util import get_package_manager
 import os, sys, subprocess, shutil, ipaddress, shlex
 import re
 import pwd
 
-class linux_tun_manager(linux_specifiable, tun_manager.tun_manager):
+class linux_tun_manager(linux_specifiable, tun_manager):
     def __init__(self):
         self.__tun_info_pattern = "\\d+: ([^\\s]+):.+mtu (\\d+).+inet (\\d{1,3}(?:\\.\\d{1,3}){3})\\/(\\d+).+inet6 ([0-f:]+)\\/(\\d+)"
 
@@ -108,7 +108,7 @@ class linux_tun_manager(linux_specifiable, tun_manager.tun_manager):
 
     def __match_to_tun_info(self, match: re.Match):
         groups = match.groups()
-        return tun_manager.tun_info(
+        return tun_info(
             name = groups[0], 
             mtu = int(groups[1]),
             address = ipaddress.IPv4Address(groups[2]), 
@@ -116,7 +116,7 @@ class linux_tun_manager(linux_specifiable, tun_manager.tun_manager):
             user = None
         )
 
-    def get_info_by_name(self, tun_name:str) -> tun_manager.tun_info: 
+    def get_info_by_name(self, tun_name:str) -> tun_info: 
         cmd = f"ip addr show {tun_name}"
         result = subprocess.run(["ip", "addr", "show", tun_name], capture_output = True)
         if result.returncode != 0:
@@ -129,7 +129,7 @@ class linux_tun_manager(linux_specifiable, tun_manager.tun_manager):
         info.user = self.__get_username(info.tun_name)
         return info
     
-    def get_info_by_ip(self, ip: ipaddress.IPv4Address) -> tun_manager.tun_info: 
+    def get_info_by_ip(self, ip: ipaddress.IPv4Address) -> tun_info: 
         cmd = f"ip addr show {tun_name}"
         result = subprocess.run(["ip", "addr", "show"], capture_output = True)
         pattern:str = self.__tun_info_pattern

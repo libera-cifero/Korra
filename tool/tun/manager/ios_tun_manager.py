@@ -1,4 +1,4 @@
-from manager.tun_manager import tun_manager
+from .tun_manager import tun_manager
 from ...lib.crossplatform.ios.ios_specifiable import ios_specifiable
 import ipaddress
 

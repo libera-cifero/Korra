@@ -58,7 +58,7 @@ class cryptopp_linux_manager(cryptopp_deploy_manager):
 
     def install(self, auto_yes: bool):
         script = ""
-        with open("/usr/local/etc/korra/tool/data/deploy/install/linux/cryptopp.sh", 'r') as f:
+        with open("/etc/korra/tool/data/deploy/install/linux/cryptopp.sh", 'r') as f:
             script = f.read()
         script = script.replace("$1", self.ninja_commands[auto_yes]["install"])
         print("cryptopp installing...")

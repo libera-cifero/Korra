@@ -1,4 +1,4 @@
-from manager.tun_manager import tun_manager
+from .tun_manager import tun_manager
 from ...lib.crossplatform.macos.macos_specifiable import macos_specifiable
 import sys, ipaddress
 class macos_tun_manager(macos_specifiable, tun_manager):
