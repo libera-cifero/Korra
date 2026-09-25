@@ -1,6 +1,6 @@
 #include "video_socket.hpp"
-#include "data_boxer/data/ip_data.hpp"
-#include "data_boxer/data/korra_data.hpp"
+#include "lib/data/ip_data.hpp"
+#include "lib/data/korra_data.hpp"
 #include "event/event.hpp"
 #include "lib/log.hpp"
 #include "event/async_read_event.hpp"
@@ -43,68 +43,6 @@ void video_socket::_setup_event_loop(video_socket_settings &settings){
     _loop->subscribe(timer->name(), [&](event_args *res) { _on_timer_event(static_cast<timer_event_args*>(res)); });
 }
 
-static std::string ipv4_to_string(uint32_t ip) {
-    boost::asio::ip::address_v4 addr(ip);
-    return addr.to_string();
-}
-
-static std::string ipv6_to_string(const uint8_t* ip) {
-    boost::asio::ip::address_v6::bytes_type bytes;
-    std::copy(ip, ip + 16, bytes.data());
-    boost::asio::ip::address_v6 addr(bytes);
-    return addr.to_string();
-}
-
-static std::string get_protocol_name(uint8_t protocol) {
-    switch (protocol) {
-        case 1: return "ICMP";
-        case 6: return "TCP";
-        case 17: return "UDP";
-        case 41: return "IPv6";
-        case 47: return "GRE";
-        case 50: return "ESP";
-        case 51: return "AH";
-        default: return "Unknown (" + std::to_string(protocol) + ")";
-    }
-}
-
-static std::string format_ip_header(ip_header* header) {
-    std::stringstream ss;
-    
-    if (header->version == IPv4) {
-        ipv4_header* h = static_cast<ipv4_header*>(header);
-        
-        uint16_t flags_offset = ntohs(h->flags_fragment_offset);
-        uint8_t flags = (flags_offset >> 13) & 0x07;
-        uint16_t fragment_offset = flags_offset & 0x1FFF;
-        
-        std::string flags_str = "";
-        if (flags & 0x04) flags_str += "Reserved ";
-        if (flags & 0x02) flags_str += "DF ";
-        if (flags & 0x01) flags_str += "MF";
-        
-        ss << "IPv4: " << ipv4_to_string(h->src_ip) << " -> " 
-           << ipv4_to_string(h->dst_ip) << " | "
-           << "Protocol: " << get_protocol_name(h->protocol) << " | "
-           << "Length: " << h->total_length << " | "
-           << "TTL: " << (int)h->ttl << " | "
-           << "Flags: [" << flags_str << "] | "
-           << "ID: 0x" << std::hex << ntohs(h->identification);
-           
-    } else if (header->version == IPv6) {
-        ipv6_header* h = static_cast<ipv6_header*>(header);
-        
-        ss << "IPv6: " << ipv6_to_string(h->src_ip) << " -> " 
-           << ipv6_to_string(h->dst_ip) << " | "
-           << "Protocol: " << get_protocol_name(h->next_header) << " | "
-           << "Payload: " << ntohs(h->payload_length) << " | "
-           << "Hop Limit: " << (int)h->hop_limit << " | "
-           << "Flow Label: 0x" << std::hex << h->flow_label;
-    }
-    
-    return ss.str();
-}
-
 void video_socket::_on_tun_read_event(async_read_event_args *args){
     string func_prefix = get_method_prefix("video_socket._on_tun_read_event");
     bool is_debug = get_level() == level::debug;
@@ -134,6 +72,8 @@ void video_socket::_on_pipe_in_read_event(async_read_event_args *args){
     for(int i = 0; i < buffer.size(); i++){
         korra_data *data = buffer[i];
         if(auto ip = dynamic_cast<ip_data*>(data)){
+            string header_str = format_ip_header(ip->header());
+            debug("{} received ip_data with header {}", func_prefix, header_str);
             info("{} writing ip_data to tun {}...", func_prefix, _tun->name());
             if(get_level() == level::debug)
                 debug("{} {}", func_prefix, format_ip_header(ip->header()));

@@ -1,6 +1,6 @@
 #pragma once
-#include "data_boxer/data/base/identifiable.hpp"
-#include "data_boxer/data/korra_data.hpp"
+#include "base/identifiable.hpp"
+#include "korra_data.hpp"
 
 class piecable_data : public korra_data, public identifiable { 
 private:

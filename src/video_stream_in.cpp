@@ -1,6 +1,6 @@
 #include "video_stream_in.hpp"
 #include "config/data/video_config.hpp"
-#include "data_boxer/data/korra_data.hpp"
+#include "lib/data/korra_data.hpp"
 #include "lib/log.hpp"
 #include <spdlog/spdlog.h>
 #include <vector>

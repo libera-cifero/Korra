@@ -1,6 +1,6 @@
 #pragma once
 #include "config/data/video_config.hpp"
-#include "data_boxer/data/korra_data.hpp"
+#include "lib/data/korra_data.hpp"
 #include "data_boxer/data_unboxer.hpp"
 #include "pipe/in/pipe/video_pipe_in.hpp"
 #include "video_codec/video_codec.hpp"

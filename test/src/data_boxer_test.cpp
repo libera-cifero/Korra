@@ -1,6 +1,6 @@
 #include "config/data/video_config.hpp"
-#include "data_boxer/data/ip_data.hpp"
-#include "data_boxer/data/korra_data.hpp"
+#include "lib/data/ip_data.hpp"
+#include "lib/data/korra_data.hpp"
 #include "data_boxer/data_boxer.hpp"
 #include "data_boxer/data_unboxer.hpp"
 #include "frame_io.hpp"

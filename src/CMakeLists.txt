@@ -28,7 +28,7 @@ target_include_directories(lib PUBLIC ${INCLUDE_DIR})
 target_link_libraries(lib PUBLIC spdlog)
 
 #video_codec
-add_library(video_codec STATIC ${video_codec_src})
+add_library(video_codec SHARED ${video_codec_src})
 target_include_directories(video_codec PUBLIC ${INCLUDE_DIR})
 target_link_libraries(video_codec PUBLIC lib ${CRYPTOPP_LIB} spdlog)
 
@@ -49,7 +49,7 @@ target_include_directories(tun PUBLIC ${INCLUDE_DIR})
 target_link_libraries(tun PUBLIC spdlog)
 
 #video_socket
-add_library(video_socket STATIC ${video_socket_src} ${pipe_src} ${event_src})
+add_library(video_socket SHARED ${video_socket_src} ${pipe_src} ${event_src})
 target_include_directories(video_socket PUBLIC ${INCLUDE_DIR})
 target_link_libraries(video_socket PUBLIC spdlog lib video_codec data_boxer tun)
 

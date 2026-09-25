@@ -1,8 +1,8 @@
 #include "data_boxer/data_boxer.hpp"
-#include "data_boxer/data/korra_data.hpp"
-#include "data_boxer/data/piecable_data.hpp"
-#include "data_boxer/data/begin_label_data.hpp"
-#include "data_boxer/data/pieced_data.hpp"
+#include "lib/data/korra_data.hpp"
+#include "lib/data/piecable_data.hpp"
+#include "lib/data/begin_label_data.hpp"
+#include "lib/data/pieced_data.hpp"
 #include "lib/log.hpp"
 #include "video_codec/payload_storage.hpp"
 #include <cstdio>

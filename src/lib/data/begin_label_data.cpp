@@ -1,5 +1,5 @@
-#include "data_boxer/data/begin_label_data.hpp"
-#include "data_boxer/data/korra_data.hpp"
+#include "lib/data/begin_label_data.hpp"
+#include "lib/data/korra_data.hpp"
 #include <cstdint>
 #include <cstring>
 
