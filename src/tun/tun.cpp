@@ -57,6 +57,7 @@ char *tun::read(){
     char *buff = _current_read_buffer();
     int recv_count = __read(buff, mtu());
     if(recv_count < 0) return nullptr;
+    if((_read_buffer[0] >> 4) == 6) return nullptr; // if it is ipv6 traffic, than drop it
     memcpy(&_package_read_count, _read_buffer + 2, 2);
     _package_read_count = ntohs(_package_read_count);
     buff = _current_read_buffer();

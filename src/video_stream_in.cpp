@@ -23,19 +23,19 @@ void video_stream_in::unbox_frame(char *frame, vector<korra_data*> &buffer) {
     auto prefix = get_method_prefix("video_stream_in.unbox_frame");
     char *payload = _codec->decode(reinterpret_cast<char*>(frame));
     if(payload != nullptr){
-        spdlog::info("{} unboxing payload...", prefix);
+        spdlog::trace("{} unboxing payload...", prefix);
         _unboxer->put_payload(payload, _codec->payload_size());
         korra_data *data = nullptr;
         do{
             data = _unboxer->unbox();
             buffer.push_back(data);
-            spdlog::info("{} korra_data unboxed!", prefix);
+            spdlog::trace("{} korra_data unboxed!", prefix);
         }
         while(data != nullptr);
         delete [] payload;
     }
 
-    spdlog::info("{} success!", prefix);
+    spdlog::trace("{} success!", prefix);
 }
 
 video_stream_in::~video_stream_in(){

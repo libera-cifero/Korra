@@ -127,9 +127,10 @@ void video_socket::_on_pipe_in_read_event(async_read_event_args *args){
     vector<korra_data*> buffer;
     string func_prefix = get_method_prefix("video_socket._on_pipe_in_read_event");
     
-    bool is_debug = get_level() == level::debug;
-    info("{} reading a korra_data from stream_in to buffer...", func_prefix);
-    
+    _stream_in->unbox_frame(args->data, buffer);
+    if(buffer.size() > 0)
+        info("{} reading a korra_data from stream_in to buffer...", func_prefix);
+
     for(int i = 0; i < buffer.size(); i++){
         korra_data *data = buffer[i];
         if(auto ip = dynamic_cast<ip_data*>(data)){
@@ -142,6 +143,8 @@ void video_socket::_on_pipe_in_read_event(async_read_event_args *args){
         }
         if(data != nullptr) delete data;
     }
+
+    delete [] args->data;
 }
 
 void video_socket::_on_timer_event(timer_event_args *args){

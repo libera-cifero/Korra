@@ -8,7 +8,7 @@
             "target": "./bin/korra",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
-            "arguments": "--log-level trace --config test/context/data/config/socket_A.json"
+            "arguments": "--log-level debug --config test/context/data/config/socket_A.json"
         },
         {
             "name": "Python Debugger: Python File",

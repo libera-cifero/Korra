@@ -23,6 +23,7 @@ video_socket *socket;
 
 video_socket *read_socket_from_file(path &file_path){
     string prefix = get_method_prefix("main.read_socket_from_file");
+    spdlog::info("{} reading config from {}...", prefix, file_path.string());
     video_socket *socket = nullptr;
     try{
         ifstream file(file_path);
@@ -33,6 +34,7 @@ video_socket *read_socket_from_file(path &file_path){
         
         auto config = json::parse(config_str);
         socket = socket_parser->parse(config);
+        spdlog::info("{} config was readed successfully!", prefix);
     }
     catch(exception &e){
         spdlog::error("{} invalid config!", prefix);
