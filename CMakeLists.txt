@@ -21,4 +21,4 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
 
 add_subdirectory(src)
 add_subdirectory(test)
-add_subdirectory(example)
+#add_subdirectory(example)
